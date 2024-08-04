@@ -1,0 +1,114 @@
+{
+    "books": [
+        {
+            "id": 1,
+            "title": "To Kill a Mockingbird",
+            "author_id": 1,
+            "genre_id": 1,
+            "publication_year": 1960,
+            "ISBN": "978-0-06-112008-4",
+            "description": "A novel about the serious issues of rape and racial inequality told through the eyes of a young girl in the Deep South.",
+            "cover_image": "https://example.com/images/to_kill_a_mockingbird_cover.jpg",
+            "back_image": "https://example.com/images/to_kill_a_mockingbird_back.jpg"
+        },
+        {
+            "id": 2,
+            "title": "1984",
+            "author_id": 2,
+            "genre_id": 2,
+            "publication_year": 1949,
+            "ISBN": "978-0-452-28423-4",
+            "description": "A dystopian social science fiction novel and cautionary tale about the dangers of totalitarianism.",
+            "cover_image": "https://example.com/images/1984_cover.jpg",
+            "back_image": "https://example.com/images/1984_back.jpg"
+        },
+        {
+            "id": 3,
+            "title": "The Great Gatsby",
+            "author_id": 3,
+            "genre_id": 1,
+            "publication_year": 1925,
+            "ISBN": "978-0-7432-7356-5",
+            "description": "A novel about the American dream, set in the Jazz Age, depicting the life and times of the mysterious millionaire Jay Gatsby.",
+            "cover_image": "https://example.com/images/the_great_gatsby_cover.jpg",
+            "back_image": "https://example.com/images/the_great_gatsby_back.jpg"
+        },
+        {
+            "id": 4,
+            "title": "Pride and Prejudice",
+            "author_id": 4,
+            "genre_id": 3,
+            "publication_year": 1813,
+            "ISBN": "978-0-19-953556-9",
+            "description": "A romantic novel that charts the emotional development of the protagonist, Elizabeth Bennet, who learns about the repercussions of hasty judgments and the importance of understanding.",
+            "cover_image": "https://example.com/images/pride_and_prejudice_cover.jpg",
+            "back_image": "https://example.com/images/pride_and_prejudice_back.jpg"
+        },
+        {
+            "id": 5,
+            "title": "Moby-Dick",
+            "author_id": 5,
+            "genre_id": 4,
+            "publication_year": 1851,
+            "ISBN": "978-0-14-243724-7",
+            "description": "An epic tale of the voyage of the whaling ship Pequod and its captain, Ahab, who relentlessly pursues the giant white whale, Moby-Dick.",
+            "cover_image": "https://example.com/images/moby_dick_cover.jpg",
+            "back_image": "https://example.com/images/moby_dick_back.jpg"
+        },
+        {
+            "id": 6,
+            "title": "The Road",
+            "author_id": 6,
+            "genre_id": 5,
+            "publication_year": 2006,
+            "ISBN": "978-0-307-38789-9",
+            "description": "A novel that tells the story of a father and son's journey through a post-apocalyptic landscape.",
+            "cover_image": "https://example.com/images/the_road_cover.jpg",
+            "back_image": "https://example.com/images/the_road_back.jpg"
+        },
+        {
+            "id": 7,
+            "title": "The Catcher in the Rye",
+            "author_id": 7,
+            "genre_id": 1,
+            "publication_year": 1951,
+            "ISBN": "978-0-316-76948-0",
+            "description": "A story about a young boy named Holden Caulfield, his experiences in New York City, and his contemplation of the adult world.",
+            "cover_image": "https://example.com/images/the_catcher_in_the_rye_cover.jpg",
+            "back_image": "https://example.com/images/the_catcher_in_the_rye_back.jpg"
+        },
+        {
+            "id": 8,
+            "title": "The Hobbit",
+            "author_id": 8,
+            "genre_id": 6,
+            "publication_year": 1937,
+            "ISBN": "978-0-618-00221-3",
+            "description": "A fantasy novel that follows the journey of Bilbo Baggins as he embarks on an unexpected adventure.",
+            "cover_image": "https://example.com/images/the_hobbit_cover.jpg",
+            "back_image": "https://example.com/images/the_hobbit_back.jpg"
+        },
+        {
+            "id": 9,
+            "title": "Gone Girl",
+            "author_id": 9,
+            "genre_id": 7,
+            "publication_year": 2012,
+            "ISBN": "978-0-307-58837-3",
+            "description": "A thriller about the mysterious disappearance of Amy Dunne and the ensuing media frenzy, with a focus on the dark side of marriage.",
+            "cover_image": "https://example.com/images/gone_girl_cover.jpg",
+            "back_image": "https://example.com/images/gone_girl_back.jpg"
+        },
+        {
+            "id": 10,
+            "title": "The Da Vinci Code",
+            "author_id": 10,
+            "genre_id": 8,
+            "publication_year": 2003,
+            "ISBN": "978-0-385-50420-1",
+            "description": "A mystery thriller that follows symbologist Robert Langdon as he uncovers secrets hidden in Leonardo da Vinci's works.",
+            "cover_image": "https://example.com/images/the_da_vinci_code_cover.jpg",
+            "back_image": "https://example.com/images/the_da_vinci_code_back.jpg"
+        }
+    ]
+}

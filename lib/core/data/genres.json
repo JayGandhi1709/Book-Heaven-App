@@ -1,0 +1,44 @@
+{
+    "genres": [
+        {
+            "id": 1,
+            "name": "Fiction",
+            "description": "Literature created from the imagination, not presented as fact."
+        },
+        {
+            "id": 2,
+            "name": "Dystopian",
+            "description": "A genre of speculative fiction that explores social and political structures in a dark, nightmare world."
+        },
+        {
+            "id": 3,
+            "name": "Romance",
+            "description": "A genre centered on romantic love between two people and usually has an emotionally satisfying and optimistic ending."
+        },
+        {
+            "id": 4,
+            "name": "Adventure",
+            "description": "A genre of fiction that usually presents danger, or gives the reader a sense of excitement."
+        },
+        {
+            "id": 5,
+            "name": "Post-apocalyptic",
+            "description": "A genre of fiction set in a world or civilization after a catastrophic disaster."
+        },
+        {
+            "id": 6,
+            "name": "Fantasy",
+            "description": "A genre of speculative fiction set in a fictional universe, often inspired by real world myth and folklore."
+        },
+        {
+            "id": 7,
+            "name": "Thriller",
+            "description": "A genre that uses suspense, tension, and excitement as its main elements."
+        },
+        {
+            "id": 8,
+            "name": "Mystery",
+            "description": "A genre that involves solving a crime or uncovering secrets."
+        }
+    ]
+}

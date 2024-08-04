@@ -1,0 +1,71 @@
+{
+    "authors": [
+        {
+            "id": 1,
+            "name": "Harper Lee",
+            "birth_year": 1926,
+            "death_year": 2016,
+            "nationality": "American"
+        },
+        {
+            "id": 2,
+            "name": "George Orwell",
+            "birth_year": 1903,
+            "death_year": 1950,
+            "nationality": "British"
+        },
+        {
+            "id": 3,
+            "name": "F. Scott Fitzgerald",
+            "birth_year": 1896,
+            "death_year": 1940,
+            "nationality": "American"
+        },
+        {
+            "id": 4,
+            "name": "Jane Austen",
+            "birth_year": 1775,
+            "death_year": 1817,
+            "nationality": "British"
+        },
+        {
+            "id": 5,
+            "name": "Herman Melville",
+            "birth_year": 1819,
+            "death_year": 1891,
+            "nationality": "American"
+        },
+        {
+            "id": 6,
+            "name": "Cormac McCarthy",
+            "birth_year": 1933,
+            "nationality": "American"
+        },
+        {
+            "id": 7,
+            "name": "J.D. Salinger",
+            "birth_year": 1919,
+            "death_year": 2010,
+            "nationality": "American"
+        },
+        {
+            "id": 8,
+            "name": "J.R.R. Tolkien",
+            "birth_year": 1892,
+            "death_year": 1973,
+            "nationality": "British"
+        },
+        {
+            "id": 9,
+            "name": "Gillian Flynn",
+            "birth_year": 1971,
+            "nationality": "American"
+        },
+        {
+            "id": 10,
+            "name": "Dan Brown",
+            "birth_year": 1964,
+            "nationality": "American"
+        }
+    ]
+}
