@@ -1,5 +1,7 @@
 import 'dart:developer';
 
+import 'package:book_heaven/screens/admin/dashboard/dashboard_screen.dart';
+import 'package:book_heaven/screens/main_home_screen.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -86,9 +88,9 @@ class UserProvider extends GetxController {
           showSnackBar(apiResponse.message, MsgType.success);
           log("Login Successful");
           // await Get.off(() => const MainHomeScreen());
-          // await Get.off(() => _user.role == 'ADMIN'
-          //     ? const AdminScreen()
-          //     : const MainHomeScreen());
+          await Get.off(() => _user.role == 'ADMIN'
+              ? const DashboardScreen()
+              : const MainHomeScreen());
           isLoggedIn.value = true;
           return true;
         } else {

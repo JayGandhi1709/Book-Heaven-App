@@ -20,6 +20,10 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         hintText: 'Enter your $labelText',
+        filled: true,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

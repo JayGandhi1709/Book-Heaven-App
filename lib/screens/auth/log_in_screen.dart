@@ -49,7 +49,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 25),
           child: Form(
             key: _formKey,
             child: Column(
@@ -64,17 +64,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   labelText: "Email",
                   controller: _emailcontroller,
                 ),
+                const SizedBox(height: 15),
                 CustomTextField(
                   labelText: "Password",
                   controller: _passwordcontroller,
                   obscureText: true,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 40),
                 _isLoading
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
                         onPressed: handleLogin,
-                        child: const Text('Login'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: const Size(double.infinity, 50),
+                          backgroundColor: Colors.deepPurple,
+                        ),
+                        child: const Text(
+                          'Log in',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                          ),
+                        ),
                       ),
                 // dont haven't account by not using Row
                 const SizedBox(height: 20),
