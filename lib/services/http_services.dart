@@ -11,11 +11,13 @@ class HttpService {
 
   Future<Response> get({required String endpointUrl}) async {
     try {
+      log("$baseUrl/$endpointUrl");
       final prefs = await SharedPreferences.getInstance();
       final String token = prefs.getString(USER_TOKEN) ?? '';
       return await GetConnect().get('$baseUrl/$endpointUrl',
           headers: {'Authorization': 'Bearer $token'});
     } catch (e) {
+      log('Error: $e');
       return Response(
           body: json.encode({'error': e.toString()}), statusCode: 500);
     }

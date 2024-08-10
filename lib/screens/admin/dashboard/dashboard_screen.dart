@@ -3,17 +3,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DashboardScreen extends StatelessWidget {
+class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
 
   @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  @override
+  void initState() {
+    // context.dashboardProvider.count();
+    context.dataProvider.onInit();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    List cardNames = [
-      'Users',
-      'Books',
-      'Orders',
-      'Categories',
-      'Authors',
+    List<Map<String, String>> cardNames = [
+      {
+        'name': 'Users',
+        'count': context.dataProvider.allUsers.length.toString()
+      },
+      {
+        'name': 'Books',
+        'count': context.dataProvider.allBooks.length.toString()
+      },
+      {'name': 'Orders', 'count': '10'},
+      {'name': 'Categories', 'count': '10'},
+      {'name': 'Authors', 'count': '10'},
     ];
 
     return Scaffold(
@@ -71,10 +89,10 @@ class DashboardScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Text(index.toString()),
-                          const Text(
-                            '100',
-                            style: TextStyle(
+                          Text(cardName['name'] ?? ''),
+                          Text(
+                            cardName['count'] ?? '',
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
