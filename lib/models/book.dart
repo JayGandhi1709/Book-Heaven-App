@@ -1,10 +1,10 @@
 class Book {
   final String id;
   final String title;
-  final String authors;
+  final List<String> authors;
   final String description;
-  final String imageUrl;
-  final String category;
+  final List<String> imageUrl;
+  final List<String> genre;
   final String language;
   final String isbn;
   final String page;
@@ -24,7 +24,7 @@ class Book {
     required this.authors,
     required this.description,
     required this.imageUrl,
-    required this.category,
+    required this.genre,
     required this.language,
     required this.isbn,
     required this.page,
@@ -41,14 +41,14 @@ class Book {
     return Book(
       id: json['id'],
       title: json['title'],
-      authors: json['authors'],
       description: json['desc'],
-      imageUrl: json['img'],
-      category: json['genre'],
+      imageUrl: List<String>.from(json['img']),
+      authors: List<String>.from(json['authors']),
+      genre: List<String>.from(json['genre']),
       language: json['language'],
       isbn: json['isbn'],
-      page: json['page'].toString(),
-      publicationYear: json['publicationYear'],
+      page: json['page'],
+      publicationYear: json['publicationYear'].toString(),
       publisher: json['publisher'],
       physicalPrice: json['physicalPrice'],
       digitalPrice: json['digitalPrice'],
@@ -65,7 +65,7 @@ class Book {
       'authors': authors,
       'description': description,
       'imageUrl': imageUrl,
-      'category': category,
+      'genre': genre,
       'language': language,
       'isbn': isbn,
       'page': page,
@@ -82,10 +82,10 @@ class Book {
   Book copyWith({
     String? id,
     String? title,
-    String? authors,
+    List<String>? authors,
     String? description,
-    String? imageUrl,
-    String? category,
+    List<String>? imageUrl,
+    List<String>? genre,
     int? physicalPrice,
     int? digitalPrice,
     bool? hasPhysicalCopy,
@@ -103,7 +103,7 @@ class Book {
       authors: authors ?? this.authors,
       description: description ?? this.description,
       imageUrl: imageUrl ?? this.imageUrl,
-      category: category ?? this.category,
+      genre: genre ?? this.genre,
       physicalPrice: physicalPrice ?? this.physicalPrice,
       digitalPrice: digitalPrice ?? this.digitalPrice,
       hasPhysicalCopy: hasPhysicalCopy ?? this.hasPhysicalCopy,

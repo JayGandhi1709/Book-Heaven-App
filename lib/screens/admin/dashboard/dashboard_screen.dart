@@ -1,3 +1,5 @@
+import 'package:book_heaven/screens/admin/book/book_screen.dart';
+import 'package:book_heaven/screens/admin/user/user_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     // context.dashboardProvider.count();
-    context.dataProvider.onInit();
+    context.dataProvider.onAdminInit();
     super.initState();
   }
 
@@ -69,18 +71,32 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const SizedBox(height: 20),
               Obx(
                 () {
-                  List<Map<String, String>> cardNames = [
+                  List<Map<String, dynamic>> cardNames = [
                     {
                       'name': 'Users',
-                      'count': context.dataProvider.allUsers.length.toString()
+                      'count': context.dataProvider.allUsers.length.toString(),
+                      'onTap': () => Get.to(() => const UserScreen()),
                     },
                     {
                       'name': 'Books',
-                      'count': context.dataProvider.allBooks.length.toString()
+                      'count': context.dataProvider.allBooks.length.toString(),
+                      'onTap': () => Get.to(() => const BookScreen()),
                     },
-                    {'name': 'Orders', 'count': '10'},
-                    {'name': 'Categories', 'count': '10'},
-                    {'name': 'Authors', 'count': '10'},
+                    {
+                      'name': 'Orders',
+                      'count': '10',
+                      'onTap': () {},
+                    },
+                    {
+                      'name': 'Categories',
+                      'count': '10',
+                      'onTap': () {},
+                    },
+                    {
+                      'name': 'Authors',
+                      'count': '10',
+                      'onTap': () {},
+                    },
                   ];
 
                   return GridView.builder(
@@ -101,19 +117,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(cardName['name'] ?? ''),
-                              Text(
-                                cardName['count'] ?? '',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
+                        child: InkWell(
+                          onTap: cardName['onTap'],
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(cardName['name'] ?? ''),
+                                Text(
+                                  cardName['count'] ?? '',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       );

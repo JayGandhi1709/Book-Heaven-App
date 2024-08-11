@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:book_heaven/models/api_response.dart';
 import 'package:book_heaven/models/book.dart';
 import 'package:book_heaven/models/user.dart';
@@ -21,8 +19,12 @@ class DataProvider extends GetxController {
   //   getAllUsers();
   // }
 
-  @override
-  void onInit() {
+  void onUserInit() {
+    super.onInit();
+    getAllBooks();
+  }
+
+  void onAdminInit() {
     super.onInit();
     getAllBooks();
     getAllUsers();
