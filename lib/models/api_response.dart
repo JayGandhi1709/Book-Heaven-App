@@ -7,7 +7,7 @@ class ApiResponse<T> {
 
   factory ApiResponse.fromJson(
     Map<String, dynamic> json,
-    T Function(T? json)? fromJsonT,
+    T Function(Object? json)? fromJsonT,
   ) =>
       ApiResponse(
         success: json['success'] as bool,

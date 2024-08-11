@@ -1,52 +1,60 @@
 class Book {
   final String id;
   final String title;
-  final String author;
+  final String authors;
   final String description;
   final String imageUrl;
   final String category;
-  final String rating;
-  final String price;
   final String language;
   final String isbn;
-  final String pages;
-  final String year;
+  final String page;
+  final String publicationYear;
   final String publisher;
-  final String fileUrl;
+
+  // Fields for handling physical and digital versions
+  final int physicalPrice;
+  final int digitalPrice;
+  final bool hasPhysicalCopy;
+  final bool hasDigitalCopy;
+  final String? fileUrl; // File URL for the digital version (E-Book)
 
   Book({
     required this.id,
     required this.title,
-    required this.author,
+    required this.authors,
     required this.description,
     required this.imageUrl,
     required this.category,
-    required this.rating,
-    required this.price,
     required this.language,
     required this.isbn,
-    required this.pages,
-    required this.year,
+    required this.page,
+    required this.publicationYear,
     required this.publisher,
-    required this.fileUrl,
+    required this.physicalPrice,
+    required this.digitalPrice,
+    required this.hasPhysicalCopy,
+    required this.hasDigitalCopy,
+    this.fileUrl, // This can be null if there is no digital version
   });
 
   factory Book.fromJson(Map<String, dynamic> json) {
     return Book(
       id: json['id'],
       title: json['title'],
-      author: json['author'],
-      description: json['description'],
-      imageUrl: json['imageUrl'],
-      category: json['category'],
-      rating: json['rating'],
-      price: json['price'],
+      authors: json['authors'],
+      description: json['desc'],
+      imageUrl: json['img'],
+      category: json['genre'],
       language: json['language'],
       isbn: json['isbn'],
-      pages: json['pages'],
-      year: json['year'],
+      page: json['page'].toString(),
+      publicationYear: json['publicationYear'],
       publisher: json['publisher'],
-      fileUrl: json['fileUrl'],
+      physicalPrice: json['physicalPrice'],
+      digitalPrice: json['digitalPrice'],
+      hasPhysicalCopy: json['hasPhysicalCopy'],
+      hasDigitalCopy: json['hasDigitalCopy'],
+      fileUrl: json['pdfUrl'],
     );
   }
 
@@ -54,55 +62,56 @@ class Book {
     return {
       'id': id,
       'title': title,
-      'author': author,
+      'authors': authors,
       'description': description,
       'imageUrl': imageUrl,
       'category': category,
-      'rating': rating,
-      'price': price,
       'language': language,
       'isbn': isbn,
-      'pages': pages,
-      'year': year,
+      'page': page,
+      'publicationYear': publicationYear,
       'publisher': publisher,
+      'physicalPrice': physicalPrice,
+      'digitalPrice': digitalPrice,
+      'hasPhysicalCopy': hasPhysicalCopy,
+      'hasDigitalCopy': hasDigitalCopy,
       'fileUrl': fileUrl,
     };
-  }
-
-  @override
-  String toString() {
-    return 'Book{id: $id, title: $title, author: $author, description: $description, imageUrl: $imageUrl, category: $category, rating: $rating, price: $price, language: $language, isbn: $isbn, pages: $pages, year: $year, publisher: $publisher, fileUrl: $fileUrl}';
   }
 
   Book copyWith({
     String? id,
     String? title,
-    String? author,
+    String? authors,
     String? description,
     String? imageUrl,
     String? category,
-    String? rating,
-    String? price,
+    int? physicalPrice,
+    int? digitalPrice,
+    bool? hasPhysicalCopy,
+    bool? hasDigitalCopy,
     String? language,
     String? isbn,
-    String? pages,
-    String? year,
+    String? page,
+    String? publicationYear,
     String? publisher,
     String? fileUrl,
   }) {
     return Book(
       id: id ?? this.id,
       title: title ?? this.title,
-      author: author ?? this.author,
+      authors: authors ?? this.authors,
       description: description ?? this.description,
       imageUrl: imageUrl ?? this.imageUrl,
       category: category ?? this.category,
-      rating: rating ?? this.rating,
-      price: price ?? this.price,
+      physicalPrice: physicalPrice ?? this.physicalPrice,
+      digitalPrice: digitalPrice ?? this.digitalPrice,
+      hasPhysicalCopy: hasPhysicalCopy ?? this.hasPhysicalCopy,
+      hasDigitalCopy: hasDigitalCopy ?? this.hasDigitalCopy,
       language: language ?? this.language,
       isbn: isbn ?? this.isbn,
-      pages: pages ?? this.pages,
-      year: year ?? this.year,
+      page: page ?? this.page,
+      publicationYear: publicationYear ?? this.publicationYear,
       publisher: publisher ?? this.publisher,
       fileUrl: fileUrl ?? this.fileUrl,
     );

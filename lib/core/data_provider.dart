@@ -10,18 +10,43 @@ import 'package:get/get.dart';
 class DataProvider extends GetxController {
   HttpService httpService = HttpService();
 
-  List<Book> _allBooks = [];
-  List<Book> get allBooks => _allBooks;
+  RxList<Book> _allBooks = <Book>[].obs;
+  List<Book> get allBooks => _allBooks.toList();
 
-  List<User> _allUsers = [];
-  List<User> get allUsers => _allUsers;
+  RxList<User> _allUsers = <User>[].obs;
+  List<User> get allUsers => _allUsers.toList();
 
-  DataProvider() {
+  // DataProvider() {
+  //   getAllBooks();
+  //   getAllUsers();
+  // }
+
+  @override
+  void onInit() {
+    super.onInit();
     getAllBooks();
     getAllUsers();
   }
 
-  Future<List<Book>> getAllBooks({bool showSnake = false}) async {
+  // Future<List<Book>> getAllBooks({bool showSnake = false}) async {
+  //   try {
+  //     Response response = await httpService.get(endpointUrl: "admin/books");
+  //     if (response.isOk) {
+  //       ApiResponse<List<Book>> apiResponse = ApiResponse<List<Book>>.fromJson(
+  //         response.body,
+  //         (json) => (json as List).map((item) => Book.fromJson(item)).toList(),
+  //       );
+  //       _allBooks.assignAll(apiResponse.data ?? []);
+  //     }
+  //   } catch (e) {
+  //     if (showSnake) {
+  //       Get.snackbar("Error", e.toString());
+  //     }
+  //   }
+  //   return _allBooks;
+  // }
+
+  Future<List<User>> getAllBooks({bool showSnake = false}) async {
     try {
       Response response = await httpService.get(endpointUrl: "admin/books");
       if (response.isOk) {
@@ -29,43 +54,15 @@ class DataProvider extends GetxController {
           response.body,
           (json) => (json as List).map((item) => Book.fromJson(item)).toList(),
         );
-        _allBooks = apiResponse.data ?? [];
-      }
-    } catch (e) {
-      if (showSnake) {
-        Get.snackbar("Error", e.toString());
-      }
-    }
-    return _allBooks;
-  }
-
-  Future<List<User>> getAllUsers({bool showSnake = false}) async {
-    try {
-      Response response = await httpService.get(endpointUrl: "admin/users");
-      if (response.isOk) {
-        ApiResponse<List<User>> apiResponse = ApiResponse<List<User>>.fromJson(
-          response.body,
-          // (json) => (json as List).map((item) => User.fromJson(item)).toList(),
-          (json) => (json as List)
-              .map((item) => User.fromJson(item as Map<String, dynamic>))
-              .toList(),
-        );
-
-        // List<User> users =
-        //     (response.body as List).map((item) => User.fromJson(item)).toList();
 
         if (apiResponse.success) {
-          _allUsers = apiResponse.data ?? [];
-          // notifyListeners();
-          // _allUsers = users;
-          update();
+          _allBooks.assignAll(apiResponse.data ?? []);
           showSnake ? showSnackBar("Fetched all users", MsgType.success) : null;
-          // showSnake ? showSnackBar("Fetched all users", MsgType.success) : null;
         } else {
-          // showSnake
-          //     ? showSnackBar(
-          //         "Failed to fetch : ${apiResponse.message}", MsgType.error)
-          //     : null;
+          showSnake
+              ? showSnackBar(
+                  "Failed to fetch : ${apiResponse.message}", MsgType.error)
+              : null;
         }
       } else {
         showSnake
@@ -77,8 +74,42 @@ class DataProvider extends GetxController {
     } catch (e) {
       print(e);
       if (showSnake) {
-        // Get.snackbar("Error", e.toString());
-        showSnackBar(e.toString(), MsgType.error);
+        showSnackBar("Error : ${e.toString()}", MsgType.error);
+      }
+      showSnackBar(e.toString(), MsgType.error);
+    }
+    return _allUsers;
+  }
+
+  Future<List<User>> getAllUsers({bool showSnake = false}) async {
+    try {
+      Response response = await httpService.get(endpointUrl: "admin/users");
+      if (response.isOk) {
+        ApiResponse<List<User>> apiResponse = ApiResponse<List<User>>.fromJson(
+          response.body,
+          (json) => (json as List).map((item) => User.fromJson(item)).toList(),
+        );
+
+        if (apiResponse.success) {
+          _allUsers.assignAll(apiResponse.data ?? []);
+          showSnake ? showSnackBar("Fetched all users", MsgType.success) : null;
+        } else {
+          showSnake
+              ? showSnackBar(
+                  "Failed to fetch : ${apiResponse.message}", MsgType.error)
+              : null;
+        }
+      } else {
+        showSnake
+            ? showSnackBar(
+                "Error ${response.body?['message'] ?? response.statusText}",
+                MsgType.error)
+            : null;
+      }
+    } catch (e) {
+      print(e);
+      if (showSnake) {
+        showSnackBar("Error : ${e.toString()}", MsgType.error);
       }
       showSnackBar(e.toString(), MsgType.error);
     }
