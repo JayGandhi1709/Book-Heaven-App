@@ -59,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                context.userProvider.user!.name!.capitalize ?? "",
+                context.userProvider.user.name!.capitalize ?? "",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -67,7 +67,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 5),
               Text(
-                context.userProvider.user!.email ?? "",
+                context.userProvider.user.email ?? "",
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,

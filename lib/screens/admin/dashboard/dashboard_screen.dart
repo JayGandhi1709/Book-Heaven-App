@@ -1,4 +1,5 @@
 import 'package:book_heaven/screens/admin/book/book_screen.dart';
+import 'package:book_heaven/screens/admin/carousel/carousel.dart';
 import 'package:book_heaven/screens/admin/user/user_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,6 +41,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         title: const Text('Dashboard'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              context.dataProvider.onAdminInit();
+            },
+          ),
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
@@ -83,6 +90,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       'onTap': () => Get.to(() => const BookScreen()),
                     },
                     {
+                      'name': 'Carousels',
+                      'count':
+                          context.dataProvider.allCarousels.length.toString(),
+                      'onTap': () => Get.to(() => const CarouselScreen()),
+                    },
+                    {
                       'name': 'Orders',
                       'count': '10',
                       'onTap': () {},
@@ -106,7 +119,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       crossAxisCount: 2,
                       crossAxisSpacing: 10,
                       mainAxisSpacing: 10,
-                      childAspectRatio: 3.5,
+                      childAspectRatio: 2.5,
                     ),
                     itemCount: cardNames.length,
                     itemBuilder: (BuildContext context, int index) {

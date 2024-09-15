@@ -29,8 +29,11 @@ class HttpService {
       // showSnackBar("$baseUrl/$endpointUrl", MsgType.warning);
       // showSnackBar("$itemData", MsgType.warning);
       log("$baseUrl/$endpointUrl");
-      final response =
-          await GetConnect().post('$baseUrl/$endpointUrl', itemData);
+      final prefs = await SharedPreferences.getInstance();
+      final String token = prefs.getString(USER_TOKEN) ?? '';
+      final response = await GetConnect().post(
+          '$baseUrl/$endpointUrl', itemData,
+          headers: {'Authorization': 'Bearer $token'});
       // print(response.body['message']);
       return response;
     } catch (e) {

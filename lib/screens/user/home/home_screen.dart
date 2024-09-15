@@ -1,8 +1,6 @@
 import 'package:book_heaven/utility/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
-import 'package:book_heaven/utility/extensions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

@@ -1,5 +1,5 @@
 import 'package:animations/animations.dart';
-import 'package:book_heaven/screens/admin/add%20book/add_book_screen.dart';
+import 'package:book_heaven/screens/admin/book/add_book_screen.dart';
 import 'package:book_heaven/screens/admin/dashboard/dashboard_screen.dart';
 import 'package:book_heaven/screens/user/cart/cart_screen.dart';
 import 'package:book_heaven/screens/user/favorite/favorite_screen.dart';

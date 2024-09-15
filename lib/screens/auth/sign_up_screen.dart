@@ -1,4 +1,3 @@
-import 'package:book_heaven/screens/auth/provider/user_provider.dart';
 import 'package:book_heaven/screens/auth/widgets/custom_text_field.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
