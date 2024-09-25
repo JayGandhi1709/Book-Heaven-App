@@ -16,7 +16,7 @@ class DataProvider extends GetxController {
   List<User> get allUsers => _allUsers.toList();
 
   final RxList<Carousel> _allCarousels = <Carousel>[].obs;
-  List<Carousel> get allCarousels => _allCarousels.toList();
+  List<Carousel> get allCarousels => _allCarousels;
 
   // DataProvider() {
   //   getAllBooks();
@@ -25,7 +25,8 @@ class DataProvider extends GetxController {
 
   void onUserInit() {
     super.onInit();
-    getAllBooks();
+    // getAllBooks();
+    getAllCarousels();
   }
 
   void onAdminInit() {
@@ -134,7 +135,7 @@ class DataProvider extends GetxController {
               (json as List).map((item) => Carousel.fromJson(item)).toList(),
         );
 
-        if (apiResponse.success == false) {
+        if (apiResponse.success) {
           _allCarousels.assignAll(apiResponse.data ?? []);
           showSnake
               ? showSnackBar("Fetched all Carousels", MsgType.success)

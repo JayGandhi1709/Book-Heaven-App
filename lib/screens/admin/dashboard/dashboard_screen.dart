@@ -42,6 +42,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         title: const Text('Dashboard'),
         actions: [
           IconButton(
+            onPressed: () {
+              Get.changeThemeMode(
+                  Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+            },
+            icon: Icon(Get.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+          ),
+          IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
               context.dataProvider.onAdminInit();

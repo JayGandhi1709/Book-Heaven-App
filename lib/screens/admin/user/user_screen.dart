@@ -1,3 +1,4 @@
+import 'package:book_heaven/core/data_provider.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -6,14 +7,23 @@ class UserScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DataProvider dataProvider = context.dataProvider;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Users'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              dataProvider.getAllUsers(showSnake: true);
+            },
+          ),
+        ],
       ),
       body: ListView.builder(
-        itemCount: context.dataProvider.allUsers.length,
+        itemCount: dataProvider.allUsers.length,
         itemBuilder: (context, index) {
-          var user = context.dataProvider.allUsers[index];
+          var user = dataProvider.allUsers[index];
           return ListTile(
             leading: user.role == "ADMIN"
                 ? const Icon(Icons.admin_panel_settings_rounded)

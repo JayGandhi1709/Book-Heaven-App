@@ -1,4 +1,5 @@
 import 'package:book_heaven/core/data_provider.dart';
+import 'package:book_heaven/screens/admin/carousel/carousel_services.dart';
 import 'package:book_heaven/screens/admin/dashboard/dashboard_provider.dart';
 import 'package:book_heaven/screens/auth/provider/user_provider.dart';
 import 'package:get/get.dart';
@@ -18,6 +19,8 @@ extension Providers on BuildContext {
   UserProvider get userProvider => Get.put(UserProvider());
   DashboardProvider get dashboardProvider => Get.put(DashboardProvider());
   DataProvider get dataProvider => Get.put(DataProvider());
+  CarouselServices get carouselServices =>
+      Get.put(CarouselServices(dataProvider));
   // DataProvider get dataProvider => Provider.of<DataProvider>(this, listen: false);
   // ProductByCategoryProvider get proByCProvider => Provider.of<ProductByCategoryProvider>(this, listen: false);
   // ProductDetailProvider get proDetailProvider => Provider.of<ProductDetailProvider>(this, listen: false);

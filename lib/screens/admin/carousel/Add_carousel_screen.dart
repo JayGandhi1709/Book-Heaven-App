@@ -1,13 +1,9 @@
 import 'dart:io';
 
-import 'package:book_heaven/screens/admin/book/book_screen.dart';
-import 'package:book_heaven/screens/admin/carousel/carousel.dart';
-import 'package:book_heaven/screens/admin/carousel/carousel_services.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:book_heaven/utility/pick_images.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class AddCarouselScreen extends StatefulWidget {
   const AddCarouselScreen({super.key});
@@ -17,11 +13,8 @@ class AddCarouselScreen extends StatefulWidget {
 }
 
 class _AddCarouselScreenState extends State<AddCarouselScreen> {
-  TextEditingController _title = new TextEditingController();
-  TextEditingController _desc = new TextEditingController();
-  TextEditingController _order = new TextEditingController();
-
-  CarouselServices _carouselServices = CarouselServices();
+  final TextEditingController _title = TextEditingController();
+  final TextEditingController _desc = TextEditingController();
 
   File? _image;
 
@@ -33,7 +26,7 @@ class _AddCarouselScreenState extends State<AddCarouselScreen> {
   }
 
   void addCarousel() {
-    _carouselServices.addCarousel(_image!, _title.text, _desc.text,
+    context.carouselServices.addCarousel(_image!, _title.text, _desc.text,
         context.dataProvider.allCarousels.length + 1);
   }
 
@@ -41,7 +34,7 @@ class _AddCarouselScreenState extends State<AddCarouselScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add Carousel"),
+        title: const Text("Add Carousel"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -85,27 +78,38 @@ class _AddCarouselScreenState extends State<AddCarouselScreen> {
                         ),
                       ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _title,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   label: Text("Title"),
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               TextFormField(
                 controller: _desc,
-                decoration: InputDecoration(
-                  label: Text("Title"),
+                decoration: const InputDecoration(
+                  label: Text("Description"),
                   border: OutlineInputBorder(),
                 ),
               ),
-              SizedBox(height: 30),
-              ElevatedButton(
+              const SizedBox(height: 30),
+              // ElevatedButton(
+              //   onPressed: addCarousel,
+              //   child: const Text("Add"),
+              // )
+              // Add New Carousel Button with Icon with style
+              ElevatedButton.icon(
                 onPressed: addCarousel,
-                child: Text("Add"),
-              )
+                icon: const Icon(Icons.add),
+                label: const Text("Add"),
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+              ),
             ],
           ),
         ),

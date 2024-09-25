@@ -1,7 +1,7 @@
 class Carousel {
   final String id;
-  final String title;
-  final String description;
+  String title;
+  String description;
   final String imageUrl;
   final int displayOrder;
 

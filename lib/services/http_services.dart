@@ -43,12 +43,28 @@ class HttpService {
     }
   }
 
-  Future<Response> put(
+  Future<Response> putById(
       {required String endpointUrl,
       required String itemId,
       required dynamic itemData}) async {
     try {
-      return await GetConnect().put('$baseUrl/$endpointUrl/$itemId', itemData);
+      final prefs = await SharedPreferences.getInstance();
+      final String token = prefs.getString(USER_TOKEN) ?? '';
+      return await GetConnect().put('$baseUrl/$endpointUrl/$itemId', itemData,
+          headers: {'Authorization': 'Bearer $token'});
+    } catch (e) {
+      return Response(
+          body: json.encode({'message': e.toString()}), statusCode: 500);
+    }
+  }
+
+  Future<Response> put(
+      {required String endpointUrl, required dynamic itemData}) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String token = prefs.getString(USER_TOKEN) ?? '';
+      return await GetConnect().put('$baseUrl/$endpointUrl', itemData,
+          headers: {'Authorization': 'Bearer $token'});
     } catch (e) {
       return Response(
           body: json.encode({'message': e.toString()}), statusCode: 500);
@@ -58,7 +74,13 @@ class HttpService {
   Future<Response> delete(
       {required String endpointUrl, required String itemId}) async {
     try {
-      return await GetConnect().delete('$baseUrl/$endpointUrl/$itemId');
+      final prefs = await SharedPreferences.getInstance();
+      final String token = prefs.getString(USER_TOKEN) ?? '';
+      log('Delete : $baseUrl/$endpointUrl/$itemId');
+      return await GetConnect().delete(
+        '$baseUrl/$endpointUrl/$itemId',
+        headers: {'Authorization': 'Bearer $token'},
+      );
     } catch (e) {
       return Response(
           body: json.encode({'message': e.toString()}), statusCode: 500);
