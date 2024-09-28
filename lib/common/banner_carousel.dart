@@ -33,10 +33,16 @@ class _BannerCarouselState extends State<BannerCarousel> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return widget.carousels.length <= 0 ? SizedBox.shrink() : Column(
       children: [
-        SizedBox(
+        Container(
           height: 200,
+          decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(color: Colors.grey.shade400,spreadRadius: 2,blurRadius: 10)
+              ],
+            borderRadius: BorderRadius.circular(8),
+          ),
           width: MediaQuery.sizeOf(context).width,
           child: CarouselSlider.builder(
             itemCount: widget.carousels.length,

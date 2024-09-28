@@ -1,6 +1,4 @@
-import 'dart:developer';
 
-import 'package:book_heaven/models/api_response.dart';
 import 'package:book_heaven/models/book.dart';
 import 'package:book_heaven/services/http_services.dart';
 import 'package:get/get.dart';
@@ -11,6 +9,7 @@ class FavoriteController extends GetxController {
   final favoriteBox = GetStorage("favorite");
 
   final RxList<Book> _allFavoriteBooks = <Book>[].obs;
+
   List<Book> get allFavoriteBooks => _allFavoriteBooks;
 
   @override
@@ -36,7 +35,10 @@ class FavoriteController extends GetxController {
       favoriteBox.write(book.id.toString(), book.toJson());
       _allFavoriteBooks.add(book);
     }
-    log(_allFavoriteBooks.length.toString());
     update();
+  }
+
+  bool isFavorite(Book book) {
+    return _allFavoriteBooks.contains(book);
   }
 }

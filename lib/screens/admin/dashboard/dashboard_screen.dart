@@ -102,21 +102,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           context.dataProvider.allCarousels.length.toString(),
                       'onTap': () => Get.to(() => const CarouselScreen()),
                     },
-                    {
-                      'name': 'Orders',
-                      'count': '10',
-                      'onTap': () {},
-                    },
-                    {
-                      'name': 'Categories',
-                      'count': '10',
-                      'onTap': () {},
-                    },
-                    {
-                      'name': 'Authors',
-                      'count': '10',
-                      'onTap': () {},
-                    },
+                    // {
+                    //   'name': 'Orders',
+                    //   'count': '10',
+                    //   'onTap': () {},
+                    // },
+                    // {
+                    //   'name': 'Categories',
+                    //   'count': '10',
+                    //   'onTap': () {},
+                    // },
+                    // {
+                    //   'name': 'Authors',
+                    //   'count': '10',
+                    //   'onTap': () {},
+                    // },
                   ];
 
                   return GridView.builder(

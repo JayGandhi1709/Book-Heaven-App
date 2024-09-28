@@ -18,10 +18,6 @@ class DataProvider extends GetxController {
   final RxList<Carousel> _allCarousels = <Carousel>[].obs;
   List<Carousel> get allCarousels => _allCarousels;
 
-  // DataProvider() {
-  //   getAllBooks();
-  //   getAllUsers();
-  // }
 
   void onUserInit() {
     super.onInit();
@@ -35,24 +31,6 @@ class DataProvider extends GetxController {
     getAllUsers();
     getAllCarousels();
   }
-
-  // Future<List<Book>> getAllBooks({bool showSnake = false}) async {
-  //   try {
-  //     Response response = await httpService.get(endpointUrl: "admin/books");
-  //     if (response.isOk) {
-  //       ApiResponse<List<Book>> apiResponse = ApiResponse<List<Book>>.fromJson(
-  //         response.body,
-  //         (json) => (json as List).map((item) => Book.fromJson(item)).toList(),
-  //       );
-  //       _allBooks.assignAll(apiResponse.data ?? []);
-  //     }
-  //   } catch (e) {
-  //     if (showSnake) {
-  //       Get.snackbar("Error", e.toString());
-  //     }
-  //   }
-  //   return _allBooks;
-  // }
 
   Future<List<User>> getAllBooks({bool showSnake = false}) async {
     try {

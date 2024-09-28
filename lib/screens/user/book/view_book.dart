@@ -1,6 +1,5 @@
-import 'package:book_heaven/common/banner_carousel.dart';
+
 import 'package:book_heaven/models/book.dart';
-import 'package:book_heaven/screens/auth/splash_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:flutter/material.dart';
 
@@ -152,29 +151,38 @@ class _ViewBookState extends State<ViewBook> {
           ),
         ),
       ),
-      bottomNavigationBar: Row(
-        children: [
-          Expanded(
-            child: ElevatedButton(
-              onPressed: () {},
-              child: const Text("Add to Cart"),
+      bottomNavigationBar: Container(
+        height: 80,
+        padding: EdgeInsets.symmetric(horizontal: 16),
+        child: Row(
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {},
+                child: const Text("Add to Cart"),
+              ),
             ),
-          ),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                context.favoriteController.addRemoveFavorite(widget.book);
-              });
-            },
-            icon: context.favoriteController.allFavoriteBooks
-                    .contains(widget.book)
-                ? const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  )
-                : const Icon(Icons.favorite_border),
-          )
-        ],
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  context.favoriteController.addRemoveFavorite(widget.book);
+                });
+              },
+              // icon: context.favoriteController.isFavorite(book) ? Icons.favorite : Icons.favorite_border,
+              //     ? const Icon(
+              //         Icons.favorite,
+              //         color: Colors.red,
+              //       )
+              //     : const Icon(Icons.favorite_border),
+              icon: const Icon(Icons.favorite_border),
+              selectedIcon: const Icon(
+                Icons.favorite,
+                color: Colors.red,
+              ),
+              isSelected: context.favoriteController.isFavorite(widget.book),
+            )
+          ],
+        ),
       ),
     );
   }

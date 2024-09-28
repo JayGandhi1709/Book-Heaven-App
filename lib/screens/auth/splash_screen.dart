@@ -33,23 +33,27 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Container(
-            height: 100,
-            width: 100,
-            decoration: const BoxDecoration(color: Colors.amberAccent
-                // image: DecorationImage(
-                //   image: AssetImage('assets/images/logo.png'),
-                //   fit: BoxFit.contain,
-                // ),
-                ),
-          ),
-          const Center(
-            child: CircularProgressIndicator(),
-          ),
-        ],
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 200,
+              width: 300,
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/splashlogo.png'),
+                    fit: BoxFit.contain,
+                  ),
+              ),
+            ),
+            Text("Book Heaven",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,letterSpacing: 2,),),
+            SizedBox(height: 100),
+            const Center(
+              child: CircularProgressIndicator(),
+            ),
+          ],
+        ),
       ),
     );
   }

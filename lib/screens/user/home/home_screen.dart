@@ -5,7 +5,6 @@ import 'package:book_heaven/screens/user/book/view_book.dart';
 import 'package:book_heaven/utility/constants.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -21,8 +20,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<Carousel> originalOrder = [];
   List<Book> books = [];
   final TextEditingController searchController = TextEditingController();
-  int _current = 0;
-  final CarouselSliderController _controller = CarouselSliderController();
 
   @override
   void initState() {
@@ -118,28 +115,44 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
+                  // height: 600, // Adjust height as needed to fit your design
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(), // Prevents scrolling
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2, // Two items per row
+                      childAspectRatio: 0.50, // Adjust as needed for the height/width ratio
+                    ),
                     itemCount: books.length,
                     itemBuilder: (context, index) {
                       var book = books[index];
                       return Container(
-                        width: 150,
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        padding: const EdgeInsets.all(10), // Padding around each item
                         child: InkWell(
                           onTap: () => Get.to(() => ViewBook(book: book)),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
                             children: [
-                              ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: CachedNetworkImage(
-                                  imageUrl: book.imageUrl[0].isNotEmpty
-                                      ? book.imageUrl[0]
-                                      : '',
-                                  height: 150,
-                                  width: 100,
-                                  fit: BoxFit.cover,
+                              Container(
+                                height: 300,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade300,
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: book.imageUrl.isNotEmpty ? book.imageUrl[0] : '',
+                                    height: 150,
+                                    width: double.infinity, // Fill the width of the container
+                                    fit: BoxFit.cover,
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 10),
@@ -166,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 ),
+
               ],
             ),
           ),

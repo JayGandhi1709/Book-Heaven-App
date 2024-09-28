@@ -53,15 +53,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   labelText: "Name",
                   controller: _namecontroller,
                 ),
+                SizedBox(height: 10),
                 CustomTextField(
                   labelText: "Email",
                   controller: _emailcontroller,
                 ),
+                SizedBox(height: 10),
                 CustomTextField(
                   labelText: "Password",
                   controller: _passwordcontroller,
                   obscureText: true,
                 ),
+                SizedBox(height: 10),
                 CustomTextField(
                   labelText: "Confirm Password",
                   controller: _confirmPasswordcontroller,
