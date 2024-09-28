@@ -12,7 +12,7 @@ final txtColor = {
   'success': Colors.white,
   'error': Colors.white,
   'warning': Colors.black,
-  'info': Colors.white,
+  'info': Colors.blue,
 };
 
 final icons = {

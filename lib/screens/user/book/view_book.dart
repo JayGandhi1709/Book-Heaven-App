@@ -1,6 +1,7 @@
 
 import 'package:book_heaven/models/book.dart';
 import 'package:book_heaven/utility/extensions.dart';
+import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 
 class ViewBook extends StatefulWidget {
@@ -93,7 +94,7 @@ class _ViewBookState extends State<ViewBook> {
                     ListTile(
                       title: Text("Price"),
                       trailing: Text(
-                        "\₹${widget.book.physicalPrice}",
+                        "₹${widget.book.physicalPrice}",
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -158,7 +159,12 @@ class _ViewBookState extends State<ViewBook> {
           children: [
             Expanded(
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  setState(() {
+                    context.cartController.addRemoveCart(widget.book);
+                  });
+                  showSnackBar("Added Successfuly!", MsgType.success);
+                },
                 child: const Text("Add to Cart"),
               ),
             ),

@@ -2,6 +2,7 @@ import 'package:book_heaven/core/data_provider.dart';
 import 'package:book_heaven/screens/admin/carousel/carousel_services.dart';
 import 'package:book_heaven/screens/admin/dashboard/dashboard_provider.dart';
 import 'package:book_heaven/screens/auth/provider/user_provider.dart';
+import 'package:book_heaven/screens/user/cart/cart_controller.dart';
 import 'package:book_heaven/screens/user/favorite/favorite_controller.dart';
 import 'package:get/get.dart';
 
@@ -23,6 +24,7 @@ extension Providers on BuildContext {
   CarouselServices get carouselServices =>
       Get.put(CarouselServices(dataProvider));
   FavoriteController get favoriteController => Get.put(FavoriteController());
+  CartController get cartController => Get.put(CartController());
   // DataProvider get dataProvider => Provider.of<DataProvider>(this, listen: false);
   // ProductByCategoryProvider get proByCProvider => Provider.of<ProductByCategoryProvider>(this, listen: false);
   // ProductDetailProvider get proDetailProvider => Provider.of<ProductDetailProvider>(this, listen: false);

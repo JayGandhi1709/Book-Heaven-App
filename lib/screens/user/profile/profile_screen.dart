@@ -95,7 +95,7 @@ class ProfileScreen extends StatelessWidget {
                             // );
                             showSnackBar(
                               "This feature is coming soon",
-                              title: "Comming Soon",
+                              title: "Coming Soon",
                               MsgType.info,
                             );
                           },
