@@ -1,8 +1,24 @@
+import 'package:book_heaven/common/custom_text_form_field.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 
-class AddBookScreen extends StatelessWidget {
+class AddBookScreen extends StatefulWidget {
   const AddBookScreen({super.key});
+
+  @override
+  State<AddBookScreen> createState() => _AddBookScreenState();
+}
+
+class _AddBookScreenState extends State<AddBookScreen> {
+  void addCarousel() {
+    // context.carouselServices.addCarousel(_image!, _title.text, _desc.text,
+    //     context.dataProvider.allCarousels.length + 1);
+  }
+
+  // controllers
+  // final TextEditingController _title = TextEditingController();
+  // final TextEditingController _desc = TextEditingController();
+  // File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +61,39 @@ class AddBookScreen extends StatelessWidget {
                             ),
                           ),
                         ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  const CustomTextFormField(labelText: "Book Name"),
+                  const CustomTextFormField(labelText: "Description"),
+                  const CustomTextFormField(labelText: "Author"),
+                  // publisher
+                  const CustomTextFormField(labelText: "Publisher"),
+                  //                       Integer publicationYear;
+                  const CustomTextFormField(labelText: "Publication Year"),
+                  // List<String> genre;
+                  const CustomTextFormField(labelText: "Genre"),
+                  // String isbn;
+                  const CustomTextFormField(labelText: "ISBN"),
+                  // Integer physicalPrice;
+                  const CustomTextFormField(labelText: "Physical Price"),
+                  // Integer digitalPrice;
+                  const CustomTextFormField(labelText: "Digital Price"),
+                  // String page;
+                  const CustomTextFormField(labelText: "Page"),
+                  // String language;
+                  const CustomTextFormField(labelText: "Language"),
+                  // String pdfUrl;
+                  const CustomTextFormField(labelText: "PDF URL"),
+                  const SizedBox(height: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.add),
+                    label: const Text("Add"),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
                   ),

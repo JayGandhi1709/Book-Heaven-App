@@ -25,7 +25,7 @@ class DataProvider extends GetxController {
 
   void onUserInit() {
     super.onInit();
-    // getAllBooks();
+    getAllBooks();
     getAllCarousels();
   }
 
@@ -56,7 +56,7 @@ class DataProvider extends GetxController {
 
   Future<List<User>> getAllBooks({bool showSnake = false}) async {
     try {
-      Response response = await httpService.get(endpointUrl: "admin/books");
+      Response response = await httpService.get(endpointUrl: "books");
       if (response.isOk) {
         ApiResponse<List<Book>> apiResponse = ApiResponse<List<Book>>.fromJson(
           response.body,
@@ -65,6 +65,7 @@ class DataProvider extends GetxController {
 
         if (apiResponse.success) {
           _allBooks.assignAll(apiResponse.data ?? []);
+
           showSnake ? showSnackBar("Fetched all users", MsgType.success) : null;
         } else {
           showSnake

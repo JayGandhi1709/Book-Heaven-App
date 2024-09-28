@@ -17,7 +17,24 @@ class MainHomeScreen extends StatefulWidget {
 }
 
 class _MainHomeScreenState extends State<MainHomeScreen> {
+  @override
+  void initState() {
+    context.userProvider.isLoggedIn.listen((value) {
+      context.userProvider.user.role == "ADMIN"
+          ? context.dataProvider.onAdminInit()
+          : userInit();
+    });
+    super.initState();
+  }
+
+  void userInit() {
+    context.dataProvider.onUserInit();
+    context.favoriteController.getAllFavoriteBooks();
+  }
+
   int newIndex = 0;
+
+  // User Screens
   List<Widget> userScreens = [
     const HomeScreen(),
     const FavoriteScreen(),
@@ -25,14 +42,15 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     const ProfileScreen()
   ];
 
+  // Admin Screens
   List<Widget> adminScreens = [
     const DashboardScreen(),
-    // const Center(child: Text("Manage")),
     const AddBookScreen(),
     const Center(child: Text("Page 3")),
     const ProfileScreen()
   ];
 
+  // Bottom navigation items for users
   List<BottomNavyBarItem> userBottomItems = [
     BottomNavyBarItem(
       icon: const Icon(Icons.home),
@@ -60,6 +78,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     ),
   ];
 
+  // Bottom navigation items for admins
   List<BottomNavyBarItem> adminBottomItems = [
     BottomNavyBarItem(
       icon: const Icon(Icons.home),
@@ -97,14 +116,14 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         items: context.userProvider.user.role == "ADMIN"
             ? adminBottomItems
             : userBottomItems,
-        // items: userBottomItems,
         onItemSelected: (currentIndex) {
-          newIndex = currentIndex;
-          setState(() {});
+          setState(() {
+            newIndex = currentIndex; // Update the selected index and rebuild
+          });
         },
       ),
       body: PageTransitionSwitcher(
-        duration: const Duration(seconds: 1),
+        duration: const Duration(milliseconds: 300), // Adjust transition time
         transitionBuilder: (
           Widget child,
           Animation<double> animation,
@@ -116,13 +135,10 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
             child: child,
           );
         },
-        // child: screens[newIndex],
-        child: IndexedStack(
-          index: newIndex,
-          children: context.userProvider.user.role == "ADMIN"
-              ? adminScreens
-              : userScreens,
-        ),
+        // Directly display the selected screen based on newIndex
+        child: context.userProvider.user.role == "ADMIN"
+            ? adminScreens[newIndex]
+            : userScreens[newIndex],
       ),
     );
   }
