@@ -1,5 +1,5 @@
 import 'package:book_heaven/common/banner_carousel.dart';
-import 'package:book_heaven/models/carousel.dart';
+import 'package:book_heaven/models/carousel_model.dart';
 import 'package:book_heaven/screens/admin/carousel/add_carousel_screen.dart';
 import 'package:book_heaven/utility/custom_dialog.dart';
 import 'package:book_heaven/utility/extensions.dart';
@@ -15,8 +15,8 @@ class CarouselScreen extends StatefulWidget {
 }
 
 class _CarouselScreenState extends State<CarouselScreen> {
-  List<Carousel> carousels = [];
-  List<Carousel> originalOrder = [];
+  List<CarouselModel> carousels = [];
+  List<CarouselModel> originalOrder = [];
   bool orderChanged = false;
 
   @override

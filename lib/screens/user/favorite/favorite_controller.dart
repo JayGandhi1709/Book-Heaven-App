@@ -1,16 +1,15 @@
+import 'dart:developer';
 
-import 'package:book_heaven/models/book.dart';
-import 'package:book_heaven/services/http_services.dart';
+import 'package:book_heaven/models/book_model.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 class FavoriteController extends GetxController {
-  HttpService httpService = HttpService();
   final favoriteBox = GetStorage("favorite");
 
-  final RxList<Book> _allFavoriteBooks = <Book>[].obs;
+  final RxList<BookModel> _allFavoriteBooks = <BookModel>[].obs;
 
-  List<Book> get allFavoriteBooks => _allFavoriteBooks;
+  List<BookModel> get allFavoriteBooks => _allFavoriteBooks;
 
   @override
   void onInit() {
@@ -18,16 +17,25 @@ class FavoriteController extends GetxController {
     getAllFavoriteBooks();
   }
 
-  // store in get storage and get all favorite books
+  // Retrieve all favorite books from GetStorage
   Future<void> getAllFavoriteBooks() async {
-    _allFavoriteBooks.clear();
-    favoriteBox.getKeys().forEach((key) {
-      var book = Book.fromJson(favoriteBox.read(key));
-      _allFavoriteBooks.add(book);
-    });
+    // _allFavoriteBooks.clear();
+    log("Comming in Favourite Controller");
+    log(favoriteBox.getKeys().toString());
+    final keys = favoriteBox.getKeys();
+    if (keys.isNotEmpty) {
+      for (var key in keys) {
+        var bookData = favoriteBox.read(key);
+        if (bookData != null) {
+          var book = BookModel.fromJson(bookData);
+          _allFavoriteBooks.add(book);
+        }
+      }
+    }
   }
 
-  void addRemoveFavorite(Book book) {
+  // Add or remove a book from favorites
+  void addRemoveFavorite(BookModel book) {
     if (_allFavoriteBooks.contains(book)) {
       favoriteBox.remove(book.id.toString());
       _allFavoriteBooks.remove(book);
@@ -38,7 +46,8 @@ class FavoriteController extends GetxController {
     update();
   }
 
-  bool isFavorite(Book book) {
+  // Check if a book is marked as favorite
+  bool isFavorite(BookModel book) {
     return _allFavoriteBooks.contains(book);
   }
 }

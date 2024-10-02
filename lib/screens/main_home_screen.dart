@@ -29,7 +29,6 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
 
   void userInit() {
     context.dataProvider.onUserInit();
-    context.favoriteController.getAllFavoriteBooks();
   }
 
   int newIndex = 0;
@@ -136,9 +135,15 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
           );
         },
         // Directly display the selected screen based on newIndex
-        child: context.userProvider.user.role == "ADMIN"
-            ? adminScreens[newIndex]
-            : userScreens[newIndex],
+        // child: context.userProvider.user.role == "ADMIN"
+        //     ? adminScreens[newIndex]
+        //     : userScreens[newIndex],
+        child: IndexedStack(
+          index: newIndex,
+          children: context.userProvider.user.role == "ADMIN"
+              ? adminScreens
+              : userScreens,
+        ),
       ),
     );
   }

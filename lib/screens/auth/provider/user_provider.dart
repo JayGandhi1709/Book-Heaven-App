@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:book_heaven/models/api_response.dart';
-import 'package:book_heaven/models/user.dart';
+import 'package:book_heaven/models/user_model.dart';
 import 'package:book_heaven/screens/auth/log_in_screen.dart';
 import 'package:book_heaven/services/http_services.dart';
 import 'package:book_heaven/utility/constants.dart';
@@ -16,33 +16,31 @@ class UserProvider extends GetxController {
   var isLoggedIn = false.obs;
   HttpService service = HttpService();
   SharedPreferences? prefs;
-  // final box = GetStorage();
-  // User? user;
   String token = "";
-  User _user = User(
+  UserModel _user = UserModel(
     id: '',
     name: '',
     email: '',
     password: '',
     role: '',
   );
-  User get user => _user;
+  UserModel get user => _user;
 
   // final sub_url = 'customer';
   final String subUrl = 'auth';
 
   void setUser(String user) {
-    _user = User.fromJson(user as Map<String, dynamic>);
+    _user = UserModel.fromJson(user as Map<String, dynamic>);
     update();
   }
 
-  void setUserFromModel(User user) {
+  void setUserFromModel(UserModel user) {
     _user = user;
     update();
   }
 
   void clearUser() {
-    _user = User(
+    _user = UserModel(
       id: '',
       name: '',
       email: '',
@@ -68,15 +66,14 @@ class UserProvider extends GetxController {
             //   (json) => json,
             // );
             (json) => {
-                  "user": User.fromJson((json as Map<String, dynamic>)['user']
-                      as Map<String, dynamic>),
+                  "user": UserModel.fromJson((json
+                      as Map<String, dynamic>)['user'] as Map<String, dynamic>),
                   "token": json['token'],
                   "data": json,
                 });
 
         if (apiResponse.success == true) {
           log("message: ${apiResponse.data['user']}");
-          // user = User.fromJson(await apiResponse.data['user']);
           setUserFromModel(await apiResponse.data['user']);
           token = await apiResponse.data['token'];
           if (token.isNotEmpty) {
@@ -157,11 +154,6 @@ class UserProvider extends GetxController {
     }
   }
 
-  // Future<void> saveLoginInfo(User? loginUser) async {
-  //   await box.write(USER_INFO_BOX, loginUser?.toJson());
-  //   // Map<String, dynamic>? userJson = box.read(USER_INFO_BOX);
-  // }
-
   void saveToken(String token) async {
     // write a code to store token in shared preference
     prefs = await SharedPreferences.getInstance();
@@ -180,7 +172,7 @@ class UserProvider extends GetxController {
           response.body,
           //   (json) => json,
           // );
-          (json) => User.fromJson(json as Map<String, dynamic>),
+          (json) => UserModel.fromJson(json as Map<String, dynamic>),
         );
 
         if (apiResponse.success == true) {

@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:book_heaven/core/data_provider.dart';
 import 'package:book_heaven/models/api_response.dart';
-import 'package:book_heaven/models/carousel.dart';
+import 'package:book_heaven/models/carousel_model.dart';
 import 'package:book_heaven/services/http_services.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:get/get.dart';
@@ -88,7 +88,7 @@ class CarouselServices extends GetxController {
   }
 
   // update carousel order in database
-  Future<void> updateCarouselOrder(List<Carousel> carousels) async {
+  Future<void> updateCarouselOrder(List<CarouselModel> carousels) async {
     try {
       List<Map<String, dynamic>> carouselList = carousels
           .map((carousel) => {
@@ -126,7 +126,7 @@ class CarouselServices extends GetxController {
   }
 
   // update carousel in database
-  Future<void> updateCarousel(Carousel carousel) async {
+  Future<void> updateCarousel(CarouselModel carousel) async {
     try {
       final FormData formData = FormData({
         "title": carousel.title,

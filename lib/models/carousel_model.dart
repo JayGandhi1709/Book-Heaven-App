@@ -1,11 +1,11 @@
-class Carousel {
+class CarouselModel {
   final String id;
   String title;
   String description;
   final String imageUrl;
   final int displayOrder;
 
-  Carousel({
+  CarouselModel({
     required this.id,
     required this.title,
     required this.description,
@@ -25,8 +25,8 @@ class Carousel {
   }
 
   // fromJson() method to convert the map to a Carousel object
-  factory Carousel.fromJson(Map<String, dynamic> map) {
-    return Carousel(
+  factory CarouselModel.fromJson(Map<String, dynamic> map) {
+    return CarouselModel(
       id: map['id'],
       title: map['title'],
       description: map['description'],

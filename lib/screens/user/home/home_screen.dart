@@ -1,6 +1,6 @@
 import 'package:book_heaven/common/banner_carousel.dart';
-import 'package:book_heaven/models/book.dart';
-import 'package:book_heaven/models/carousel.dart';
+import 'package:book_heaven/models/book_model.dart';
+import 'package:book_heaven/models/carousel_model.dart';
 import 'package:book_heaven/screens/user/book/view_book.dart';
 import 'package:book_heaven/utility/constants.dart';
 import 'package:book_heaven/utility/extensions.dart';
@@ -16,9 +16,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  List<Carousel> carousels = [];
-  List<Carousel> originalOrder = [];
-  List<Book> books = [];
+  List<CarouselModel> carousels = [];
+  List<CarouselModel> originalOrder = [];
+  List<BookModel> books = [];
   final TextEditingController searchController = TextEditingController();
 
   @override
@@ -118,68 +118,63 @@ class _HomeScreenState extends State<HomeScreen> {
                   // height: 600, // Adjust height as needed to fit your design
                   child: GridView.builder(
                     shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(), // Prevents scrolling
+                    physics:
+                        const NeverScrollableScrollPhysics(), // Prevents scrolling
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Two items per row
-                      childAspectRatio: 0.50, // Adjust as needed for the height/width ratio
+                      crossAxisCount: Get.width > 800 ? 4 : 2,
+                      childAspectRatio: Get.width / Get.height * 1.5,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
                     ),
                     itemCount: books.length,
                     itemBuilder: (context, index) {
                       var book = books[index];
-                      return Container(
-                        padding: const EdgeInsets.all(10), // Padding around each item
-                        child: InkWell(
-                          onTap: () => Get.to(() => ViewBook(book: book)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start, // Align text to the start
-                            children: [
-                              Container(
-                                height: 300,
-                                decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.shade300,
-                                      spreadRadius: 2,
-                                      blurRadius: 5,
-                                    ),
-                                  ],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ClipRRect(
+                      return Card(
+                        elevation: 3,
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          child: InkWell(
+                            onTap: () => Get.to(() => ViewBook(book: book)),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment
+                                  .start, // Align text to the start
+                              children: [
+                                ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: CachedNetworkImage(
-                                    imageUrl: book.imageUrl.isNotEmpty ? book.imageUrl[0] : '',
+                                    imageUrl:
+                                        book.img.isNotEmpty ? book.img[0] : '',
                                     height: 150,
-                                    width: double.infinity, // Fill the width of the container
-                                    fit: BoxFit.cover,
+                                    width: double
+                                        .infinity, // Fill the width of the container
+                                    fit: BoxFit.contain,
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 10),
-                              Text(
-                                book.title,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
+                                const SizedBox(height: 10),
+                                Text(
+                                  book.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
-                              ),
-                              Text(
-                                book.authors.join(", "),
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.grey,
+                                Text(
+                                  book.authors.join(", "),
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       );
                     },
                   ),
                 ),
-
               ],
             ),
           ),

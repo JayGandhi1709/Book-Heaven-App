@@ -1,9 +1,9 @@
-class Book {
+class BookModel {
   final String id;
   final String title;
   final List<String> authors;
-  final String description;
-  final List<String> imageUrl;
+  final String desc;
+  final List<String> img;
   final List<String> genre;
   final String language;
   final String isbn;
@@ -18,12 +18,12 @@ class Book {
   final bool hasDigitalCopy;
   final String? fileUrl; // File URL for the digital version (E-Book)
 
-  Book({
+  BookModel({
     required this.id,
     required this.title,
     required this.authors,
-    required this.description,
-    required this.imageUrl,
+    required this.desc,
+    required this.img,
     required this.genre,
     required this.language,
     required this.isbn,
@@ -37,12 +37,12 @@ class Book {
     this.fileUrl, // This can be null if there is no digital version
   });
 
-  factory Book.fromJson(Map<String, dynamic> json) {
-    return Book(
+  factory BookModel.fromJson(Map<String, dynamic> json) {
+    return BookModel(
       id: json['id'],
       title: json['title'],
-      description: json['desc'],
-      imageUrl: List<String>.from(json['img']),
+      desc: json['desc'],
+      img: List<String>.from(json['img']),
       authors: List<String>.from(json['authors']),
       genre: List<String>.from(json['genre']),
       language: json['language'],
@@ -63,8 +63,8 @@ class Book {
       'id': id,
       'title': title,
       'authors': authors,
-      'description': description,
-      'imageUrl': imageUrl,
+      'desc': desc,
+      'img': img,
       'genre': genre,
       'language': language,
       'isbn': isbn,
@@ -79,12 +79,12 @@ class Book {
     };
   }
 
-  Book copyWith({
+  BookModel copyWith({
     String? id,
     String? title,
     List<String>? authors,
-    String? description,
-    List<String>? imageUrl,
+    String? desc,
+    List<String>? img,
     List<String>? genre,
     int? physicalPrice,
     int? digitalPrice,
@@ -97,12 +97,12 @@ class Book {
     String? publisher,
     String? fileUrl,
   }) {
-    return Book(
+    return BookModel(
       id: id ?? this.id,
       title: title ?? this.title,
       authors: authors ?? this.authors,
-      description: description ?? this.description,
-      imageUrl: imageUrl ?? this.imageUrl,
+      desc: desc ?? this.desc,
+      img: img ?? this.img,
       genre: genre ?? this.genre,
       physicalPrice: physicalPrice ?? this.physicalPrice,
       digitalPrice: digitalPrice ?? this.digitalPrice,

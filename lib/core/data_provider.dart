@@ -1,7 +1,7 @@
 import 'package:book_heaven/models/api_response.dart';
-import 'package:book_heaven/models/book.dart';
-import 'package:book_heaven/models/carousel.dart';
-import 'package:book_heaven/models/user.dart';
+import 'package:book_heaven/models/book_model.dart';
+import 'package:book_heaven/models/carousel_model.dart';
+import 'package:book_heaven/models/user_model.dart';
 import 'package:book_heaven/services/http_services.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:get/get.dart';
@@ -9,15 +9,14 @@ import 'package:get/get.dart';
 class DataProvider extends GetxController {
   HttpService httpService = HttpService();
 
-  final RxList<Book> _allBooks = <Book>[].obs;
-  List<Book> get allBooks => _allBooks.toList();
+  final RxList<BookModel> _allBooks = <BookModel>[].obs;
+  List<BookModel> get allBooks => _allBooks;
 
-  final RxList<User> _allUsers = <User>[].obs;
-  List<User> get allUsers => _allUsers.toList();
+  final RxList<UserModel> _allUsers = <UserModel>[].obs;
+  List<UserModel> get allUsers => _allUsers;
 
-  final RxList<Carousel> _allCarousels = <Carousel>[].obs;
-  List<Carousel> get allCarousels => _allCarousels;
-
+  final RxList<CarouselModel> _allCarousels = <CarouselModel>[].obs;
+  List<CarouselModel> get allCarousels => _allCarousels;
 
   void onUserInit() {
     super.onInit();
@@ -32,13 +31,15 @@ class DataProvider extends GetxController {
     getAllCarousels();
   }
 
-  Future<List<User>> getAllBooks({bool showSnake = false}) async {
+  Future<List<UserModel>> getAllBooks({bool showSnake = false}) async {
     try {
       Response response = await httpService.get(endpointUrl: "books");
       if (response.isOk) {
-        ApiResponse<List<Book>> apiResponse = ApiResponse<List<Book>>.fromJson(
+        ApiResponse<List<BookModel>> apiResponse =
+            ApiResponse<List<BookModel>>.fromJson(
           response.body,
-          (json) => (json as List).map((item) => Book.fromJson(item)).toList(),
+          (json) =>
+              (json as List).map((item) => BookModel.fromJson(item)).toList(),
         );
 
         if (apiResponse.success) {
@@ -68,13 +69,15 @@ class DataProvider extends GetxController {
     return _allUsers;
   }
 
-  Future<List<User>> getAllUsers({bool showSnake = false}) async {
+  Future<List<UserModel>> getAllUsers({bool showSnake = false}) async {
     try {
       Response response = await httpService.get(endpointUrl: "admin/users");
       if (response.isOk) {
-        ApiResponse<List<User>> apiResponse = ApiResponse<List<User>>.fromJson(
+        ApiResponse<List<UserModel>> apiResponse =
+            ApiResponse<List<UserModel>>.fromJson(
           response.body,
-          (json) => (json as List).map((item) => User.fromJson(item)).toList(),
+          (json) =>
+              (json as List).map((item) => UserModel.fromJson(item)).toList(),
         );
 
         if (apiResponse.success) {
@@ -103,15 +106,16 @@ class DataProvider extends GetxController {
     return _allUsers;
   }
 
-  Future<List<Carousel>> getAllCarousels({bool showSnake = false}) async {
+  Future<List<CarouselModel>> getAllCarousels({bool showSnake = false}) async {
     try {
       Response response = await httpService.get(endpointUrl: "carousel");
       if (response.isOk) {
-        ApiResponse<List<Carousel>> apiResponse =
-            ApiResponse<List<Carousel>>.fromJson(
+        ApiResponse<List<CarouselModel>> apiResponse =
+            ApiResponse<List<CarouselModel>>.fromJson(
           response.body,
-          (json) =>
-              (json as List).map((item) => Carousel.fromJson(item)).toList(),
+          (json) => (json as List)
+              .map((item) => CarouselModel.fromJson(item))
+              .toList(),
         );
 
         if (apiResponse.success) {

@@ -1,5 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-class User {
+class UserModel {
   String? id;
   String? name;
   String? email;
@@ -8,7 +8,7 @@ class User {
   // String? token;
   // String? createdAt;
 
-  User({
+  UserModel({
     this.id,
     this.name,
     this.email,
@@ -18,7 +18,7 @@ class User {
     // this.createdAt,
   });
 
-  User.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
@@ -40,14 +40,14 @@ class User {
     return data;
   }
 
-  User copyWith({
+  UserModel copyWith({
     String? id,
     String? name,
     String? email,
     String? password,
     String? role,
   }) {
-    return User(
+    return UserModel(
       id: id ?? this.id,
       name: name ?? this.name,
       email: email ?? this.email,

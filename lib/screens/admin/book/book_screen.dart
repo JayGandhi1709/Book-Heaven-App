@@ -30,7 +30,7 @@ class BookScreen extends StatelessWidget {
             //   ),
             // ),
             leading: CachedNetworkImage(
-              imageUrl: book.imageUrl.isNotEmpty ? book.imageUrl.first : '',
+              imageUrl: book.img.isNotEmpty ? book.img.first : '',
               placeholder: (context, url) => const CircularProgressIndicator(),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),

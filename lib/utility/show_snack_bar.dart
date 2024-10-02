@@ -55,13 +55,13 @@ void showSnackBar(String message, MsgType type,
     backgroundColor: bgColor[MsgTypeExtension(type).value],
     colorText: txtColor[MsgTypeExtension(type).value],
     borderRadius: 20,
-    duration: const Duration(seconds: 3),
+    duration: const Duration(seconds: 2),
     icon: Icon(
       icons[MsgTypeExtension(type).value],
       color: txtColor[MsgTypeExtension(type).value],
     ),
     barBlur: 100,
-    isDismissible: showCloseIcon,
+    isDismissible: true,
     dismissDirection: DismissDirection.up,
   );
 }
