@@ -1,13 +1,14 @@
-// import 'package:book_heaven/screens/admin/book/add_book_screen.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 import 'package:book_heaven/screens/auth/splash_screen.dart';
 import 'package:book_heaven/utility/locale.dart';
+import 'package:book_heaven/utility/secret.dart';
 import 'package:book_heaven/utility/theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 void main() async {
+  Stripe.publishableKey = publishablekey;
   await GetStorage.init("favorite");
   await GetStorage.init("cart");
   runApp(const MyApp());

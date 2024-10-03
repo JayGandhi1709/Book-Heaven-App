@@ -121,25 +121,37 @@ class _HomeScreenState extends State<HomeScreen> {
                     physics:
                         const NeverScrollableScrollPhysics(), // Prevents scrolling
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: Get.width > 800 ? 4 : 2,
-                      childAspectRatio: Get.width / Get.height * 1.5,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
+                      // crossAxisCount: Get.width > 800 ? 4 : 2,
+                      // childAspectRatio: Get.width / Get.height * 1.5,
+                      // crossAxisSpacing:  10,
+                      // mainAxisSpacing: 10,
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.64,
                     ),
                     itemCount: books.length,
                     itemBuilder: (context, index) {
                       var book = books[index];
-                      return Card(
-                        elevation: 3,
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          child: InkWell(
-                            onTap: () => Get.to(() => ViewBook(book: book)),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment
-                                  .start, // Align text to the start
-                              children: [
-                                ClipRRect(
+                      return Container(
+                        padding: EdgeInsets.all(10),
+                        child: InkWell(
+                          onTap: () => Get.to(() => ViewBook(book: book)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment
+                                .start, // Align text to the start
+                            children: [
+                              Container(
+                                height:Get.size.width * 0.55,
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade300,
+                                      spreadRadius: 1,
+                                      blurRadius: 2
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
                                   borderRadius: BorderRadius.circular(10),
                                   child: CachedNetworkImage(
                                     imageUrl:
@@ -147,28 +159,28 @@ class _HomeScreenState extends State<HomeScreen> {
                                     height: 150,
                                     width: double
                                         .infinity, // Fill the width of the container
-                                    fit: BoxFit.contain,
+                                    fit: BoxFit.fitWidth,
                                   ),
                                 ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  book.title,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                              ),
+                              const SizedBox(height: 10),
+                              Text(
+                                book.title,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                                Text(
-                                  book.authors.join(", "),
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey,
-                                  ),
+                              ),
+                              Text(
+                                book.authors.join(", "),
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       );

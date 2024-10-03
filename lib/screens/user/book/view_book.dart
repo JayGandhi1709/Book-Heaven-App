@@ -1,6 +1,5 @@
 import 'package:book_heaven/models/book_model.dart';
 import 'package:book_heaven/utility/extensions.dart';
-import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -94,7 +93,7 @@ class _ViewBookState extends State<ViewBook> {
                 children: [
                   const Text(
                     'by, ',
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                    style: TextStyle(fontSize: 14),
                   ),
                   Text(
                     widget.book.authors.join(', '),
@@ -250,13 +249,14 @@ class _ViewBookState extends State<ViewBook> {
             if (widget.book.hasPhysicalCopy)
               Container(
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xff466168),
-                      Color.fromARGB(255, 128, 160, 168),
-                      Color.fromARGB(255, 147, 187, 197),
-                    ], // Specify your gradient colors
-                  ),
+                  // gradient: const LinearGradient(
+                  //   colors: [
+                  //     Color(0xff466168),
+                  //     Color.fromARGB(255, 128, 160, 168),
+                  //     Color.fromARGB(255, 147, 187, 197),
+                  //   ], // Specify your gradient colors
+                  // ),
+                  color: Colors.blue,
                   borderRadius:
                       BorderRadius.circular(8), // Optional: for rounded corners
                 ),
@@ -269,24 +269,42 @@ class _ViewBookState extends State<ViewBook> {
                   onPressed: () {
                     context.cartController.addToCart(widget.book, "physical");
                     setState(() {});
-                    showSnackBar("Added Successfuly!", MsgType.success);
                   },
-                  child: Text(
-                    'Buy Handcover  ₹${widget.book.physicalPrice}',
-                    style: const TextStyle(color: Colors.white),
+                  // child: Text(
+                  //   'Buy physical  ₹${widget.book.physicalPrice}',
+                  //   style: const TextStyle(color: Colors.white),
+                  // ),
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Buy Physical ",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "₹${widget.book.physicalPrice}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
             if (widget.book.hasDigitalCopy)
               Container(
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(0xff466168),
-                      Color.fromARGB(255, 128, 160, 168),
-                      Color.fromARGB(255, 147, 187, 197),
-                    ], // Specify your gradient colors
-                  ),
+                  // gradient: const LinearGradient(
+                  //   colors: [
+                  //     Color(0xff466168),
+                  //     Color.fromARGB(255, 128, 160, 168),
+                  //     Color.fromARGB(255, 147, 187, 197),
+                  //   ], // Specify your gradient colors
+                  // ),
+                  color: Colors.blue,
                   borderRadius:
                       BorderRadius.circular(8), // Optional: for rounded corners
                 ),
@@ -299,11 +317,28 @@ class _ViewBookState extends State<ViewBook> {
                   onPressed: () {
                     context.cartController.addToCart(widget.book, "digital");
                     setState(() {});
-                    showSnackBar("Added Successfuly!", MsgType.success);
                   },
-                  child: Text(
-                    'Buy E-Book  ₹${widget.book.digitalPrice}',
-                    style: const TextStyle(color: Colors.white),
+                  // child: Text(
+                  //   'Buy E-Book  ₹${widget.book.digitalPrice}',
+                  //   style: const TextStyle(color: Colors.white),
+                  // ),
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Buy Digital ",
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "₹${widget.book.digitalPrice}",
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -1,16 +1,25 @@
+import 'dart:convert';
 import 'dart:developer';
 
-import 'package:book_heaven/models/book_model.dart';
 import 'package:book_heaven/models/cart_model.dart';
 import 'package:book_heaven/screens/user/book/view_book.dart';
 import 'package:book_heaven/screens/user/cart/cart_controller.dart';
-import 'package:book_heaven/utility/show_snack_bar.dart';
+import 'package:book_heaven/utility/secret.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
-class CartScreen extends StatelessWidget {
+class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
+
+  @override
+  State<CartScreen> createState() => _CartScreenState();
+}
+
+class _CartScreenState extends State<CartScreen> {
+  Map<String, dynamic>? paymentIntent;
 
   @override
   Widget build(BuildContext context) {
@@ -52,45 +61,60 @@ class CartScreen extends StatelessWidget {
                               children: [
                                 Text(
                                     "₹${cartBooks[index].bookType == "digital" ? cart.digitalPrice : cart.physicalPrice}  x ${cartBooks[index].quantity}"),
-                                Text("Price : ₹${cart.physicalPrice}"),
+                                // Text("Price : ₹${cart.physicalPrice}"),
                                 Text("Type : ${cartBooks[index].bookType}"),
                                 // quantity plus and minus
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.add),
-                                      onPressed: () {
-                                        controller.updateQuantity(
-                                            cart,
-                                            cartBooks[index].quantity + 1,
-                                            cartBooks[index].bookType);
-                                      },
-                                    ),
-                                    const SizedBox(width: 20),
-                                    Text(
-                                      cartBooks[index].quantity.toString(),
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
+                                if (cartBooks[index].bookType == "physical")
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        icon: const Icon(Icons.add),
+                                        onPressed: () {
+                                          controller.updateQuantity(
+                                              cart,
+                                              cartBooks[index].quantity + 1,
+                                              cartBooks[index].bookType);
+                                        },
                                       ),
-                                    ),
-                                    const SizedBox(width: 20),
-                                    IconButton(
-                                      icon: Icon(
-                                        cartBooks[index].quantity == 1
-                                            ? Icons.delete
-                                            : Icons.remove,
+                                      const SizedBox(width: 20),
+                                      Text(
+                                        cartBooks[index].quantity.toString(),
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
-                                      onPressed: () {
-                                        controller.updateQuantity(
-                                            cart,
-                                            cartBooks[index].quantity - 1,
-                                            cartBooks[index].bookType);
-                                      },
+                                      const SizedBox(width: 20),
+                                      IconButton(
+                                        icon: Icon(
+                                          cartBooks[index].quantity == 1
+                                              ? Icons.delete
+                                              : Icons.remove,
+                                        ),
+                                        onPressed: () {
+                                          controller.updateQuantity(
+                                              cart,
+                                              cartBooks[index].quantity - 1,
+                                              cartBooks[index].bookType);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                if (cartBooks[index].bookType == "digital")
+                                  IconButton(
+                                    icon: Icon(
+                                      cartBooks[index].quantity == 1
+                                          ? Icons.delete
+                                          : Icons.remove,
                                     ),
-                                  ],
-                                ),
+                                    onPressed: () {
+                                      controller.updateQuantity(
+                                          cart,
+                                          cartBooks[index].quantity - 1,
+                                          cartBooks[index].bookType);
+                                    },
+                                  ),
                               ],
                             ),
                             onTap: () => Get.to(() => ViewBook(book: cart)),
@@ -126,11 +150,14 @@ class CartScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      showSnackBar(
-                        "This feature is coming soon",
-                        title: "Coming Soon",
-                        MsgType.info,
-                      );
+                      // showSnackBar(
+                      //   "This feature is coming soon",
+                      //   title: "Coming Soon",
+                      //   MsgType.info,
+                      // );
+                      // makePayment(controller.getTotalPrice().toString().trim());
+                      makePayment(
+                          controller.getTotalPrice().round().toString());
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -147,5 +174,113 @@ class CartScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Future<void> makePayment(String amount) async {
+    try {
+      paymentIntent = await createPaymentIntent(amount, 'INR');
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent?['client_secret'],
+                  style: ThemeMode.dark,
+                  merchantDisplayName: 'Book Heaven'))
+          .then((value) {});
+
+      displayPaymentSheet();
+    } catch (e, s) {
+      print("Error: $e$s");
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+        // Map<String, dynamic> orderInfoMap = {
+        //   "Product": widget.name,
+        //   "Price": widget.price,
+        //   "Name": name,
+        //   "Email": email,
+        //   "Image": image,
+        //   "Product Image": widget.image,
+        //   "Status": 'On the way',
+        // };
+        // await DatabaseMethod().orderDetails(orderInfoMap);
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                          ),
+                          Text('Payment Successful'),
+                        ],
+                      )
+                    ],
+                  ),
+                ));
+        paymentIntent = null;
+      }).onError((error, stackTrace) {
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: const [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          ),
+                          Text('Payment Failed'),
+                        ],
+                      )
+                    ],
+                  ),
+                ));
+      });
+    } on StripeException catch (e) {
+      print('StripeException: ${e.error.localizedMessage}');
+      showDialog(
+          context: context,
+          builder: (_) => AlertDialog(
+                content: Text('Cancelled'),
+              ));
+    } catch (e) {
+      print('Unknown error: $e');
+    }
+  }
+
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': calculateAmount(amount),
+        'currency': currency,
+        'payment_method_types[]': 'card'
+      };
+
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer $secret',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      return jsonDecode(response.body);
+    } catch (err) {
+      print('err charging user : ${err.toString()}');
+    }
+  }
+
+  calculateAmount(String amount) {
+    final calculatedAmount = (int.parse(amount) * 100);
+    return calculatedAmount.toString();
   }
 }
