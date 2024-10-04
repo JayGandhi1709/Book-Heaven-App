@@ -35,26 +35,32 @@ class FavoriteScreen extends StatelessWidget {
                         itemCount: favoriteBooks.length,
                         itemBuilder: (context, index) {
                           var book = favoriteBooks[index];
-                          return ListTile(
-                            leading: CachedNetworkImage(
-                              imageUrl:
-                                  book.img.isNotEmpty ? book.img.first : '',
-                              placeholder: (context, url) =>
-                                  const CircularProgressIndicator(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 4,
                             ),
-                            title: Text(book.title),
-                            onTap: () => Get.to(() => ViewBook(book: book)),
-                            trailing: IconButton(
-                              icon: const Icon(
-                                Icons.favorite,
-                                color: Colors.red,
+                            child: ListTile(
+                              leading: CachedNetworkImage(
+                                imageUrl:
+                                    book.img.isNotEmpty ? book.img.first : '',
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
                               ),
-                              onPressed: () {
-                                controller.addRemoveFavorite(book);
-                                // No need to call setState, GetBuilder will handle it
-                              },
+                              title: Text(book.title),
+                              onTap: () => Get.to(() => ViewBook(book: book)),
+                              trailing: IconButton(
+                                icon: const Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                ),
+                                onPressed: () {
+                                  controller.addRemoveFavorite(book);
+                                  // No need to call setState, GetBuilder will handle it
+                                },
+                              ),
                             ),
                           );
                         },

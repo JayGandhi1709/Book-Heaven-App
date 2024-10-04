@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:book_heaven/models/api_response.dart';
 import 'package:book_heaven/models/book_model.dart';
 import 'package:book_heaven/models/carousel_model.dart';
@@ -11,6 +13,9 @@ class DataProvider extends GetxController {
 
   final RxList<BookModel> _allBooks = <BookModel>[].obs;
   List<BookModel> get allBooks => _allBooks;
+
+  final RxList<BookModel> _filterBook = <BookModel>[].obs;
+  List<BookModel> get filterBook => _filterBook;
 
   final RxList<UserModel> _allUsers = <UserModel>[].obs;
   List<UserModel> get allUsers => _allUsers;
@@ -44,6 +49,7 @@ class DataProvider extends GetxController {
 
         if (apiResponse.success) {
           _allBooks.assignAll(apiResponse.data ?? []);
+          _filterBook.assignAll(apiResponse.data ?? []);
 
           showSnake ? showSnackBar("Fetched all users", MsgType.success) : null;
         } else {
@@ -67,6 +73,19 @@ class DataProvider extends GetxController {
       showSnackBar(e.toString(), MsgType.error);
     }
     return _allUsers;
+  }
+
+  List<BookModel> filterBooks(String query) {
+    if (query.isEmpty) {
+      return _allBooks;
+    }
+    log(_allBooks
+        .where((book) => book.title.toLowerCase().contains(query.toLowerCase()))
+        .toList()
+        .toString());
+    return _allBooks
+        .where((book) => book.title.toLowerCase().contains(query.toLowerCase()))
+        .toList();
   }
 
   Future<List<UserModel>> getAllUsers({bool showSnake = false}) async {

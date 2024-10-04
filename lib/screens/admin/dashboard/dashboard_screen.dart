@@ -45,6 +45,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             onPressed: () {
               Get.changeThemeMode(
                   Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+              setState(() {});
             },
             icon: Icon(Get.isDarkMode ? Icons.light_mode : Icons.dark_mode),
           ),
@@ -133,7 +134,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       var cardName = cardNames[index];
                       return Card(
                         elevation: 2,
-                        color: context.theme.cardColor,
+                        // color: context.theme.cardColor,
+                        // color: Get.isDarkMode ? Colors.grey[800] : Colors.white,
+                        color: Get.isDarkMode ? Colors.grey[800] : Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

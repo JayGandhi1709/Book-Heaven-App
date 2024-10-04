@@ -21,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   List<BookModel> books = [];
   final TextEditingController searchController = TextEditingController();
 
-  bool isSearching = false;
+  bool isSearching = true;
 
   @override
   void initState() {
@@ -52,81 +52,110 @@ class _HomeScreenState extends State<HomeScreen> {
           preferredSize: const Size.fromHeight(60),
           child: AppBar(
             elevation: 1,
-            // title: Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Row(
-            //     children: [
-            //       isSearching
-            //           ? IconButton(
-            //               icon: const Icon(Icons.arrow_back),
-            //               onPressed: () {
-            //                 setState(() {
-            //                   isSearching = false;
-            //                   searchController.clear();
-            //                   books.clear();
-            //                   books.addAll(context.dataProvider.allBooks);
-            //                   setState(() {});
-            //                 });
-            //               },
-            //             )
-            //           : const SizedBox.shrink(),
-            //       Expanded(
-            //         child: TextFormField(
-            //           controller: searchController,
-            //           onTap: () {
-            //             setState(() {
-            //               isSearching = true;
-            //             });
-            //           },
-            //           onChanged: (value) {
-            //             if (value.isEmpty) {
-            //               books.clear();
-            //               books.addAll(context.dataProvider.allBooks);
-            //             } else {
-            //               books.clear();
-            //               books.addAll(context.dataProvider.allBooks.where(
-            //                   (book) => book.title
-            //                       .toLowerCase()
-            //                       .contains(value.toLowerCase())));
-            //             }
-            //             setState(() {});
-            //           },
-            //           decoration: InputDecoration(
-            //             hintText: "Search",
-            //             prefixIcon: const Icon(Icons.search),
-            //             // suffixIcon: IconButton(
-            //             //   key: Key('clearButton'),
-            //             //   icon: const Icon(Icons.clear),
-            //             //   onPressed: () {
-            //             //     searchController.clear();
-            //             //   },
-            //             // ),
-            //             border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(10),
-            //             ),
-            //             filled: true,
-            //             fillColor: Colors.transparent,
-            //             contentPadding: const EdgeInsets.only(top: 10),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-            title: const Text(
-              "Book Heaven",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            title: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  isSearching
+                      ? IconButton(
+                          icon: const Icon(Icons.arrow_back),
+                          onPressed: () {
+                            setState(() {
+                              isSearching = false;
+                              searchController.clear();
+                              books.clear();
+                              books.addAll(context.dataProvider.allBooks);
+                              setState(() {});
+                            });
+                          },
+                        )
+                      : const SizedBox.shrink(),
+                  Expanded(
+                    child: TextFormField(
+                      controller: searchController,
+                      onTap: () {
+                        setState(() {
+                          isSearching = true;
+                        });
+                      },
+                      onChanged: (value) {
+                        if (value.isEmpty) {
+                          books.clear();
+                          books.addAll(context.dataProvider.allBooks);
+                        } else {
+                          books.clear();
+                          books.addAll(context.dataProvider.allBooks.where(
+                              (book) => book.title
+                                  .toLowerCase()
+                                  .contains(value.toLowerCase())));
+                        }
+                        setState(() {});
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        prefixIcon: const Icon(Icons.search),
+                        // suffixIcon: IconButton(
+                        //   key: Key('clearButton'),
+                        //   icon: const Icon(Icons.clear),
+                        //   onPressed: () {
+                        //     searchController.clear();
+                        //   },
+                        // ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        filled: true,
+                        fillColor: Colors.transparent,
+                        contentPadding: const EdgeInsets.only(top: 10),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
+            // title: const Text(
+            //   "Book Heaven",
+            //   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            // ),
           ),
         ),
         body: SingleChildScrollView(
-          child: isSearching
-              ? const SizedBox.expand()
-              : Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                  child: Column(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
+            child: isSearching
+                ? Column(
+                    children: [
+                      Expanded(
+                        child: ListView.builder(
+                          itemCount: books.length,
+                          itemBuilder: (context, index) {
+                            var book = books[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 8,
+                                horizontal: 4,
+                              ),
+                              child: ListTile(
+                                leading: CachedNetworkImage(
+                                  imageUrl:
+                                      book.img.isNotEmpty ? book.img.first : '',
+                                  placeholder: (context, url) =>
+                                      const CircularProgressIndicator(),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                ),
+                                title: Text(book.title),
+                                onTap: () => Get.to(() => ViewBook(book: book)),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  )
+                : Column(
                     children: [
                       SizedBox(
                         height: 60,
@@ -236,7 +265,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                ),
+          ),
         ));
   }
 }
