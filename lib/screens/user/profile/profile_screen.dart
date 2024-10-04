@@ -3,9 +3,14 @@ import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> settingsItem = [
@@ -32,7 +37,9 @@ class ProfileScreen extends StatelessWidget {
           IconButton(
             onPressed: () {
               Get.changeThemeMode(
-                  Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
+                Get.isDarkMode ? ThemeMode.light : ThemeMode.dark,
+              );
+              setState(() {});
             },
             icon: Icon(Get.isDarkMode ? Icons.light_mode : Icons.dark_mode),
           ),

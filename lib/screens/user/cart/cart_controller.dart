@@ -91,5 +91,6 @@ class CartController extends GetxController {
 
   void clearCart() {
     _allcartItems.clear();
+    update();
   }
 }

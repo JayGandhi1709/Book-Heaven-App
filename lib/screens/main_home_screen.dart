@@ -8,6 +8,7 @@ import 'package:book_heaven/screens/user/home/widgets/botton_nav_bar.dart';
 import 'package:book_heaven/screens/user/profile/profile_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MainHomeScreen extends StatefulWidget {
   const MainHomeScreen({super.key});
@@ -109,7 +110,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavyBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
         itemCornerRadius: 10,
         selectedIndex: newIndex,
         items: context.userProvider.user.role == "ADMIN"

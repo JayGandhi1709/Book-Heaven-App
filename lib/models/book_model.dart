@@ -10,13 +10,11 @@ class BookModel {
   final String page;
   final String publicationYear;
   final String publisher;
-
-  // Fields for handling physical and digital versions
   final int physicalPrice;
   final int digitalPrice;
   final bool hasPhysicalCopy;
   final bool hasDigitalCopy;
-  final String? fileUrl; // File URL for the digital version (E-Book)
+  final String? fileUrl;
 
   BookModel({
     required this.id,

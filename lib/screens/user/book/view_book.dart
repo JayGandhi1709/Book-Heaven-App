@@ -1,4 +1,5 @@
 import 'package:book_heaven/models/book_model.dart';
+import 'package:book_heaven/screens/user/book/custom_pdf_view.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -238,6 +239,37 @@ class _ViewBookState extends State<ViewBook> {
               ),
 
               const SizedBox(height: 16.0),
+              // make Preview book button
+              if (widget.book.hasDigitalCopy && widget.book.fileUrl != null)
+                Container(
+                  decoration: BoxDecoration(
+                    // gradient: const LinearGradient(
+                    //   colors: [
+                    //     Color(0xff466168),
+                    //     Color.fromARGB(255, 128, 160, 168),
+                    //     Color.fromARGB(255, 147, 187, 197),
+                    //   ], // Specify your gradient colors
+                    // ),
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(
+                        8), // Optional: for rounded corners
+                  ),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Colors.transparent, // Make the button transparent
+                      shadowColor: Colors.transparent, // Remove shadow
+                    ),
+                    onPressed: () {
+                      Get.to(
+                          () => CustomPdfViewer(pdfUrl: widget.book.fileUrl!));
+                    },
+                    child: const Text(
+                      'Preview Book',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -294,7 +326,7 @@ class _ViewBookState extends State<ViewBook> {
                   ),
                 ),
               ),
-            if (widget.book.hasDigitalCopy)
+            if (widget.book.hasDigitalCopy && widget.book.fileUrl != null)
               Container(
                 decoration: BoxDecoration(
                   // gradient: const LinearGradient(

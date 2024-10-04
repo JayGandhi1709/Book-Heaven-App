@@ -17,33 +17,39 @@ class BookScreen extends StatelessWidget {
         itemCount: context.dataProvider.allBooks.length,
         itemBuilder: (context, index) {
           var book = context.dataProvider.allBooks[index];
-          return ListTile(
-            // leading: Container(
-            //   width: 50,
-            //   height: 50,
-            //   decoration: BoxDecoration(
-            //     image: DecorationImage(
-            //       image: NetworkImage(
-            //           book.imageUrl.isNotEmpty ? book.imageUrl.first : ''),
-            //       fit: BoxFit.cover,
-            //     ),
-            //   ),
-            // ),
-            leading: CachedNetworkImage(
-              imageUrl: book.img.isNotEmpty ? book.img.first : '',
-              placeholder: (context, url) => const CircularProgressIndicator(),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+            child: ListTile(
+              // leading: Container(
+              //   width: 50,
+              //   height: 50,
+              //   decoration: BoxDecoration(
+              //     image: DecorationImage(
+              //       image: NetworkImage(
+              //           book.imageUrl.isNotEmpty ? book.imageUrl.first : ''),
+              //       fit: BoxFit.cover,
+              //     ),
+              //   ),
+              // ),
+              leading: CachedNetworkImage(
+                height: 100,
+                imageUrl: book.img.isNotEmpty ? book.img.first : '',
+                placeholder: (context, url) =>
+                    const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+
+              title: Text(book.title),
             ),
-            title: Text(book.title),
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.to(() => const AddBookScreen());
-        },
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     Get.to(() => const AddBookScreen());
+      //   },
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }

@@ -18,6 +18,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
   List<CarouselModel> carousels = [];
   List<CarouselModel> originalOrder = [];
   bool orderChanged = false;
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -196,22 +197,31 @@ class _CarouselScreenState extends State<CarouselScreen> {
       ),
       // update Order bottom sheet
       bottomNavigationBar: orderChanged
-          ? Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await context.carouselServices
-                            .updateCarouselOrder(carousels);
-                      },
-                      child: const Text('Update Order'),
-                    ),
+          ? isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : Container(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await context.carouselServices
+                                .updateCarouselOrder(carousels);
+                            orderChanged = false;
+                            setState(() {
+                              isLoading = false;
+                            });
+                          },
+                          child: const Text('Update Order'),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )
+                )
           : null,
     );
   }

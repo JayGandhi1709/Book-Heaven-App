@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:book_heaven/common/banner_carousel.dart';
 import 'package:book_heaven/models/cart_model.dart';
 import 'package:book_heaven/screens/user/book/view_book.dart';
 import 'package:book_heaven/screens/user/cart/cart_controller.dart';
+import 'package:book_heaven/utility/extensions.dart';
 import 'package:book_heaven/utility/secret.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -206,6 +208,7 @@ class _CartScreenState extends State<CartScreen> {
         //   "Status": 'On the way',
         // };
         // await DatabaseMethod().orderDetails(orderInfoMap);
+        context.cartController.clearCart();
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
@@ -225,6 +228,7 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                 ));
         paymentIntent = null;
+        // clear cart
       }).onError((error, stackTrace) {
         showDialog(
             context: context,

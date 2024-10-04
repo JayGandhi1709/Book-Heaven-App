@@ -46,6 +46,8 @@ dependencies:
   carousel_slider: ^5.0.0
   flutter_stripe: ^11.1.0
   http: ^1.2.2
+  syncfusion_flutter_pdfviewer: ^27.1.51
+  # pdfx: ^2.8.0
   # bottom_navy_bar: ^6.0.0
 
 dev_dependencies:

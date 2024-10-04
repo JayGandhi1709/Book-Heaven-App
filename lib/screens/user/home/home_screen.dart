@@ -120,19 +120,20 @@ class _HomeScreenState extends State<HomeScreen> {
                     shrinkWrap: true,
                     physics:
                         const NeverScrollableScrollPhysics(), // Prevents scrolling
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       // crossAxisCount: Get.width > 800 ? 4 : 2,
                       // childAspectRatio: Get.width / Get.height * 1.5,
                       // crossAxisSpacing:  10,
                       // mainAxisSpacing: 10,
                       crossAxisCount: 2,
-                      childAspectRatio: 0.64,
+                      childAspectRatio: 0.6,
                     ),
                     itemCount: books.length,
                     itemBuilder: (context, index) {
                       var book = books[index];
                       return Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: InkWell(
                           onTap: () => Get.to(() => ViewBook(book: book)),
                           child: Column(
@@ -140,14 +141,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .start, // Align text to the start
                             children: [
                               Container(
-                                height:Get.size.width * 0.55,
+                                height: Get.size.width * 0.55,
                                 decoration: BoxDecoration(
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.grey.shade300,
-                                      spreadRadius: 1,
-                                      blurRadius: 2
-                                    ),
+                                        color: Colors.grey.shade300,
+                                        spreadRadius: 1,
+                                        blurRadius: 2),
                                   ],
                                   borderRadius: BorderRadius.circular(10),
                                 ),
