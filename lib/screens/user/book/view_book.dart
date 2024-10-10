@@ -262,7 +262,10 @@ class _ViewBookState extends State<ViewBook> {
                     ),
                     onPressed: () {
                       Get.to(
-                          () => CustomPdfViewer(pdfUrl: widget.book.fileUrl!));
+                        () => CustomPdfViewer(
+                          pdfUrl: widget.book.fileUrl!,
+                        ),
+                      );
                     },
                     child: const Text(
                       'Preview Book',

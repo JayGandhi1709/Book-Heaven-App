@@ -6,11 +6,13 @@ class CustomTextField extends StatelessWidget {
     required this.labelText,
     required this.controller,
     this.obscureText = false,
+    this.border,
   });
 
   final String labelText;
   final TextEditingController controller;
   final bool obscureText;
+  final InputBorder? border;
 
   @override
   Widget build(BuildContext context) {
@@ -21,9 +23,10 @@ class CustomTextField extends StatelessWidget {
         labelText: labelText,
         hintText: 'Enter your $labelText',
         filled: true,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        border: border ??
+            OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {

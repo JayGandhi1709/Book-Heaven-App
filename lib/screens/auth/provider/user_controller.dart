@@ -12,7 +12,7 @@ import 'package:book_heaven/services/http_services.dart';
 import 'package:book_heaven/utility/constants.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
 
-class UserProvider extends GetxController {
+class UserController extends GetxController {
   var isLoggedIn = false.obs;
   HttpService service = HttpService();
   SharedPreferences? prefs;

@@ -34,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = true;
       });
-      await context.userProvider.login(
+      await context.userController.login(
         email: _emailcontroller.text.trim(),
         password: _passwordcontroller.text.trim(),
       );

@@ -79,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         showSnackBar("Passwords do not match!", MsgType.error);
                         return;
                       }
-                      context.userProvider.register(
+                      context.userController.register(
                         name: _namecontroller.text,
                         email: _emailcontroller.text.trim(),
                         password: _passwordcontroller.text.trim(),

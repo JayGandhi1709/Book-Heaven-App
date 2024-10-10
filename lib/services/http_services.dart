@@ -23,6 +23,21 @@ class HttpService {
     }
   }
 
+  Future<Response> getById(
+      {required String endpointUrl, required dynamic itemData}) async {
+    try {
+      log("$baseUrl/$endpointUrl");
+      final prefs = await SharedPreferences.getInstance();
+      final String token = prefs.getString(USER_TOKEN) ?? '';
+      return await GetConnect().get('$baseUrl/$endpointUrl/$itemData',
+          headers: {'Authorization': 'Bearer $token'});
+    } catch (e) {
+      log('Error: $e');
+      return Response(
+          body: json.encode({'error': e.toString()}), statusCode: 500);
+    }
+  }
+
   Future<Response> post(
       {required String endpointUrl, required dynamic itemData}) async {
     try {

@@ -15,11 +15,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    context.userProvider.isLoggedIn.listen((value) {
+    context.userController.isLoggedIn.listen((value) {
       if (value) {
         Future.delayed(const Duration(seconds: 0), () {
           // Get.offAll(() => const MainHomeScreen());
-          Get.offAll(() => context.userProvider.user.role == "ADMIN"
+          Get.offAll(() => context.userController.user.role == "ADMIN"
               ? const DashboardScreen()
               : const MainHomeScreen());
         });
@@ -41,13 +41,20 @@ class _SplashScreenState extends State<SplashScreen> {
               height: 200,
               width: 300,
               decoration: const BoxDecoration(
-                  image: DecorationImage(
-                    image: AssetImage('assets/splashlogo.png'),
-                    fit: BoxFit.contain,
-                  ),
+                image: DecorationImage(
+                  image: AssetImage('assets/splashlogo.png'),
+                  fit: BoxFit.contain,
+                ),
               ),
             ),
-            Text("Book Heaven",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold,letterSpacing: 2,),),
+            Text(
+              "Book Heaven",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                letterSpacing: 2,
+              ),
+            ),
             SizedBox(height: 100),
             const Center(
               child: CircularProgressIndicator(),

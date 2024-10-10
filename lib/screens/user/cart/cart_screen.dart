@@ -1,17 +1,18 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:book_heaven/common/banner_carousel.dart';
-import 'package:book_heaven/models/cart_model.dart';
-import 'package:book_heaven/screens/user/book/view_book.dart';
-import 'package:book_heaven/screens/user/cart/cart_controller.dart';
-import 'package:book_heaven/utility/extensions.dart';
-import 'package:book_heaven/utility/secret.dart';
+import 'package:book_heaven/screens/user/address/address_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+
+import 'package:book_heaven/models/cart_model.dart';
+import 'package:book_heaven/screens/user/book/view_book.dart';
+import 'package:book_heaven/screens/user/cart/cart_controller.dart';
+import 'package:book_heaven/utility/extensions.dart';
+import 'package:book_heaven/utility/secret.dart';
 
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
@@ -62,7 +63,7 @@ class _CartScreenState extends State<CartScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                    "₹${cartBooks[index].bookType == "digital" ? cart.digitalPrice : cart.physicalPrice}  x ${cartBooks[index].quantity}"),
+                                    "₹${cartBooks[index].bookType == "digital" ? cart.digitalPrice : cart.physicalPrice} x ${cartBooks[index].quantity}"),
                                 // Text("Price : ₹${cart.physicalPrice}"),
                                 Text("Type : ${cartBooks[index].bookType}"),
                                 // quantity plus and minus
@@ -158,8 +159,11 @@ class _CartScreenState extends State<CartScreen> {
                       //   MsgType.info,
                       // );
                       // makePayment(controller.getTotalPrice().toString().trim());
-                      makePayment(
-                          controller.getTotalPrice().round().toString());
+                      // makePayment(
+                      //     controller.getTotalPrice().round().toString());
+                      Get.to(() => const ManageAddressScreen(
+                            selectable: true,
+                          ));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
@@ -198,23 +202,13 @@ class _CartScreenState extends State<CartScreen> {
   displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) async {
-        // Map<String, dynamic> orderInfoMap = {
-        //   "Product": widget.name,
-        //   "Price": widget.price,
-        //   "Name": name,
-        //   "Email": email,
-        //   "Image": image,
-        //   "Product Image": widget.image,
-        //   "Status": 'On the way',
-        // };
-        // await DatabaseMethod().orderDetails(orderInfoMap);
         context.cartController.clearCart();
         showDialog(
             context: context,
-            builder: (_) => AlertDialog(
+            builder: (_) => const AlertDialog(
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Row(
                         children: [
                           Icon(
@@ -232,10 +226,10 @@ class _CartScreenState extends State<CartScreen> {
       }).onError((error, stackTrace) {
         showDialog(
             context: context,
-            builder: (_) => AlertDialog(
+            builder: (_) => const AlertDialog(
                   content: Column(
                     mainAxisSize: MainAxisSize.min,
-                    children: const [
+                    children: [
                       Row(
                         children: [
                           Icon(
@@ -253,7 +247,7 @@ class _CartScreenState extends State<CartScreen> {
       print('StripeException: ${e.error.localizedMessage}');
       showDialog(
           context: context,
-          builder: (_) => AlertDialog(
+          builder: (_) => const AlertDialog(
                 content: Text('Cancelled'),
               ));
     } catch (e) {

@@ -20,8 +20,8 @@ class MainHomeScreen extends StatefulWidget {
 class _MainHomeScreenState extends State<MainHomeScreen> {
   @override
   void initState() {
-    context.userProvider.isLoggedIn.listen((value) {
-      context.userProvider.user.role == "ADMIN"
+    context.userController.isLoggedIn.listen((value) {
+      context.userController.user.role == "ADMIN"
           ? context.dataProvider.onAdminInit()
           : userInit();
     });
@@ -113,7 +113,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
         itemCornerRadius: 10,
         selectedIndex: newIndex,
-        items: context.userProvider.user.role == "ADMIN"
+        items: context.userController.user.role == "ADMIN"
             ? adminBottomItems
             : userBottomItems,
         onItemSelected: (currentIndex) {
@@ -141,7 +141,7 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
         //     : userScreens[newIndex],
         child: IndexedStack(
           index: newIndex,
-          children: context.userProvider.user.role == "ADMIN"
+          children: context.userController.user.role == "ADMIN"
               ? adminScreens
               : userScreens,
         ),

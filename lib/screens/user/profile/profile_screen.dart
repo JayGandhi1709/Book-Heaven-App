@@ -23,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         "icon": Icons.logout,
         "title": "Logout",
         "color": Colors.red,
-        "onTap": context.userProvider.logOutUser
+        "onTap": context.userController.logOutUser
       },
     ];
 
@@ -66,7 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 10),
               Text(
-                context.userProvider.user.name!.capitalize ?? "",
+                context.userController.user.name!.capitalize ?? "",
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               const SizedBox(height: 5),
               Text(
-                context.userProvider.user.email ?? "",
+                context.userController.user.email ?? "",
                 style: const TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,

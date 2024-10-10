@@ -58,7 +58,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () {
-              context.userProvider.logOutUser();
+              context.userController.logOutUser();
             },
           ),
         ],
@@ -72,13 +72,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               const Icon(CupertinoIcons.person, size: 20),
               const SizedBox(height: 5),
               Text(
-                context.userProvider.user.name.toString(),
+                context.userController.user.name.toString(),
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Text(
-                context.userProvider.user.email.toString(),
+                context.userController.user.email.toString(),
                 style: const TextStyle(
                   fontSize: 12,
                 ),
