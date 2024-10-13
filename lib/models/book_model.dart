@@ -14,7 +14,7 @@ class BookModel {
   final int digitalPrice;
   final bool hasPhysicalCopy;
   final bool hasDigitalCopy;
-  final String? fileUrl;
+  final String? pdfUrl;
 
   BookModel({
     required this.id,
@@ -32,7 +32,7 @@ class BookModel {
     required this.digitalPrice,
     required this.hasPhysicalCopy,
     required this.hasDigitalCopy,
-    this.fileUrl, // This can be null if there is no digital version
+    this.pdfUrl, // This can be null if there is no digital version
   });
 
   factory BookModel.fromJson(Map<String, dynamic> json) {
@@ -52,7 +52,7 @@ class BookModel {
       digitalPrice: json['digitalPrice'],
       hasPhysicalCopy: json['hasPhysicalCopy'],
       hasDigitalCopy: json['hasDigitalCopy'],
-      fileUrl: json['pdfUrl'],
+      pdfUrl: json['pdfUrl'],
     );
   }
 
@@ -73,7 +73,7 @@ class BookModel {
       'digitalPrice': digitalPrice,
       'hasPhysicalCopy': hasPhysicalCopy,
       'hasDigitalCopy': hasDigitalCopy,
-      'fileUrl': fileUrl,
+      'pdfUrl': pdfUrl,
     };
   }
 
@@ -93,7 +93,7 @@ class BookModel {
     String? page,
     String? publicationYear,
     String? publisher,
-    String? fileUrl,
+    String? pdfUrl,
   }) {
     return BookModel(
       id: id ?? this.id,
@@ -111,7 +111,7 @@ class BookModel {
       page: page ?? this.page,
       publicationYear: publicationYear ?? this.publicationYear,
       publisher: publisher ?? this.publisher,
-      fileUrl: fileUrl ?? this.fileUrl,
+      pdfUrl: pdfUrl ?? this.pdfUrl,
     );
   }
 }

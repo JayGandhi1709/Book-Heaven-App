@@ -27,7 +27,8 @@ extension Providers on BuildContext {
       Get.put(CarouselServices(dataProvider));
   FavoriteController get favoriteController => Get.put(FavoriteController());
   CartController get cartController => Get.put(CartController());
-  OrderController get orderController => Get.put(OrderController());
+  OrderController get orderController =>
+      Get.put(OrderController(userController.user.id!));
   AddressController get addressController =>
       Get.put(AddressController(userController.user.id!));
   // DataProvider get dataProvider => Provider.of<DataProvider>(this, listen: false);

@@ -1,4 +1,4 @@
-import 'package:book_heaven/models/address.dart';
+import 'package:book_heaven/models/address_model.dart';
 import 'package:book_heaven/screens/user/address/add_address_screen.dart';
 import 'package:book_heaven/screens/user/address/address_controller.dart';
 import 'package:book_heaven/screens/user/checkout/checkout_screen.dart';

@@ -18,7 +18,7 @@ class CartModel {
   }
 
   // toMap method to convert CartModel object to Map
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return {
       'book': book.toJson(),
       'quantity': quantity,

@@ -1,4 +1,7 @@
-import 'package:book_heaven/models/order_item_model.dart';
+import 'dart:convert';
+
+import 'package:book_heaven/models/address_model.dart';
+import 'package:book_heaven/models/cart_model.dart';
 
 class OrderModel {
   String? id;
@@ -9,7 +12,7 @@ class OrderModel {
   String paymentMethod;
   String orderStatus;
   bool isDigitalOrder;
-  List<OrderItem> orderItems;
+  List<CartModel> orderItems;
 
   OrderModel({
     this.id,
@@ -26,24 +29,25 @@ class OrderModel {
   // Factory method to create an Order from JSON
   factory OrderModel.fromJson(Map<String, dynamic> json) {
     return OrderModel(
-      id: json['_id'],
-      userId: json['userId'],
-      orderDate: json['orderDate'],
-      deliveryAddress: json['deliveryAddress'],
-      totalPrice: json['totalPrice'].toDouble(),
-      paymentMethod: json['paymentMethod'],
-      orderStatus: json['orderStatus'],
-      isDigitalOrder: json['isDigitalOrder'],
-      orderItems: (json['orderItems'] as List)
-          .map((item) => OrderItem.fromJson(item))
-          .toList(),
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      orderDate: json['orderDate'] ?? '',
+      // deliveryAddress: json['deliveryAddress'] ?? '',
+      deliveryAddress: json['deliveryAddress'] ?? '',
+      totalPrice: (json['totalPrice'] ?? 0).toDouble(),
+      paymentMethod: json['paymentMethod'] ?? '',
+      orderStatus: json['orderStatus'] ?? '',
+      isDigitalOrder: json['isDigitalOrder'] ?? false,
+      orderItems: (json['orderItems'] as List?)
+              ?.map((item) => CartModel.fromJson(item))
+              .toList() ??
+          [],
     );
   }
 
   // Method to convert Order to JSON
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'userId': userId,
       'orderDate': orderDate,
       'deliveryAddress': deliveryAddress,

@@ -141,42 +141,38 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ],
                 ),
-          bottomNavigationBar: SizedBox(
-            height: 100,
-            child: BottomAppBar(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Total : ₹${controller.getTotalPrice().toStringAsFixed(2)}",
-                    style: const TextStyle(fontSize: 25),
+          bottomNavigationBar: controller.allCartBooks.isNotEmpty
+              ? SizedBox(
+                  height: 100,
+                  child: BottomAppBar(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Total : ₹${controller.getTotalPrice().toStringAsFixed(2)}",
+                          style: const TextStyle(fontSize: 25),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Get.to(
+                              () => const ManageAddressScreen(
+                                selectable: true,
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                          ),
+                          child: const Text(
+                            "Checkout",
+                            style: TextStyle(fontSize: 20, color: Colors.black),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // showSnackBar(
-                      //   "This feature is coming soon",
-                      //   title: "Coming Soon",
-                      //   MsgType.info,
-                      // );
-                      // makePayment(controller.getTotalPrice().toString().trim());
-                      // makePayment(
-                      //     controller.getTotalPrice().round().toString());
-                      Get.to(() => const ManageAddressScreen(
-                            selectable: true,
-                          ));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                    ),
-                    child: const Text(
-                      "Checkout",
-                      style: TextStyle(fontSize: 20, color: Colors.black),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+                )
+              : null,
         );
       },
     );

@@ -12,7 +12,9 @@ class ApiResponse<T> {
       ApiResponse(
         success: json['success'] as bool,
         message: json['message'] as String,
-        data: json['data'] != null ? fromJsonT!(json['data']) : null,
+        data: json['data'] != null && fromJsonT != null
+            ? fromJsonT(json['data'])
+            : null,
       );
 
   factory ApiResponse.fromJsonList(

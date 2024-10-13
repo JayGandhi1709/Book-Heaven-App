@@ -1,5 +1,5 @@
 import 'package:book_heaven/models/book_model.dart';
-import 'package:book_heaven/screens/user/book/custom_pdf_view.dart';
+import 'package:book_heaven/common/custom_pdf_view.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -240,7 +240,7 @@ class _ViewBookState extends State<ViewBook> {
 
               const SizedBox(height: 16.0),
               // make Preview book button
-              if (widget.book.hasDigitalCopy && widget.book.fileUrl != null)
+              if (widget.book.hasDigitalCopy && widget.book.pdfUrl != null)
                 Container(
                   decoration: BoxDecoration(
                     // gradient: const LinearGradient(
@@ -263,7 +263,7 @@ class _ViewBookState extends State<ViewBook> {
                     onPressed: () {
                       Get.to(
                         () => CustomPdfViewer(
-                          pdfUrl: widget.book.fileUrl!,
+                          pdfUrl: widget.book.pdfUrl!,
                         ),
                       );
                     },
@@ -329,7 +329,7 @@ class _ViewBookState extends State<ViewBook> {
                   ),
                 ),
               ),
-            if (widget.book.hasDigitalCopy && widget.book.fileUrl != null)
+            if (widget.book.hasDigitalCopy && widget.book.pdfUrl != null)
               Container(
                 decoration: BoxDecoration(
                   // gradient: const LinearGradient(

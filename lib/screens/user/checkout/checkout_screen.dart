@@ -1,14 +1,27 @@
-import 'package:book_heaven/common/animated_button.dart';
-import 'package:book_heaven/common/banner_carousel.dart';
-import 'package:book_heaven/models/address.dart';
-import 'package:book_heaven/utility/extensions.dart';
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:developer';
 
-class CheckoutScreen extends StatelessWidget {
+import 'package:book_heaven/models/order_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:book_heaven/common/animated_button.dart';
+import 'package:book_heaven/models/address_model.dart';
+import 'package:book_heaven/utility/extensions.dart';
+import 'package:book_heaven/utility/secret.dart';
+
+class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key, required this.selectedAddress});
 
   final AddressModel selectedAddress;
 
+  @override
+  State<CheckoutScreen> createState() => _CheckoutScreenState();
+}
+
+class _CheckoutScreenState extends State<CheckoutScreen> {
+  Map<String, dynamic>? paymentIntent;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,13 +49,13 @@ class CheckoutScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  title: Text(selectedAddress.street),
+                  title: Text(widget.selectedAddress.street),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                          '${selectedAddress.city}, ${selectedAddress.state} - ${selectedAddress.zipCode}'),
-                      Text("Contact: ${selectedAddress.contactNumber}"),
+                          '${widget.selectedAddress.city}, ${widget.selectedAddress.state} - ${widget.selectedAddress.zipCode}'),
+                      Text("Contact: ${widget.selectedAddress.contactNumber}"),
                     ],
                   ),
                 ),
@@ -159,7 +172,7 @@ class CheckoutScreen extends StatelessWidget {
                     ListTile(
                       title: const Text("GST"),
                       trailing: Text(
-                        "₹${(context.cartController.getTotalPrice() * 0.008).toStringAsFixed(2)}",
+                        "₹${(context.cartController.getTotalPrice() * 0.008).ceil().toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -172,7 +185,7 @@ class CheckoutScreen extends StatelessWidget {
                     ListTile(
                       title: const Text("Total"),
                       trailing: Text(
-                        "₹${(context.cartController.getTotalPrice() + (context.cartController.getTotalPrice() * 0.008)).toStringAsFixed(2)}",
+                        "₹${(context.cartController.getTotalPrice() + (context.cartController.getTotalPrice() * 0.008).ceil()).toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -182,32 +195,135 @@ class CheckoutScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              // Show payment options
-              // Show place order button
               const SizedBox(height: 20),
-              // Center(
-              //   child: ElevatedButton.icon(
-              //     onPressed: () {
-              //       // Place order
-              //       // context.cartController.placeOrder(selectedAddress);
-              //     },
-              //     icon: const Icon(Icons.shopping_cart_checkout),
-              //     label: const Text("Place Order"),
-              //     style: ElevatedButton.styleFrom(
-              //       padding: const EdgeInsets.symmetric(
-              //           horizontal: 24, vertical: 12),
-              //       textStyle: const TextStyle(fontSize: 18),
-              //       shape: RoundedRectangleBorder(
-              //         borderRadius: BorderRadius.circular(10),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              AnimatedPlaceOrderButton(),
+              AnimatedPlaceOrderButton(
+                amount: (context.cartController.getTotalPrice() +
+                    (context.cartController.getTotalPrice() * 0.008).ceil()),
+                selectedAddress: widget.selectedAddress.toJson().toString(),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<bool> makePayment(String amount) async {
+    try {
+      paymentIntent = await createPaymentIntent(amount, 'INR');
+      await Stripe.instance
+          .initPaymentSheet(
+              paymentSheetParameters: SetupPaymentSheetParameters(
+                  paymentIntentClientSecret: paymentIntent?['client_secret'],
+                  style: ThemeMode.dark,
+                  merchantDisplayName: 'Book Heaven'))
+          .then((value) {});
+
+      return displayPaymentSheet();
+    } catch (e, s) {
+      print("Error: $e$s");
+    }
+    return false;
+  }
+
+  Future<bool> displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+        log('PaymentSheet response: ${widget.selectedAddress.toJson()}');
+        context.orderController.placeOrder(
+          order: OrderModel(
+            userId: context.userController.user.id!,
+            deliveryAddress: widget.selectedAddress.toJson().toString(),
+            orderItems: context.cartController.allCartBooks,
+            totalPrice: context.cartController.getTotalPrice() +
+                (context.cartController.getTotalPrice() * 0.008).ceil(),
+            orderDate: DateTime.now().toString(),
+            paymentMethod: 'card',
+            orderStatus: 'panding',
+            isDigitalOrder: context.cartController.allCartBooks
+                .every((element) => element.bookType == 'digital'),
+          ),
+        );
+        // context.cartController.clearCart();
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                          ),
+                          Text('Payment Successful'),
+                        ],
+                      )
+                    ],
+                  ),
+                ));
+        paymentIntent = null;
+        return true;
+        // clear cart
+      }).onError((error, stackTrace) {
+        showDialog(
+            context: context,
+            builder: (_) => const AlertDialog(
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                            Icons.error,
+                            color: Colors.red,
+                          ),
+                          Text('Payment Failed'),
+                        ],
+                      )
+                    ],
+                  ),
+                ));
+        return false;
+      });
+    } on StripeException catch (e) {
+      print('StripeException: ${e.error.localizedMessage}');
+      showDialog(
+          context: context,
+          builder: (_) => const AlertDialog(
+                content: Text('Cancelled'),
+              ));
+    } catch (e) {
+      print('Unknown error: $e');
+    }
+    return false;
+  }
+
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      Map<String, dynamic> body = {
+        'amount': calculateAmount(amount),
+        'currency': currency,
+        'payment_method_types[]': 'card'
+      };
+
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer $secret',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      return jsonDecode(response.body);
+    } catch (err) {
+      print('err charging user : ${err.toString()}');
+    }
+  }
+
+  calculateAmount(String amount) {
+    final calculatedAmount = (int.parse(amount) * 100);
+    return calculatedAmount.toString();
   }
 }

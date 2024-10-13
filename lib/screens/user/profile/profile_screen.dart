@@ -1,3 +1,6 @@
+import 'package:book_heaven/screens/user/E%20book/ebooks_screen.dart';
+import 'package:book_heaven/screens/user/address/address_screen.dart';
+import 'package:book_heaven/screens/user/order/orders_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +17,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> settingsItem = [
-      {"icon": Icons.account_circle, "title": "Account"},
-      {"icon": Icons.shopping_cart, "title": "Orders"},
-      {"icon": Icons.favorite, "title": "Wishlist"},
-      {"icon": Icons.settings, "title": "Settings"},
-      {"icon": Icons.help, "title": "Help"},
+      // {"icon": Icons.account_circle, "title": "Account"},
+      {
+        "icon": Icons.menu_book_sharp,
+        "title": "E-Books",
+        "onTap": () => Get.to(() => const EBooksScreen())
+      },
+      {
+        "icon": Icons.apartment,
+        "title": "Manage Address",
+        "onTap": () => const ManageAddressScreen(),
+      },
+      {
+        "icon": Icons.shopping_cart,
+        "title": "Orders",
+        "onTap": () => Get.to(() => const OrdersScreen())
+      },
+      // {"icon": Icons.favorite, "title": "Wishlist"},
+      // {"icon": Icons.settings, "title": "Settings"},
+      // {"icon": Icons.help, "title": "Help"},
       {
         "icon": Icons.logout,
         "title": "Logout",

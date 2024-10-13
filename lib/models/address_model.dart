@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 
 class AddressModel {
@@ -22,13 +24,13 @@ class AddressModel {
   // Factory method to create an Address object from JSON
   factory AddressModel.fromJson(Map<String, dynamic> json) {
     return AddressModel(
-      id: json['id'],
-      userId: json['userId'],
-      street: json['street'],
-      city: json['city'],
-      state: json['state'],
-      zipCode: json['zipCode'],
-      contactNumber: json['contactNumber'],
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      street: json['street'] ?? '',
+      city: json['city'] ?? '',
+      state: json['state'] ?? '',
+      zipCode: json['zipCode'] ?? '',
+      contactNumber: json['contactNumber'] ?? '',
     );
   }
 
@@ -43,6 +45,28 @@ class AddressModel {
       'zipCode': zipCode,
       'contactNumber': contactNumber,
     };
+  }
+
+  static String fixJsonString(String jsonString) {
+    // Adding double quotes around keys
+    return jsonString.replaceAllMapped(
+      RegExp(r'(\w+): (\w+)'),
+      (match) => '"${match[1]}": "${match[2]}"',
+    );
+  }
+
+  // from String to AddressModel
+  static AddressModel fromString(String jsonString) {
+    Map<String, dynamic> json = jsonDecode(fixJsonString(jsonString));
+    return AddressModel(
+      id: json['id'] ?? '',
+      userId: json['userId'] ?? '',
+      street: json['street'] ?? '',
+      city: json['city'] ?? '',
+      state: json['state'] ?? '',
+      zipCode: json['zipCode'] ?? '',
+      contactNumber: json['contactNumber'] ?? '',
+    );
   }
 
   AddressModel copyWith({

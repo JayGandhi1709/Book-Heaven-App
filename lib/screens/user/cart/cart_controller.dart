@@ -49,7 +49,7 @@ class CartController extends GetxController {
       _allcartItems.add(CartModel(book: book, bookType: type));
       log("Added ${book.title} to cart");
       cartBox.write(
-          book.id.toString(), CartModel(book: book, bookType: type).toMap());
+          book.id.toString(), CartModel(book: book, bookType: type).toJson());
       showSnackBar("Added Successfuly!", MsgType.success);
     }
     update();

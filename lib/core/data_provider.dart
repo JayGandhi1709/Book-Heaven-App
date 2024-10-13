@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:book_heaven/common/banner_carousel.dart';
-import 'package:book_heaven/models/address.dart';
+import 'package:book_heaven/models/address_model.dart';
 import 'package:book_heaven/models/api_response.dart';
 import 'package:book_heaven/models/book_model.dart';
 import 'package:book_heaven/models/carousel_model.dart';
