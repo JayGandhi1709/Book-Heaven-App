@@ -26,7 +26,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       {
         "icon": Icons.apartment,
         "title": "Manage Address",
-        "onTap": () => const ManageAddressScreen(),
+        "onTap": () => Get.to(const ManageAddressScreen()),
       },
       {
         "icon": Icons.shopping_cart,
