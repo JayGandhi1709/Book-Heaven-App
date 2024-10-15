@@ -68,7 +68,7 @@ class CarouselServices extends GetxController {
 
         if (apiResponse.success) {
           Get.back();
-          _dataProvider.getAllCarousels(showSnake: true);
+          _dataProvider.getAllCarousels(showSnack: true);
           showSnackBar(apiResponse.message, MsgType.success);
         } else {
           showSnackBar(apiResponse.data, MsgType.error);

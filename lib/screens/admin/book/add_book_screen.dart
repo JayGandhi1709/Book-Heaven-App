@@ -1,6 +1,12 @@
+import 'dart:io';
+
 import 'package:book_heaven/common/custom_text_form_field.dart';
+import 'package:book_heaven/common/editable_chip_field_widget.dart';
+import 'package:book_heaven/utility/constants.dart';
+import 'package:book_heaven/utility/pick_images.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AddBookScreen extends StatefulWidget {
   const AddBookScreen({super.key});
@@ -18,7 +24,38 @@ class _AddBookScreenState extends State<AddBookScreen> {
   // controllers
   // final TextEditingController _title = TextEditingController();
   // final TextEditingController _desc = TextEditingController();
-  // File? _image;
+  List<File>? _images;
+
+  final TextEditingController _bookNameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _authorController = TextEditingController();
+  final TextEditingController _publisherController = TextEditingController();
+  final TextEditingController _publicationYearController =
+      TextEditingController();
+  final TextEditingController _isbnController = TextEditingController();
+  final TextEditingController _physicalPriceController =
+      TextEditingController();
+  final TextEditingController _digitalPriceController = TextEditingController();
+  final TextEditingController _pageController = TextEditingController();
+  final TextEditingController _languageController = TextEditingController();
+  // TextEditingController _pdfUrlController = TextEditingController();
+  File? pdf;
+  final List<String> _genreController = [];
+
+  void selectImages() async {
+    List<File>? image = await pickMultipleImages();
+    setState(() {
+      _images!.addAll(image);
+    });
+  }
+
+  // select pdf
+  void selectPdf() async {
+    File? pdfFile = await pickPdf();
+    setState(() {
+      pdf = pdfFile;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,61 +69,182 @@ class _AddBookScreenState extends State<AddBookScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: [
-                  DottedBorder(
-                    borderType: BorderType.RRect,
-                    radius: const Radius.circular(10),
-                    dashPattern: const [10, 4],
-                    strokeCap: StrokeCap.round,
-                    child: Container(
-                      width: double.infinity,
-                      height: 150,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.folder_open,
-                            size: 40,
+                  _images != null && _images!.isNotEmpty
+                      ? SizedBox(
+                          height: 150,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _images!.length + 1,
+                            itemBuilder: (context, index) {
+                              if (index == _images!.length) {
+                                return GestureDetector(
+                                  onTap: selectImages,
+                                  child: Container(
+                                    width: 100,
+                                    height: 150,
+                                    color: Get.theme.colorScheme.onSurface,
+                                    child: const Icon(
+                                      Icons.add,
+                                      size: 40,
+                                    ),
+                                  ),
+                                );
+                              }
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Stack(
+                                  children: [
+                                    Image.file(_images![index]),
+                                    Positioned(
+                                      top: -14,
+                                      right: -14,
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.cancel,
+                                          color:
+                                              Get.theme.colorScheme.onSurface,
+                                        ),
+                                        onPressed: () {
+                                          setState(() {
+                                            _images!.removeAt(index);
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          Text(
-                            "Select Book Images",
-                            style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.grey.shade400,
+                        )
+                      : GestureDetector(
+                          onTap: selectImages,
+                          child: DottedBorder(
+                            color: Get.theme.colorScheme.onSurface,
+                            borderType: BorderType.RRect,
+                            radius: const Radius.circular(10),
+                            dashPattern: const [10, 4],
+                            strokeCap: StrokeCap.round,
+                            child: Container(
+                              width: double.infinity,
+                              height: 150,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.folder_open,
+                                    size: 40,
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  Text(
+                                    "Select Book Images",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.grey.shade400,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                        ],
+                        ),
+                  const SizedBox(height: 10),
+                  CustomTextFormField(
+                    labelText: "Book Name",
+                    controller: _bookNameController,
+                  ),
+                  CustomTextFormField(
+                    labelText: "Description",
+                    controller: _descriptionController,
+                  ),
+                  CustomTextFormField(
+                    labelText: "Author",
+                    controller: _authorController,
+                  ),
+                  // publisher
+                  CustomTextFormField(
+                    labelText: "Publisher",
+                    controller: _publisherController,
+                  ),
+                  //                       Integer publicationYear;
+                  CustomTextFormField(
+                    labelText: "Publication Year",
+                    controller: _publicationYearController,
+                  ),
+                  // Editable chip field
+                  const EditableChipField(
+                    list: Book_Genres,
+                    decoration: InputDecoration(
+                      // prefixIcon: Icon(Icons.local_pizza_rounded),
+                      hintText: 'Search for genre',
+                      labelText: 'Genre',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+
+                  // String isbn;
+                  CustomTextFormField(
+                      labelText: "ISBN", controller: _isbnController),
+                  // Integer physicalPrice;
+                  CustomTextFormField(
+                      labelText: "Physical Price",
+                      controller: _physicalPriceController),
+                  // Integer digitalPrice;
+                  CustomTextFormField(
+                      labelText: "Digital Price",
+                      controller: _digitalPriceController),
+                  // String page;
+                  CustomTextFormField(
+                      labelText: "Page", controller: _pageController),
+                  // String language;
+                  CustomTextFormField(
+                      labelText: "Language", controller: _languageController),
+                  // String pdfUrl;
+                  GestureDetector(
+                    onTap: selectPdf,
+                    child: DottedBorder(
+                      color: Get.theme.colorScheme.onSurface,
+                      borderType: BorderType.RRect,
+                      radius: const Radius.circular(10),
+                      dashPattern: const [10, 4],
+                      strokeCap: StrokeCap.round,
+                      child: Container(
+                        width: double.infinity,
+                        height: 70,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const Icon(
+                              Icons.folder_open,
+                              size: 40,
+                            ),
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                              pdf != null
+                                  ? pdf!.path.split('/').last
+                                  : "Select Book PDF file",
+                              style: TextStyle(
+                                fontSize: 15,
+                                color: Colors.grey.shade400,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const CustomTextFormField(labelText: "Book Name"),
-                  const CustomTextFormField(labelText: "Description"),
-                  const CustomTextFormField(labelText: "Author"),
-                  // publisher
-                  const CustomTextFormField(labelText: "Publisher"),
-                  //                       Integer publicationYear;
-                  const CustomTextFormField(labelText: "Publication Year"),
-                  // List<String> genre;
-                  const CustomTextFormField(labelText: "Genre"),
-                  // String isbn;
-                  const CustomTextFormField(labelText: "ISBN"),
-                  // Integer physicalPrice;
-                  const CustomTextFormField(labelText: "Physical Price"),
-                  // Integer digitalPrice;
-                  const CustomTextFormField(labelText: "Digital Price"),
-                  // String page;
-                  const CustomTextFormField(labelText: "Page"),
-                  // String language;
-                  const CustomTextFormField(labelText: "Language"),
-                  // String pdfUrl;
-                  const CustomTextFormField(labelText: "PDF URL"),
-                  const SizedBox(height: 20),
+
+                  const SizedBox(height: 30),
                   ElevatedButton.icon(
                     onPressed: () {},
                     icon: const Icon(Icons.add),

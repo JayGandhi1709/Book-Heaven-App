@@ -48,10 +48,12 @@ class AddressModel {
   }
 
   static String fixJsonString(String jsonString) {
-    // Adding double quotes around keys
+    // Adding double quotes around keys and handling multi-word values
     return jsonString.replaceAllMapped(
-      RegExp(r'(\w+): (\w+)'),
-      (match) => '"${match[1]}": "${match[2]}"',
+      RegExp(
+          r'(\w+):\s*([^,}]+)'), // Match key and any value that ends with a comma or }
+      (match) =>
+          '"${match[1]}": "${match[2]}"', // Add quotes around key and value
     );
   }
 

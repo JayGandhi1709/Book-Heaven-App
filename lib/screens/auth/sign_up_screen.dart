@@ -25,6 +25,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // TextEditingController(text: "12345678");
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+  bool _isLoading = false;
+
   @override
   void dispose() {
     _emailcontroller.dispose();
@@ -45,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  'Login',
+                  'Register',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 50),
@@ -53,41 +55,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   labelText: "Name",
                   controller: _namecontroller,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextField(
                   labelText: "Email",
                   controller: _emailcontroller,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextField(
                   labelText: "Password",
                   controller: _passwordcontroller,
                   obscureText: true,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CustomTextField(
                   labelText: "Confirm Password",
                   controller: _confirmPasswordcontroller,
                   obscureText: true,
                 ),
                 const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      if (_passwordcontroller.text !=
-                          _confirmPasswordcontroller.text) {
-                        showSnackBar("Passwords do not match!", MsgType.error);
-                        return;
-                      }
-                      context.userController.register(
-                        name: _namecontroller.text,
-                        email: _emailcontroller.text.trim(),
-                        password: _passwordcontroller.text.trim(),
-                      );
-                    }
-                  },
-                  child: const Text('Register'),
-                ),
+                _isLoading
+                    ? const CircularProgressIndicator.adaptive()
+                    : ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                          if (_formKey.currentState!.validate()) {
+                            if (_passwordcontroller.text !=
+                                _confirmPasswordcontroller.text) {
+                              showSnackBar(
+                                  "Passwords do not match!", MsgType.error);
+                              return;
+                            }
+                            context.userController.register(
+                              name: _namecontroller.text,
+                              email: _emailcontroller.text.trim(),
+                              password: _passwordcontroller.text.trim(),
+                            );
+                          }
+                          Future.delayed(const Duration(seconds: 2), () {
+                            setState(() {
+                              _isLoading = false;
+                            });
+                            Get.back();
+                          });
+                        },
+                        child: const Text('Register'),
+                      ),
                 // dont haven't account by not using Row
                 const SizedBox(height: 20),
                 Row(

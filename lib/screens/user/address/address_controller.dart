@@ -24,7 +24,7 @@ class AddressController extends GetxController {
   }
 
   Future<List<AddressModel>> getAllAddress(
-      {bool showSnake = false, required String userID}) async {
+      {bool showSnack = false, required String userID}) async {
     try {
       Response response = await service.getById(
         endpointUrl: "address/user",
@@ -42,17 +42,17 @@ class AddressController extends GetxController {
         if (apiResponse.success) {
           _allAddress.assignAll(apiResponse.data ?? []);
           update();
-          showSnake
+          showSnack
               ? showSnackBar("Fetched all address", MsgType.success)
               : null;
         } else {
-          showSnake
+          showSnack
               ? showSnackBar(
                   "Failed to fetch : ${apiResponse.message}", MsgType.error)
               : null;
         }
       } else {
-        showSnake
+        showSnack
             ? showSnackBar(
                 "Error ${response.body?['message'] ?? response.statusText}",
                 MsgType.error)
@@ -60,7 +60,7 @@ class AddressController extends GetxController {
       }
     } catch (e) {
       print(e);
-      if (showSnake) {
+      if (showSnack) {
         showSnackBar("Error : ${e.toString()}", MsgType.error);
       }
       showSnackBar(e.toString(), MsgType.error);

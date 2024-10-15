@@ -121,8 +121,7 @@ class UserController extends GetxController {
       };
 
       final response = await service.post(
-        // endpointUrl: '$sub_url/register',
-        endpointUrl: subUrl,
+        endpointUrl: '$subUrl/register',
         itemData: user,
       );
 

@@ -117,8 +117,7 @@ class _AnimatedPlaceOrderButtonState extends State<AnimatedPlaceOrderButton>
           userId: context.userController.user.id!,
           deliveryAddress: widget.selectedAddress,
           orderItems: context.cartController.allCartBooks,
-          totalPrice: context.cartController.getTotalPrice() +
-              (context.cartController.getTotalPrice() * 0.008).ceil(),
+          totalPrice: widget.amount,
           orderDate: DateTime.now().toString(),
           paymentMethod: 'card',
           orderStatus: 'pending', // Fix typo from 'panding' to 'pending'

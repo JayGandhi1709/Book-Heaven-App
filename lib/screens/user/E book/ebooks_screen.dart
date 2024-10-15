@@ -15,7 +15,7 @@ class EBooksScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: GetBuilder<OrderController>(
-          init: OrderController(context.userController.user.id!),
+          init: OrderController(context.userController.user),
           builder: (controller) {
             // make custom Card for each address
             if (controller.allEBooksOrders.isEmpty) {
@@ -23,42 +23,45 @@ class EBooksScreen extends StatelessWidget {
                 child: Text("No purchased Ebooks Found"),
               );
             }
-            return Column(
-              children: controller.allEBooksOrders
-                  .expand(
-                    (order) => order.orderItems.map(
-                      (orderItem) => Card(
-                        child: ListTile(
-                          leading: SizedBox(
-                            height: 250,
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Container(
-                                  height: 100,
-                                  width: 100,
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(5),
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          orderItem.book.img.first),
-                                      fit: BoxFit.contain,
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Column(
+                children: controller.allEBooksOrders
+                    .expand(
+                      (order) => order.orderItems.map(
+                        (orderItem) => Card(
+                          child: ListTile(
+                            leading: SizedBox(
+                              height: 250,
+                              child: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            orderItem.book.img.first),
+                                        fit: BoxFit.contain,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            title: Text(orderItem.book.title),
+                            onTap: () => Get.to(() => CustomPdfViewer(
+                                  pdfUrl: orderItem.book.pdfUrl!,
+                                  isPurchased: true,
+                                )),
                           ),
-                          title: Text(orderItem.book.title),
-                          onTap: () => Get.to(() => CustomPdfViewer(
-                                pdfUrl: orderItem.book.pdfUrl!,
-                                isPurchased: true,
-                              )),
                         ),
                       ),
-                    ),
-                  )
-                  .toList(),
+                    )
+                    .toList(),
+              ),
             );
           },
         ),

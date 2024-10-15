@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:book_heaven/models/api_response.dart';
 import 'package:book_heaven/models/order_model.dart';
-import 'package:book_heaven/screens/user/order/order_details_screen.dart';
+import 'package:book_heaven/models/user_model.dart';
 import 'package:book_heaven/services/http_services.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:get/get.dart';
@@ -11,11 +10,11 @@ import 'package:get/get.dart';
 class OrderController extends GetxController {
   final HttpService service = HttpService();
 
-  OrderController(this.userID);
+  OrderController(this.user);
 
   final String subUrl = 'orders';
 
-  final String userID;
+  final UserModel user;
 
   final RxList<OrderModel> _allOrders = <OrderModel>[].obs;
   List<OrderModel> get allOrders => _allOrders;
@@ -23,19 +22,82 @@ class OrderController extends GetxController {
   final RxList<OrderModel> _allEBooksOrders = <OrderModel>[].obs;
   List<OrderModel> get allEBooksOrders => _allEBooksOrders;
 
+  final RxList<OrderModel> _allFilterOrders = <OrderModel>[].obs;
+  List<OrderModel> get allFilterOrders => _allFilterOrders;
+
   @override
   void onInit() {
     super.onInit();
-    getAllUserOrders();
+    getAllOrders();
   }
 
-  // get all orders of a user
+  Future<void> getAllOrders({
+    showSnack = false,
+  }) async {
+    try {
+      Response response;
+
+      log(user.role.toString());
+
+      if (user.role == "ADMIN") {
+        response = await service.get(endpointUrl: "admin/$subUrl");
+      } else {
+        response =
+            await service.getById(endpointUrl: subUrl, itemData: user.id);
+      }
+      log(response.isOk.toString());
+      if (response.isOk) {
+        ApiResponse<List<OrderModel>> apiResponse =
+            ApiResponse<List<OrderModel>>.fromJson(
+          response.body,
+          (json) =>
+              (json as List).map((item) => OrderModel.fromJson(item)).toList(),
+        );
+        log(apiResponse.data?.length.toString() ?? "");
+        if (apiResponse.success == true) {
+          _allOrders.assignAll(apiResponse.data ?? []);
+          _allFilterOrders.assignAll(_allOrders);
+          // filter ebooks orders
+          if (user.role == "USER") {
+            _allEBooksOrders.assignAll(_allOrders
+                .where((order) => order.isDigitalOrder == true)
+                .toList());
+          }
+          update();
+
+          if (showSnack) {
+            showSnackBar(apiResponse.message, MsgType.success);
+          }
+        } else {
+          if (showSnack) {
+            showSnackBar(
+                "Failed to get : ${apiResponse.message}", MsgType.error);
+          }
+          log('Failed to get : ${apiResponse.message}');
+        }
+      } else {
+        if (showSnack) {
+          showSnackBar(
+              "Error ${response.body?['message'] ?? response.statusText}",
+              MsgType.error);
+        }
+        log("Error ${response.body?['message'] ?? response.statusText}");
+      }
+    } catch (e) {
+      if (showSnack) {
+        showSnackBar(
+            "Something went wrong, please try again later.", MsgType.error);
+      }
+    }
+  }
+
   Future<void> getAllUserOrders({
-    showSnakebar = false,
+    showSnack = false,
+    String? userId,
   }) async {
     try {
       final response =
-          await service.getById(endpointUrl: subUrl, itemData: userID);
+          await service.getById(endpointUrl: subUrl, itemData: userId ?? user.id);
       if (response.isOk) {
         ApiResponse<List<OrderModel>> apiResponse =
             ApiResponse<List<OrderModel>>.fromJson(
@@ -45,24 +107,25 @@ class OrderController extends GetxController {
         );
         if (apiResponse.success == true) {
           _allOrders.assignAll(apiResponse.data ?? []);
+          _allFilterOrders.assignAll(_allOrders);
           // filter ebooks orders
           _allEBooksOrders.assignAll(_allOrders
               .where((order) => order.isDigitalOrder == true)
               .toList());
           update();
 
-          if (showSnakebar) {
+          if (showSnack) {
             showSnackBar(apiResponse.message, MsgType.success);
           }
         } else {
-          if (showSnakebar) {
+          if (showSnack) {
             showSnackBar(
                 "Failed to get : ${apiResponse.message}", MsgType.error);
           }
           log('Failed to get : ${apiResponse.message}');
         }
       } else {
-        if (showSnakebar) {
+        if (showSnack) {
           showSnackBar(
               "Error ${response.body?['message'] ?? response.statusText}",
               MsgType.error);
@@ -70,7 +133,7 @@ class OrderController extends GetxController {
         log("Error ${response.body?['message'] ?? response.statusText}");
       }
     } catch (e) {
-      if (showSnakebar) {
+      if (showSnack) {
         showSnackBar(
             "Something went wrong, please try again later.", MsgType.error);
       }
@@ -78,10 +141,8 @@ class OrderController extends GetxController {
   }
 
   Future<void> placeOrder(
-      {showSnackBar = false, required OrderModel order}) async {
+      {showSnack = false, required OrderModel order}) async {
     try {
-      log(jsonEncode(order.toJson()));
-      log(order.deliveryAddress);
       final response = await service.post(
         endpointUrl: subUrl,
         itemData: order.toJson(),
@@ -93,28 +154,169 @@ class OrderController extends GetxController {
         );
         if (apiResponse.success == true) {
           log(apiResponse.message);
-          if (showSnackBar) showSnackBar(apiResponse.message, MsgType.success);
+          if (showSnack) showSnackBar(apiResponse.message, MsgType.success);
           update();
           // await Future.delayed(
           //     const Duration(seconds: 2),
           //     () => Get.offAll(
           //         () => OrderDeatilsScreen(order: apiResponse.data!)));
         } else {
-          if (showSnackBar)
+          if (showSnack) {
             showSnackBar(
                 "Failed to Register : ${apiResponse.message}", MsgType.error);
+          }
         }
       } else {
-        if (showSnackBar)
+        if (showSnack) {
           showSnackBar(
               "Error ${response.body?['message'] ?? response.statusText}",
               MsgType.error);
+        }
       }
     } catch (e) {
       log(e.toString());
-      if (showSnackBar)
+      if (showSnack) {
         showSnackBar(
             "Something went wrong, please try again later.", MsgType.error);
+      }
     }
+  }
+
+  Future<void> updateOrder(
+      {showSnack = false, required OrderModel order}) async {
+    try {
+      final response = await service.put(
+        endpointUrl: subUrl,
+        itemData: order.toJson(),
+      );
+      if (response.isOk) {
+        ApiResponse<OrderModel> apiResponse = ApiResponse<OrderModel>.fromJson(
+          response.body as Map<String, dynamic>,
+          (json) => OrderModel.fromJson(json as Map<String, dynamic>),
+        );
+        if (apiResponse.success == true) {
+          log(apiResponse.message);
+          if (showSnack) showSnackBar(apiResponse.message, MsgType.success);
+          update();
+          // await Future.delayed(
+          //     const Duration(seconds: 2),
+          //     () => Get.offAll(
+          //         () => OrderDeatilsScreen(order: apiResponse.data!)));
+        } else {
+          if (showSnack) {
+            showSnackBar(
+                "Failed to Register : ${apiResponse.message}", MsgType.error);
+          }
+        }
+      } else {
+        if (showSnack) {
+          showSnackBar(
+              "Error ${response.body?['message'] ?? response.statusText}",
+              MsgType.error);
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+      if (showSnack) {
+        showSnackBar(
+            "Something went wrong, please try again later.", MsgType.error);
+      }
+    }
+  }
+
+  // update order status
+  Future<void> updateOrderStatus(
+      {showSnack = false,
+      required OrderModel order,
+      required String status}) async {
+    try {
+      final response = await service.put(
+        endpointUrl: "admin/$subUrl/${order.id}/status",
+        itemData: status,
+      );
+      if (response.isOk) {
+        ApiResponse<OrderModel> apiResponse = ApiResponse<OrderModel>.fromJson(
+          response.body as Map<String, dynamic>,
+          (json) => OrderModel.fromJson(json as Map<String, dynamic>),
+        );
+        if (apiResponse.success == true) {
+          // replace the order with updated order
+          var index =
+              _allOrders.indexWhere((element) => element.id == order.id);
+          _allOrders[index] = apiResponse.data!;
+          index =
+              _allFilterOrders.indexWhere((element) => element.id == order.id);
+          _allFilterOrders[index] = apiResponse.data!;
+
+          if (showSnack) {
+            showSnackBar(apiResponse.message, MsgType.success);
+          }
+          update();
+        } else {
+          if (showSnack) {
+            showSnackBar(
+                "Failed to Register : ${apiResponse.message}", MsgType.error);
+          }
+        }
+      } else {
+        if (showSnack) {
+          showSnackBar(
+              "Error ${response.body?['message'] ?? response.statusText}",
+              MsgType.error);
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+      if (showSnack) {
+        showSnackBar(
+            "Something went wrong, please try again later.", MsgType.error);
+      }
+    }
+  }
+
+  // filter orders
+  void filterOrders({String? status, String? bookType}) {
+    // Start with the complete list
+    List<OrderModel> filteredOrders = _allOrders;
+
+    // Filter by order status (ignore case), but only if status is provided and is not "All"
+    if (status != null && status.isNotEmpty && status.toLowerCase() != 'all') {
+      filteredOrders = filteredOrders
+          .where((order) =>
+              order.orderStatus.toLowerCase() == status.toLowerCase())
+          .toList();
+    }
+
+    // Filter by book type if provided
+    if (bookType != null && bookType.isNotEmpty) {
+      switch (bookType) {
+        case "E-Books":
+          filteredOrders =
+              filteredOrders.where((order) => order.isDigitalOrder).toList();
+          break;
+        case "Physical":
+          filteredOrders =
+              filteredOrders.where((order) => !order.isDigitalOrder).toList();
+          break;
+      }
+    }
+
+    // Update the filtered orders list and notify listeners
+    _allFilterOrders.assignAll(filteredOrders);
+    update();
+  }
+
+  // fulter orders by user id
+  void filterOrdersByUserId({required String userID}) {
+    // Start with the complete list
+    List<OrderModel> filteredOrders = _allOrders;
+
+    // Filter by user id
+    filteredOrders =
+        filteredOrders.where((order) => order.userId == userID).toList();
+
+    // Update the filtered orders list and notify listeners
+    _allFilterOrders.assignAll(filteredOrders);
+    update();
   }
 }

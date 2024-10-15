@@ -1,6 +1,8 @@
+import 'package:book_heaven/screens/admin/book/add_book_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BookScreen extends StatelessWidget {
   const BookScreen({super.key});
@@ -30,7 +32,7 @@ class BookScreen extends StatelessWidget {
               //   ),
               // ),
               leading: CachedNetworkImage(
-                height: 100,
+                // height: 100,
                 imageUrl: book.img.isNotEmpty ? book.img.first : '',
                 placeholder: (context, url) =>
                     const CircularProgressIndicator(),
@@ -42,12 +44,12 @@ class BookScreen extends StatelessWidget {
           );
         },
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Get.to(() => const AddBookScreen());
-      //   },
-      //   child: const Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(() => const AddBookScreen());
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

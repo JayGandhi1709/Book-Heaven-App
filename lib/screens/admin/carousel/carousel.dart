@@ -27,9 +27,9 @@ class _CarouselScreenState extends State<CarouselScreen> {
     super.initState();
   }
 
-  void _loadCarousels({showSnake = false}) async {
+  void _loadCarousels({showSnack = false}) async {
     carousels = (await context.dataProvider
-            .getAllCarousels(showSnake: showSnake))
+            .getAllCarousels(showSnack: showSnack))
         .toList()
       ..sort((a, b) => a.displayOrder.compareTo(b.displayOrder));
     originalOrder = List.from(carousels); // Copy the list
@@ -67,7 +67,7 @@ class _CarouselScreenState extends State<CarouselScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
-            onPressed: () => _loadCarousels(showSnake: true),
+            onPressed: () => _loadCarousels(showSnack: true),
           ),
         ],
       ),

@@ -1,6 +1,8 @@
 import 'package:book_heaven/screens/admin/book/book_screen.dart';
 import 'package:book_heaven/screens/admin/carousel/carousel.dart';
 import 'package:book_heaven/screens/admin/user/user_screen.dart';
+import 'package:book_heaven/screens/user/order/order_controller.dart';
+import 'package:book_heaven/screens/user/order/orders_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   void initState() {
     // context.dashboardProvider.count();
-    context.dataProvider.onAdminInit();
+    _load();
     super.initState();
+  }
+
+  void _load() {
+    context.dataProvider.onAdminInit();
+    context.orderController.getAllOrders();
   }
 
   @override
@@ -52,7 +59,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
-              context.dataProvider.onAdminInit();
+              _load();
             },
           ),
           IconButton(
@@ -103,11 +110,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           context.dataProvider.allCarousels.length.toString(),
                       'onTap': () => Get.to(() => const CarouselScreen()),
                     },
-                    // {
-                    //   'name': 'Orders',
-                    //   'count': '10',
-                    //   'onTap': () {},
-                    // },
+                    {
+                      'name': 'Orders',
+                      'count':
+                          context.orderController.allOrders.length.toString(),
+                      'onTap': () => Get.to(() => const OrdersScreen()),
+                    },
                     // {
                     //   'name': 'Categories',
                     //   'count': '10',
@@ -135,8 +143,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return Card(
                         elevation: 2,
                         // color: context.theme.cardColor,
-                        // color: Get.isDarkMode ? Colors.grey[800] : Colors.white,
-                        color: Get.isDarkMode ? Colors.grey[800] : Colors.white,
+
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),

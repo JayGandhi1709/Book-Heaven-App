@@ -39,7 +39,7 @@ class DataProvider extends GetxController {
     getAllCarousels();
   }
 
-  Future<List<UserModel>> getAllBooks({bool showSnake = false}) async {
+  Future<List<UserModel>> getAllBooks({bool showSnack = false}) async {
     try {
       Response response = await httpService.get(endpointUrl: "books");
       if (response.isOk) {
@@ -54,15 +54,15 @@ class DataProvider extends GetxController {
           _allBooks.assignAll(apiResponse.data ?? []);
           _filterBook.assignAll(apiResponse.data ?? []);
 
-          showSnake ? showSnackBar("Fetched all users", MsgType.success) : null;
+          showSnack ? showSnackBar("Fetched all users", MsgType.success) : null;
         } else {
-          showSnake
+          showSnack
               ? showSnackBar(
                   "Failed to fetch : ${apiResponse.message}", MsgType.error)
               : null;
         }
       } else {
-        showSnake
+        showSnack
             ? showSnackBar(
                 "Error ${response.body?['message'] ?? response.statusText}",
                 MsgType.error)
@@ -70,7 +70,7 @@ class DataProvider extends GetxController {
       }
     } catch (e) {
       print(e);
-      if (showSnake) {
+      if (showSnack) {
         showSnackBar("Error : ${e.toString()}", MsgType.error);
       }
       showSnackBar(e.toString(), MsgType.error);
@@ -91,7 +91,7 @@ class DataProvider extends GetxController {
         .toList();
   }
 
-  Future<List<UserModel>> getAllUsers({bool showSnake = false}) async {
+  Future<List<UserModel>> getAllUsers({bool showSnack = false}) async {
     try {
       Response response = await httpService.get(endpointUrl: "admin/users");
       if (response.isOk) {
@@ -104,15 +104,15 @@ class DataProvider extends GetxController {
 
         if (apiResponse.success) {
           _allUsers.assignAll(apiResponse.data ?? []);
-          showSnake ? showSnackBar("Fetched all users", MsgType.success) : null;
+          showSnack ? showSnackBar("Fetched all users", MsgType.success) : null;
         } else {
-          showSnake
+          showSnack
               ? showSnackBar(
                   "Failed to fetch : ${apiResponse.message}", MsgType.error)
               : null;
         }
       } else {
-        showSnake
+        showSnack
             ? showSnackBar(
                 "Error ${response.body?['message'] ?? response.statusText}",
                 MsgType.error)
@@ -120,7 +120,7 @@ class DataProvider extends GetxController {
       }
     } catch (e) {
       print(e);
-      if (showSnake) {
+      if (showSnack) {
         showSnackBar("Error : ${e.toString()}", MsgType.error);
       }
       showSnackBar(e.toString(), MsgType.error);
@@ -128,7 +128,7 @@ class DataProvider extends GetxController {
     return _allUsers;
   }
 
-  Future<List<CarouselModel>> getAllCarousels({bool showSnake = false}) async {
+  Future<List<CarouselModel>> getAllCarousels({bool showSnack = false}) async {
     try {
       Response response = await httpService.get(endpointUrl: "carousel");
       if (response.isOk) {
@@ -142,17 +142,17 @@ class DataProvider extends GetxController {
 
         if (apiResponse.success) {
           _allCarousels.assignAll(apiResponse.data ?? []);
-          showSnake
+          showSnack
               ? showSnackBar("Fetched all Carousels", MsgType.success)
               : null;
         } else {
-          showSnake
+          showSnack
               ? showSnackBar(
                   "Failed to fetch : ${apiResponse.message}", MsgType.error)
               : null;
         }
       } else {
-        showSnake
+        showSnack
             ? showSnackBar(
                 "Error ${response.body?['message'] ?? response.statusText}",
                 MsgType.error)
@@ -160,7 +160,7 @@ class DataProvider extends GetxController {
       }
     } catch (e) {
       print(e);
-      if (showSnake) {
+      if (showSnack) {
         showSnackBar("Error : ${e.toString()}", MsgType.error);
       }
       showSnackBar(e.toString(), MsgType.error);

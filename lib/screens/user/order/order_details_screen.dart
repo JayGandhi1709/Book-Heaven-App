@@ -1,10 +1,10 @@
-import 'dart:convert';
-import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import 'package:book_heaven/models/address_model.dart';
 import 'package:book_heaven/models/order_model.dart';
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:book_heaven/utility/extensions.dart';
 
 class OrderDeatilsScreen extends StatefulWidget {
   const OrderDeatilsScreen({super.key, required this.order});
@@ -16,11 +16,14 @@ class OrderDeatilsScreen extends StatefulWidget {
 }
 
 class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
+  bool editable = false;
   AddressModel? address;
+  String? updatedStatus;
 
   @override
   void initState() {
     address = AddressModel.fromString(widget.order.deliveryAddress);
+    editable = context.userController.user.role == "ADMIN";
     super.initState();
   }
 
@@ -56,7 +59,38 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
-                  title: Text('Current Status: ${widget.order.orderStatus}'),
+                  // title: Text('Current Status: ${widget.order.orderStatus}'),
+                  // make status editable
+                  title: Row(
+                    children: [
+                      const Text("Current Status: "),
+                      editable
+                          ? Expanded(
+                              child: DropdownButtonFormField<String>(
+                                value:
+                                    updatedStatus ?? widget.order.orderStatus,
+                                items: [
+                                  'pending',
+                                  'Shipped',
+                                  'Out For delivery',
+                                  'Delivered',
+                                ]
+                                    .map(
+                                      (status) => DropdownMenuItem(
+                                        value: status,
+                                        child: Text(status),
+                                      ),
+                                    )
+                                    .toList(),
+                                onChanged: (value) {
+                                  updatedStatus = value;
+                                  setState(() {});
+                                },
+                              ),
+                            )
+                          : Text(widget.order.orderStatus),
+                    ],
+                  ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -138,35 +172,68 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
                           RichText(
                             text: TextSpan(
                               children: [
-                                const TextSpan(
+                                TextSpan(
                                   text: "Price: ",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                                 ),
                                 TextSpan(
-                                  text:
-                                      "₹${(orderItem.bookType == "digital" ? orderItem.book.digitalPrice : orderItem.book.physicalPrice).toStringAsFixed(2)}",
-                                ),
+                                    text:
+                                        "₹${(orderItem.bookType == "digital" ? orderItem.book.digitalPrice : orderItem.book.physicalPrice).toStringAsFixed(2)}",
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                    )),
                               ],
                             ),
                           ),
                           RichText(
                             text: TextSpan(
                               children: [
-                                const TextSpan(
+                                TextSpan(
                                   text: "Qty: ",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.onSurface,
                                   ),
                                 ),
                                 TextSpan(
-                                  text: orderItem.quantity.toString(),
-                                ),
+                                    text: orderItem.quantity.toString(),
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface,
+                                    )),
                               ],
                             ),
                           ),
-                          Text("Book Type : ${orderItem.bookType}"),
+                          // Text("Book Type : ${orderItem.bookType}"),
+                          // book Type
+                          RichText(
+                              text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Book Type: ",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                              TextSpan(
+                                text: orderItem.bookType.capitalizeFirst,
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface,
+                                ),
+                              ),
+                            ],
+                          )),
                         ],
                       ),
                       trailing: Text(
@@ -198,7 +265,7 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
                     ListTile(
                       title: const Text("Subtotal"),
                       trailing: Text(
-                        "₹${(widget.order.totalPrice / 0.08).toStringAsFixed(2)}",
+                        "₹${(widget.order.totalPrice).toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -208,9 +275,9 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
                       dense: true,
                     ),
                     ListTile(
-                      title: const Text("GST"),
+                      title: const Text("GST (8%)"),
                       trailing: Text(
-                        "₹${(widget.order.totalPrice / 0.08).ceil().toStringAsFixed(2)}",
+                        "₹${(widget.order.totalPrice * 0.008).ceil().toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -223,7 +290,7 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
                     ListTile(
                       title: const Text("Total"),
                       trailing: Text(
-                        "₹${(widget.order.totalPrice).ceil().toStringAsFixed(2)}",
+                        "₹${(widget.order.totalPrice + (widget.order.totalPrice * 0.008)).ceil().toStringAsFixed(2)}",
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
@@ -237,6 +304,25 @@ class _OrderDeatilsScreenState extends State<OrderDeatilsScreen> {
           ),
         ),
       ),
+      bottomNavigationBar: editable
+          ? updatedStatus != widget.order.orderStatus && updatedStatus != null
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // update order status
+                      context.orderController.updateOrderStatus(
+                        order: widget.order,
+                        status: updatedStatus!,
+                        showSnack: true,
+                      );
+                      setState(() {});
+                    },
+                    child: const Text("Update Status"),
+                  ),
+                )
+              : null
+          : null,
     );
   }
 }
