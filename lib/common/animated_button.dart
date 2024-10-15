@@ -2,11 +2,9 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:book_heaven/models/order_model.dart';
-import 'package:book_heaven/screens/user/order/order_details_screen.dart';
 import 'package:book_heaven/utility/secret.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:book_heaven/utility/extensions.dart';

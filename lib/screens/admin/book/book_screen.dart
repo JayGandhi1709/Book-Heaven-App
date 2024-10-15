@@ -1,4 +1,5 @@
 import 'package:book_heaven/screens/admin/book/add_book_screen.dart';
+import 'package:book_heaven/utility/custom_dialog.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -40,6 +41,31 @@ class BookScreen extends StatelessWidget {
               ),
 
               title: Text(book.title),
+              onLongPress: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => CustomDialog(
+                    title: 'Delete Book',
+                    content: const [
+                      Text(
+                          'Are you sure you want to delete this Book?')
+                    ],
+                    onConfirm: () async {
+                      await context.bookController
+                          .deleteBook(book.id);
+                      await context.dataProvider.getAllBooks();
+                      // setState(() {
+                      //   // context.dataProvider
+                      //   //     .getAllCarousels();
+                      //   _loadCarousels();
+                      // });
+                    },
+                    onCancel: () {
+                      Get.back();
+                    },
+                  ),
+                );
+              },
             ),
           );
         },

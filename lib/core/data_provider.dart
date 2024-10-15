@@ -1,12 +1,9 @@
 import 'dart:developer';
 
-import 'package:book_heaven/common/banner_carousel.dart';
-import 'package:book_heaven/models/address_model.dart';
 import 'package:book_heaven/models/api_response.dart';
 import 'package:book_heaven/models/book_model.dart';
 import 'package:book_heaven/models/carousel_model.dart';
 import 'package:book_heaven/models/user_model.dart';
-import 'package:book_heaven/screens/auth/log_in_screen.dart';
 import 'package:book_heaven/services/http_services.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:get/get.dart';

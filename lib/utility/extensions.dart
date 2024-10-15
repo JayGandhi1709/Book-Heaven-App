@@ -1,4 +1,5 @@
 import 'package:book_heaven/core/data_provider.dart';
+import 'package:book_heaven/screens/admin/book/book_controller.dart';
 import 'package:book_heaven/screens/admin/carousel/carousel_controller.dart';
 import 'package:book_heaven/screens/admin/dashboard/dashboard_provider.dart';
 import 'package:book_heaven/screens/auth/provider/user_controller.dart';
@@ -22,6 +23,7 @@ import 'package:flutter/material.dart';
 extension Providers on BuildContext {
   UserController get userController => Get.put(UserController());
   DashboardProvider get dashboardProvider => Get.put(DashboardProvider());
+  BookController get bookController => Get.put(BookController());
   DataProvider get dataProvider => Get.put(DataProvider());
   CarouselServices get carouselServices =>
       Get.put(CarouselServices(dataProvider));

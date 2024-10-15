@@ -1,8 +1,8 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:book_heaven/common/custom_text_form_field.dart';
-import 'package:book_heaven/common/editable_chip_field_widget.dart';
-import 'package:book_heaven/utility/constants.dart';
+import 'package:book_heaven/utility/extensions.dart';
 import 'package:book_heaven/utility/pick_images.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
@@ -16,15 +16,10 @@ class AddBookScreen extends StatefulWidget {
 }
 
 class _AddBookScreenState extends State<AddBookScreen> {
-  void addCarousel() {
-    // context.carouselServices.addCarousel(_image!, _title.text, _desc.text,
-    //     context.dataProvider.allCarousels.length + 1);
-  }
+  bool _isLoading = false;
 
   // controllers
-  // final TextEditingController _title = TextEditingController();
-  // final TextEditingController _desc = TextEditingController();
-  List<File>? _images;
+  final List<File> _images = <File>[];
 
   final TextEditingController _bookNameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -32,6 +27,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final TextEditingController _publisherController = TextEditingController();
   final TextEditingController _publicationYearController =
       TextEditingController();
+  final TextEditingController _genreController = TextEditingController();
   final TextEditingController _isbnController = TextEditingController();
   final TextEditingController _physicalPriceController =
       TextEditingController();
@@ -40,13 +36,15 @@ class _AddBookScreenState extends State<AddBookScreen> {
   final TextEditingController _languageController = TextEditingController();
   // TextEditingController _pdfUrlController = TextEditingController();
   File? pdf;
-  final List<String> _genreController = [];
+  // final List<String> _genreController = [];
 
   void selectImages() async {
-    List<File>? image = await pickMultipleImages();
-    setState(() {
-      _images!.addAll(image);
-    });
+    List<File> image = await pickMultipleImages();
+    if (image.isNotEmpty) {
+      setState(() {
+        _images.addAll(image);
+      });
+    }
   }
 
   // select pdf
@@ -69,14 +67,14 @@ class _AddBookScreenState extends State<AddBookScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 children: [
-                  _images != null && _images!.isNotEmpty
+                  _images.isNotEmpty
                       ? SizedBox(
                           height: 150,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: _images!.length + 1,
+                            itemCount: _images.length + 1,
                             itemBuilder: (context, index) {
-                              if (index == _images!.length) {
+                              if (index == _images.length) {
                                 return GestureDetector(
                                   onTap: selectImages,
                                   child: Container(
@@ -94,7 +92,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                                 padding: const EdgeInsets.all(8.0),
                                 child: Stack(
                                   children: [
-                                    Image.file(_images![index]),
+                                    Image.file(_images[index]),
                                     Positioned(
                                       top: -14,
                                       right: -14,
@@ -106,7 +104,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                                         ),
                                         onPressed: () {
                                           setState(() {
-                                            _images!.removeAt(index);
+                                            _images.removeAt(index);
                                           });
                                         },
                                       ),
@@ -176,16 +174,27 @@ class _AddBookScreenState extends State<AddBookScreen> {
                     labelText: "Publication Year",
                     controller: _publicationYearController,
                   ),
-                  // Editable chip field
-                  const EditableChipField(
-                    list: Book_Genres,
-                    decoration: InputDecoration(
-                      // prefixIcon: Icon(Icons.local_pizza_rounded),
-                      hintText: 'Search for genre',
-                      labelText: 'Genre',
-                      border: OutlineInputBorder(),
-                    ),
+                  CustomTextFormField(
+                    labelText: "Genre",
+                    controller: _genreController,
                   ),
+                  // Editable chip field
+                  // EditableChipField(
+                  //   list: Book_Genres,
+                  //   onChanged: (List<String> value){
+                  //     log("onChange");
+                  //     setState(() {
+                  //       _genreController.addAll(value);
+                  //     });
+                  //     log(_genreController.toString(),name:"category");
+                  //   },
+                  //   decoration: const InputDecoration(
+                  //     // prefixIcon: Icon(Icons.local_pizza_rounded),
+                  //     hintText: 'Search for genre',
+                  //     labelText: 'Genre',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
 
                   // String isbn;
                   CustomTextFormField(
@@ -245,16 +254,48 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   ),
 
                   const SizedBox(height: 30),
-                  ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.add),
-                    label: const Text("Add"),
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
+                  _isLoading
+                      ? const CircularProgressIndicator.adaptive()
+                      : ElevatedButton.icon(
+                          onPressed: () {
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            log(_genreController.toString());
+                            context.bookController.addBook(
+                              title: _bookNameController.text,
+                              desc: _descriptionController.text,
+                              img: _images,
+                              authors: _authorController.text.split(","),
+                              publisher: _publisherController.text,
+                              publicationYear:
+                                  int.parse(_publicationYearController.text),
+                              genre: _genreController.text.split(","),
+                              isbn: _isbnController.text,
+                              physicalPrice:
+                                  int.parse(_physicalPriceController.text),
+                              digitalPrice:
+                                  int.parse(_digitalPriceController.text),
+                              page: _pageController.text,
+                              language: _languageController.text,
+                              hasPhysicalCopy:
+                                  _physicalPriceController.text != null,
+                              hasDigitalCopy: pdf == null ? false : true,
+                              pdf: pdf!,
+                            );
+
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          },
+                          icon: const Icon(Icons.add),
+                          label: const Text("Add"),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
