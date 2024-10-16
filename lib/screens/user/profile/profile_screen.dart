@@ -46,9 +46,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        centerTitle: true,
         title: const Text('Profile'),
         actions: [
           IconButton(
@@ -56,6 +53,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               Get.changeThemeMode(
                 Get.isDarkMode ? ThemeMode.light : ThemeMode.dark,
               );
+              // context.themeController.toggleTheme();
               setState(() {});
             },
             icon: Icon(Get.isDarkMode ? Icons.light_mode : Icons.dark_mode),
@@ -68,67 +66,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              const Center(
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundImage: NetworkImage(
-                    "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
-                  ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Center(
+              child: CircleAvatar(
+                radius: 50,
+                backgroundImage: NetworkImage(
+                  "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg",
                 ),
               ),
-              const SizedBox(height: 10),
-              Text(
-                context.userController.user.name!.capitalize ?? "",
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              context.userController.user.name!.capitalize ?? "",
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-              const SizedBox(height: 5),
-              Text(
-                context.userController.user.email ?? "",
-                style: const TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
+            ),
+            const SizedBox(height: 5),
+            Text(
+              context.userController.user.email ?? "",
+              style: const TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.w400,
               ),
-              const SizedBox(height: 35),
-              ...settingsItem.map(
-                (e) => Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: Card(
-                    elevation: 4,
-                    shadowColor: Colors.black12,
-                    child: ListTile(
-                      leading: Icon(e['icon']),
-                      title: Text(
-                        e['title'],
-                        style: TextStyle(color: e['color']),
-                      ),
-                      trailing: const Icon(Icons.chevron_right),
-                      onTap: e['onTap'] ??
-                          () {
-                            // Get.snackbar(
-                            //   "Coming Soon",
-                            //   "This feature is coming soon",
-                            // );
-                            showSnackBar(
-                              "This feature is coming soon",
-                              title: "Coming Soon",
-                              MsgType.info,
-                            );
-                          },
+            ),
+            const SizedBox(height: 35),
+            ...settingsItem.map(
+              (e) => Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Card(
+                  elevation: 4,
+                  shadowColor: Colors.black12,
+                  child: ListTile(
+                    leading: Icon(e['icon']),
+                    title: Text(
+                      e['title'],
+                      style: TextStyle(color: e['color']),
                     ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: e['onTap'] ??
+                        () {
+                          // Get.snackbar(
+                          //   "Coming Soon",
+                          //   "This feature is coming soon",
+                          // );
+                          showSnackBar(
+                            "This feature is coming soon",
+                            title: "Coming Soon",
+                            MsgType.info,
+                          );
+                        },
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

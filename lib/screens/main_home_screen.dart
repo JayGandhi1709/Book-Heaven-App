@@ -50,67 +50,83 @@ class _MainHomeScreenState extends State<MainHomeScreen> {
     const ProfileScreen()
   ];
 
-  // Bottom navigation items for users
-  List<BottomNavyBarItem> userBottomItems = [
-    BottomNavyBarItem(
-      icon: const Icon(Icons.home),
-      title: const Text('Home'),
-      activeColor: Colors.blue,
-      inactiveColor: Colors.grey,
-    ),
-    BottomNavyBarItem(
-      icon: const Icon(Icons.favorite),
-      title: const Text('Favorite'),
-      activeColor: Colors.blue,
-      inactiveColor: Colors.grey,
-    ),
-    BottomNavyBarItem(
-      icon: const Icon(Icons.shopping_cart),
-      title: const Text('Cart'),
-      activeColor: Colors.blue,
-      inactiveColor: Colors.grey,
-    ),
-    BottomNavyBarItem(
-      icon: const Icon(Icons.person),
-      title: const Text('Profile'),
-      activeColor: Colors.blue,
-      inactiveColor: Colors.grey,
-    ),
-  ];
-
-  // Bottom navigation items for admins
-  List<BottomNavyBarItem> adminBottomItems = [
-    BottomNavyBarItem(
-      icon: const Icon(Icons.home),
-      title: const Text('Home'),
-      activeColor: Colors.blue,
-      inactiveColor: Colors.grey,
-    ),
-    BottomNavyBarItem(
-      icon: const Icon(Icons.book),
-      title: const Text('Books'),
-      activeColor: Colors.blue,
-      inactiveColor: Colors.grey,
-    ),
-    BottomNavyBarItem(
-      icon: const Icon(Icons.shopping_cart),
-      title: const Text('Cart'),
-      activeColor: Colors.blue,
-      inactiveColor: Colors.grey,
-    ),
-    BottomNavyBarItem(
-      icon: const Icon(Icons.person),
-      title: const Text('Profile'),
-      activeColor: Colors.blue,
-      inactiveColor: Colors.grey,
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    // Bottom navigation items for users
+    List<BottomNavyBarItem> userBottomItems = [
+      BottomNavyBarItem(
+        icon: const Icon(Icons.home),
+        title: const Text('Home'),
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+        inactiveColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+      ),
+      BottomNavyBarItem(
+        icon: const Icon(Icons.favorite),
+        title: const Text('Favorite'),
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+        inactiveColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+      ),
+      BottomNavyBarItem(
+        icon: const Icon(Icons.shopping_cart),
+        title: const Text('Cart'),
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+        inactiveColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+      ),
+      BottomNavyBarItem(
+        icon: const Icon(Icons.person),
+        title: const Text('Profile'),
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+        inactiveColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+      ),
+    ];
+
+    // Bottom navigation items for admins
+    List<BottomNavyBarItem> adminBottomItems = [
+      BottomNavyBarItem(
+        icon: const Icon(Icons.home),
+        title: const Text('Home'),
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+        inactiveColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+      ),
+      BottomNavyBarItem(
+        icon: const Icon(Icons.book),
+        title: const Text('Books'),
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+        inactiveColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+      ),
+      BottomNavyBarItem(
+        icon: const Icon(Icons.shopping_cart),
+        title: const Text('Cart'),
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+        inactiveColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+      ),
+      BottomNavyBarItem(
+        icon: const Icon(Icons.person),
+        title: const Text('Profile'),
+        activeColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor!,
+        inactiveColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
+      ),
+    ];
     return Scaffold(
       bottomNavigationBar: BottomNavyBar(
-        backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+        // backgroundColor: Get.isDarkMode ? Colors.black : Colors.white,
+        backgroundColor: context.theme.primaryColor,
         itemCornerRadius: 10,
         selectedIndex: newIndex,
         items: context.userController.user.role == "ADMIN"

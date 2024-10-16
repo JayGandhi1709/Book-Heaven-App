@@ -5,6 +5,7 @@ import 'package:book_heaven/screens/user/book/view_book.dart';
 import 'package:book_heaven/screens/user/favorite/favorite_controller.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class FavoriteScreen extends StatelessWidget {
@@ -25,8 +26,19 @@ class FavoriteScreen extends StatelessWidget {
             title: const Text('Favorite'),
           ),
           body: favoriteBooks.isEmpty
-              ? const Center(
-                  child: Text('No favorite books found.'),
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // show svg image flutter_svg
+                    SvgPicture.asset(
+                      'assets/svg/loving.svg',
+                      height: 200,
+                    ),
+                    const SizedBox(height: 20),
+                    const Center(
+                      child: Text('No favorite books found.'),
+                    ),
+                  ],
                 )
               : Column(
                   children: [

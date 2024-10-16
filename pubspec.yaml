@@ -48,6 +48,7 @@ dependencies:
   http: ^1.2.2
   syncfusion_flutter_pdfviewer: ^27.1.51
   intl: ^0.19.0
+  flutter_svg: ^2.0.10+1
   # pdfx: ^2.8.0
   # bottom_navy_bar: ^6.0.0
 
@@ -75,6 +76,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/svg/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

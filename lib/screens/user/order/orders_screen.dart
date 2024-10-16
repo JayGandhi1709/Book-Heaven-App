@@ -47,9 +47,10 @@ class _OrdersScreenState extends State<OrdersScreen> {
                               padding: const EdgeInsets.all(8.0),
                               child: ActionChip(
                                 label: Text(filter),
-                                backgroundColor: selectedStatusFilter == filter
-                                    ? Colors.blue
-                                    : Colors.grey,
+                                backgroundColor:
+                                    selectedBookTypeFilter == filter
+                                        ? context.theme.chipTheme.selectedColor
+                                        : Colors.grey,
                                 onPressed: () {
                                   controller.filterOrders(
                                       status: selectedStatusFilter,
@@ -72,7 +73,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                                 label: Text(filter),
                                 backgroundColor:
                                     selectedBookTypeFilter == filter
-                                        ? Colors.blue
+                                        ? context.theme.chipTheme.selectedColor
                                         : Colors.grey,
                                 onPressed: () {
                                   controller.filterOrders(

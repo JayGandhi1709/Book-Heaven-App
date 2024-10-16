@@ -5,6 +5,7 @@ import 'package:book_heaven/screens/user/address/address_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -38,8 +39,19 @@ class _CartScreenState extends State<CartScreen> {
             title: const Text('Cart'),
           ),
           body: cartBooks.isEmpty
-              ? const Center(
-                  child: Text('No cart books found.'),
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // show svg image flutter_svg
+                    SvgPicture.asset(
+                      'assets/svg/bookshelves.svg',
+                      height: 200,
+                    ),
+                    const SizedBox(height: 20),
+                    const Center(
+                      child: Text('No cart books found.'),
+                    ),
+                  ],
                 )
               : Column(
                   children: [

@@ -1,4 +1,5 @@
 import 'package:book_heaven/screens/auth/splash_screen.dart';
+import 'package:book_heaven/utility/extensions.dart';
 import 'package:book_heaven/utility/locale.dart';
 import 'package:book_heaven/utility/secret.dart';
 import 'package:book_heaven/utility/theme.dart';
@@ -27,9 +28,11 @@ class MyApp extends StatelessWidget {
       //   });
       //   // Get.put(UserProvider());
       // }),
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.dark,
+      theme: AppThemes.lightTheme,
+      darkTheme: AppThemes.darkTheme,
+      themeMode: context.themeController.isDarkMode.value
+          ? ThemeMode.dark
+          : ThemeMode.light,
       // locale: Locale("hi", "IN"),
       locale: const Locale("en", "US"),
       fallbackLocale: const Locale("en", "US"),

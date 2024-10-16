@@ -113,10 +113,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //     ],
             //   ),
             // ),
-            title: const Text(
-              "Book Heaven",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
+            title: const Text("Book Heaven"),
           ),
         ),
         body: SingleChildScrollView(

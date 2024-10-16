@@ -7,6 +7,7 @@ import 'package:book_heaven/screens/user/address/address_controller.dart';
 import 'package:book_heaven/screens/user/cart/cart_controller.dart';
 import 'package:book_heaven/screens/user/favorite/favorite_controller.dart';
 import 'package:book_heaven/screens/user/order/order_controller.dart';
+import 'package:book_heaven/utility/theme_controller.dart';
 import 'package:get/get.dart';
 
 // import '../screen/login_screen/provider/user_provider.dart';
@@ -21,6 +22,7 @@ import 'package:flutter/material.dart';
 // import '../screen/product_favorite_screen/provider/favorite_provider.dart';
 
 extension Providers on BuildContext {
+  ThemeController get themeController => Get.put(ThemeController());
   UserController get userController => Get.put(UserController());
   DashboardProvider get dashboardProvider => Get.put(DashboardProvider());
   BookController get bookController => Get.put(BookController());
