@@ -7,9 +7,6 @@ import 'package:book_heaven/services/http_services.dart';
 import 'package:book_heaven/utility/extensions.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/multipart/form_data.dart';
-import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 class BookController extends GetxController {
   HttpService httpService = HttpService();
@@ -32,11 +29,11 @@ class BookController extends GetxController {
     required File pdf,
   }) async {
     try {
-
       log(img.length.toString());
 
-      final List<MultipartFile> imgFiles = await Future.wait(img.map((file) async {
-        return await MultipartFile(
+      final List<MultipartFile> imgFiles =
+          await Future.wait(img.map((file) async {
+        return MultipartFile(
           file.path,
           filename: file.path.split('/').last,
           contentType: "image/jpeg",
@@ -46,8 +43,8 @@ class BookController extends GetxController {
       final FormData formData = FormData({
         'title': title,
         'desc': desc,
-        "img":imgFiles,
-            // img.map((e) => MultipartFile(e, filename: e.path.split('/').last)),
+        "img": imgFiles,
+        // img.map((e) => MultipartFile(e, filename: e.path.split('/').last)),
         'authors': authors,
         'publisher': publisher,
         'publicationYear':
@@ -61,7 +58,8 @@ class BookController extends GetxController {
         'hasPhysicalCopy': hasPhysicalCopy, // Convert boolean to string
         'hasDigitalCopy': hasDigitalCopy, // Convert boolean to string
         // 'pdfUrl': pdfUrl,
-        'pdf': MultipartFile(pdf, filename: pdf.path.split('/').last,contentType: "application/pdf"),
+        'pdf': MultipartFile(pdf,
+            filename: pdf.path.split('/').last, contentType: "application/pdf"),
       });
 
       log(genre.toString());
@@ -69,7 +67,7 @@ class BookController extends GetxController {
       log(formData.fields.toString(), name: "add Book Log");
 
       // Make the API call
-      final response = await httpService.post(
+      final response = await httpService.postMethod(
         endpointUrl: "admin/books",
         itemData: formData,
       );
@@ -77,7 +75,7 @@ class BookController extends GetxController {
       if (response.isOk) {
         ApiResponse apiResponse = ApiResponse.fromJson(
           response.body,
-          (json)=>BookModel.fromJson(json as Map<String,dynamic>),
+          (json) => BookModel.fromJson(json as Map<String, dynamic>),
         );
 
         if (apiResponse.success == true) {
@@ -90,10 +88,10 @@ class BookController extends GetxController {
           // return 'Failed to Register : ${apiResponse.message}';
         }
       } else {
+        log("Error ${response.body?['message'] ?? response.statusText}");
         showSnackBar(
             "Error ${response.body?['message'] ?? response.statusText}",
             MsgType.error);
-        // return "Error ${response.body?['message'] ?? response.statusText}";
       }
     } catch (e) {
       print('Runtime Error: $e');
@@ -103,13 +101,13 @@ class BookController extends GetxController {
   // delete carousel from database
   Future<void> deleteBook(String id) async {
     try {
-      final response = await httpService.delete(
+      final response = await httpService.deleteMethod(
         endpointUrl: "admin/books",
         itemId: id,
       );
       if (response.isOk) {
         ApiResponse apiResponse =
-        ApiResponse.fromJson(response.body, (json) => null);
+            ApiResponse.fromJson(response.body, (json) => null);
 
         if (apiResponse.success) {
           Get.back();
@@ -131,5 +129,4 @@ class BookController extends GetxController {
       // return "An error occurred: $e";
     }
   }
-
 }

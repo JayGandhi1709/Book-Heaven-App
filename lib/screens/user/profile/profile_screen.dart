@@ -56,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               // context.themeController.toggleTheme();
               setState(() {});
             },
-            icon: Icon(Get.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+            icon: Icon(Get.isDarkMode ? Icons.dark_mode : Icons.light_mode),
           ),
           // ElevatedButton(
           //   onPressed: () {

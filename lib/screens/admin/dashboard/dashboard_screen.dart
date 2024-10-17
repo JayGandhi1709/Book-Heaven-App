@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:book_heaven/screens/admin/book/book_screen.dart';
 import 'package:book_heaven/screens/admin/carousel/carousel.dart';
-import 'package:book_heaven/screens/admin/dashboard/sells.dart';
+import 'package:book_heaven/screens/admin/dashboard/sales_screen.dart';
 import 'package:book_heaven/screens/admin/user/user_screen.dart';
 import 'package:book_heaven/screens/user/order/orders_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
@@ -49,8 +49,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.amber.shade300,
+        // backgroundColor: Colors.amber.shade300,
         title: const Text('Dashboard'),
+        titleTextStyle: const TextStyle(
+          color: Colors.black,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
         actions: [
           IconButton(
             onPressed: () {
@@ -58,7 +64,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   Get.isDarkMode ? ThemeMode.light : ThemeMode.dark);
               setState(() {});
             },
-            icon: Icon(Get.isDarkMode ? Icons.light_mode : Icons.dark_mode),
+            icon: Icon(Get.isDarkMode ? Icons.dark_mode : Icons.light_mode),
           ),
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -80,7 +86,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-          // Text(context.orderController.salesData.toString()),
+              // Text(context.orderController.salesData.toString()),
               const SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -108,11 +114,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               Obx(
                 () {
                   List<Map<String, dynamic>> cardNames = [
-                    {
-                      'name': 'Selling',
-                      'count': "₹ ${context.orderController.calculateTotalSelling().toStringAsFixed(0)}",
-                      'onTap': () => Get.to(() => SalesChart(salesData: context.orderController.salesData)),
-                    },
+                    // {
+                    //   'name': 'Selling',
+                    //   'count':
+                    //       "₹ ${context.orderController.calculateTotalSelling().toStringAsFixed(0)}",
+                    //   'onTap': () => Get.to(() => SalesChart(
+                    //       salesData: context.orderController.salesData)),
+                    // },
                     {
                       'name': 'Users',
                       'count': context.dataProvider.allUsers.length.toString(),
@@ -135,23 +143,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           context.orderController.allOrders.length.toString(),
                       'onTap': () => Get.to(() => const OrdersScreen()),
                     },
-                    {
-                      'name': 'Pending Orders',
-                      'count':
-                          context.orderController.allOrders.length.toString(),
-                      'onTap': () => Get.to(() => const OrdersScreen()),
-                    },
-                    {
-                      'name': 'Cancelled Orders',
-                      'count':
-                          context.orderController.allOrders.length.toString(),
-                      'onTap': () => Get.to(() => const OrdersScreen()),
-                    },{
-                      'name': 'Delivered Orders',
-                      'count':
-                          context.orderController.allOrders.length.toString(),
-                      'onTap': () => Get.to(() => const OrdersScreen()),
-                    },
+                    // {
+                    //   'name': 'Pending Orders',
+                    //   'count':
+                    //       context.orderController.allOrders.length.toString(),
+                    //   'onTap': () => Get.to(() => const OrdersScreen()),
+                    // },
+                    // {
+                    //   'name': 'shipped Orders',
+                    //   'count':
+                    //       context.orderController.allOrders.length.toString(),
+                    //   'onTap': () => Get.to(() => const OrdersScreen()),
+                    // },
+                    // {
+                    //   'name': 'Out for delivery Orders',
+                    //   'count':
+                    //       context.orderController.allOrders.length.toString(),
+                    //   'onTap': () => Get.to(() => const OrdersScreen()),
+                    // },
+                    // {
+                    //   'name': 'Delivered Orders',
+                    //   'count':
+                    //       context.orderController.allOrders.length.toString(),
+                    //   'onTap': () => Get.to(() => const OrdersScreen()),
+                    // },
+                    // {
+                    //   'name': 'Cancelled Orders',
+                    //   'count':
+                    //       context.orderController.allOrders.length.toString(),
+                    //   'onTap': () => Get.to(() => const OrdersScreen()),
+                    // },
                     // {
                     //   'name': 'Categories',
                     //   'count': '10',
@@ -164,57 +185,68 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     // },
                   ];
 
-                  return GridView.builder(
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 2.5,
-                    ),
-                    itemCount: cardNames.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      var cardName = cardNames[index];
-                      return Card(
+                  return Column(
+                    children: [
+                      Card(
                         elevation: 2,
                         // color: context.theme.cardColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: InkWell(
-                          onTap: cardName['onTap'],
+                        child: GestureDetector(
+                          onTap: () => Get.to(() => SalesChart(
+                              salesData: context.orderController.salesData)),
                           child: ListTile(
-                            title: Text(cardName['name'] ?? ''),
+                            // dense: true,
+                            title: const Text("Sales"),
                             subtitle: Text(
-                              cardName['count'] ?? '',
+                              "₹ ${context.orderController.calculateTotalSelling().toStringAsFixed(0)}",
                               style: const TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
                         ),
-                        // InkWell(
-                        //   onTap: cardName['onTap'],
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.center,
-                        //     children: [
-                        //       Text(cardName['name'] ?? ''),
-                        //       Text(
-                        //         cardName['count'] ?? '',
-                        //         style: const TextStyle(
-                        //           fontWeight: FontWeight.bold,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                      );
-                    },
+                      ),
+                      const SizedBox(height: 10),
+                      GridView.builder(
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 10,
+                          mainAxisSpacing: 10,
+                          childAspectRatio: 2,
+                        ),
+                        itemCount: cardNames.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          var cardName = cardNames[index];
+                          return Card(
+                            elevation: 2,
+                            // color: context.theme.cardColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: GestureDetector(
+                              onTap: cardName['onTap'],
+                              child: ListTile(
+                                // dense: true,
+                                title: Text(cardName['name'] ?? ''),
+                                subtitle: Text(
+                                  cardName['count'] ?? '',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   );
                 },
               ),
-
             ],
           ),
         ),

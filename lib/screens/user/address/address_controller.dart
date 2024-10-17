@@ -25,7 +25,7 @@ class AddressController extends GetxController {
   Future<List<AddressModel>> getAllAddress(
       {bool showSnack = false, required String userID}) async {
     try {
-      Response response = await service.getById(
+      Response response = await service.getByIdMethod(
         endpointUrl: "address/user",
         itemData: userID,
       );
@@ -69,7 +69,7 @@ class AddressController extends GetxController {
 
   Future<String?> addAddress(AddressModel address) async {
     try {
-      final response = await service.post(
+      final response = await service.postMethod(
         endpointUrl: subUrl,
         itemData: address.toJson(),
       );
@@ -110,7 +110,7 @@ class AddressController extends GetxController {
   Future<String?> updateAddress(AddressModel address) async {
     try {
       log(address.toJson().toString());
-      final response = await service.putById(
+      final response = await service.putByIdMethod(
         endpointUrl: subUrl,
         itemId: address.id!,
         itemData: address.toJson(),
@@ -151,7 +151,7 @@ class AddressController extends GetxController {
   // delete
   Future<String?> deleteAddress(String id) async {
     try {
-      final response = await service.delete(
+      final response = await service.deleteMethod(
         endpointUrl: subUrl,
         itemId: id,
       );

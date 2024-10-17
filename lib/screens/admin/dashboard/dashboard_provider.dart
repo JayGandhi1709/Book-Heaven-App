@@ -9,7 +9,7 @@ class DashboardProvider extends GetxController {
 
   void count() async {
     try {
-      final response = await service.get(
+      final response = await service.getMethod(
         endpointUrl: '$subUrl/counts',
       );
       if (response.isOk) {

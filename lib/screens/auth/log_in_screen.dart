@@ -55,6 +55,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(
+                  height: 100,
+                  child: Image.asset("assets/splashlogo.png"),
+                ),
+                const SizedBox(height: 10),
                 const Text(
                   'Book Heaven',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -77,12 +82,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: handleLogin,
                         style: ElevatedButton.styleFrom(
                           minimumSize: const Size(double.infinity, 50),
-                          backgroundColor: Colors.deepPurple,
+                          backgroundColor: context.theme.colorScheme.primary,
                         ),
                         child: const Text(
                           'Log in',
                           style: TextStyle(
-                            color: Colors.white,
                             fontSize: 20,
                           ),
                         ),
@@ -97,10 +101,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       onTap: () {
                         Get.to(() => const SignUpScreen());
                       },
-                      child: const Text(
+                      child: Text(
                         "Sign Up",
                         style: TextStyle(
-                          color: Colors.deepPurple,
+                          color: context.theme.colorScheme.primary,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

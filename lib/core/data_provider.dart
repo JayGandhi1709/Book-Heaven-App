@@ -38,7 +38,7 @@ class DataProvider extends GetxController {
 
   Future<List<UserModel>> getAllBooks({bool showSnack = false}) async {
     try {
-      Response response = await httpService.get(endpointUrl: "books");
+      Response response = await httpService.getMethod(endpointUrl: "books");
       if (response.isOk) {
         ApiResponse<List<BookModel>> apiResponse =
             ApiResponse<List<BookModel>>.fromJson(
@@ -90,7 +90,8 @@ class DataProvider extends GetxController {
 
   Future<List<UserModel>> getAllUsers({bool showSnack = false}) async {
     try {
-      Response response = await httpService.get(endpointUrl: "admin/users");
+      Response response =
+          await httpService.getMethod(endpointUrl: "admin/users");
       if (response.isOk) {
         ApiResponse<List<UserModel>> apiResponse =
             ApiResponse<List<UserModel>>.fromJson(
@@ -127,7 +128,7 @@ class DataProvider extends GetxController {
 
   Future<List<CarouselModel>> getAllCarousels({bool showSnack = false}) async {
     try {
-      Response response = await httpService.get(endpointUrl: "carousel");
+      Response response = await httpService.getMethod(endpointUrl: "carousel");
       if (response.isOk) {
         ApiResponse<List<CarouselModel>> apiResponse =
             ApiResponse<List<CarouselModel>>.fromJson(

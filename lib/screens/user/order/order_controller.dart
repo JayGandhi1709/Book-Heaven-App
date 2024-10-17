@@ -33,7 +33,6 @@ class OrderController extends GetxController {
   void onInit() {
     super.onInit();
     getAllOrders();
-
   }
 
   Future<void> getAllOrders({
@@ -42,10 +41,10 @@ class OrderController extends GetxController {
     try {
       Response response;
       if (user.role == "ADMIN") {
-        response = await service.get(endpointUrl: "admin/$subUrl");
+        response = await service.getMethod(endpointUrl: "admin/$subUrl");
       } else {
         response =
-            await service.getById(endpointUrl: subUrl, itemData: user.id);
+            await service.getByIdMethod(endpointUrl: subUrl, itemData: user.id);
       }
       log(response.isOk.toString());
       if (response.isOk) {
@@ -100,8 +99,8 @@ class OrderController extends GetxController {
     String? userId,
   }) async {
     try {
-      final response =
-          await service.getById(endpointUrl: subUrl, itemData: userId ?? user.id);
+      final response = await service.getByIdMethod(
+          endpointUrl: subUrl, itemData: userId ?? user.id);
       if (response.isOk) {
         ApiResponse<List<OrderModel>> apiResponse =
             ApiResponse<List<OrderModel>>.fromJson(
@@ -147,7 +146,7 @@ class OrderController extends GetxController {
   Future<void> placeOrder(
       {showSnack = false, required OrderModel order}) async {
     try {
-      final response = await service.post(
+      final response = await service.postMethod(
         endpointUrl: subUrl,
         itemData: order.toJson(),
       );
@@ -189,7 +188,7 @@ class OrderController extends GetxController {
   Future<void> updateOrder(
       {showSnack = false, required OrderModel order}) async {
     try {
-      final response = await service.put(
+      final response = await service.putMethod(
         endpointUrl: subUrl,
         itemData: order.toJson(),
       );
@@ -234,7 +233,7 @@ class OrderController extends GetxController {
       required OrderModel order,
       required String status}) async {
     try {
-      final response = await service.put(
+      final response = await service.putMethod(
         endpointUrl: "admin/$subUrl/${order.id}/status",
         itemData: status,
       );
@@ -329,7 +328,8 @@ class OrderController extends GetxController {
 
     for (var order in _allOrders) {
       // Assuming OrderModel has a property `price` for the order amount
-      total += order.totalPrice; // Replace `price` with the actual property name
+      total +=
+          order.totalPrice; // Replace `price` with the actual property name
     }
 
     return total;
@@ -339,7 +339,7 @@ class OrderController extends GetxController {
     Map<String, double> salesData = {};
     DateTime today = DateTime.now();
 
-    try{
+    try {
       // Initialize the sales data for the last 7 days
       for (int i = 0; i < 7; i++) {
         DateTime date = today.subtract(Duration(days: i));
@@ -363,12 +363,14 @@ class OrderController extends GetxController {
         String formattedOrderDate = DateFormat('yyyy-MM-dd').format(orderDate);
         log("Formatted Order Date: $formattedOrderDate");
 
-        log("${orderDate} ${formattedOrderDate} ${salesData.containsKey(formattedOrderDate)}" ,name:"date");
+        log("${orderDate} ${formattedOrderDate} ${salesData.containsKey(formattedOrderDate)}",
+            name: "date");
 
         // Check if the order is within the last 7 days
         if (salesData.containsKey(formattedOrderDate)) {
-          log("comming",name:"com");
-          salesData[formattedOrderDate] = salesData[formattedOrderDate]! + order.totalPrice;
+          log("comming", name: "com");
+          salesData[formattedOrderDate] =
+              salesData[formattedOrderDate]! + order.totalPrice;
           log("Updated Sales Data: $formattedOrderDate -> ${salesData[formattedOrderDate]}");
           log("Updated Sales Data value: ${salesData}");
         }
@@ -376,11 +378,8 @@ class OrderController extends GetxController {
 
       _salesData.addAll(salesData);
       update();
-    }catch(e){
+    } catch (e) {
       log("Error: $e");
     }
-
-
-
   }
 }

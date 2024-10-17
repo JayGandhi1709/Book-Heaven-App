@@ -1,15 +1,20 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:get/get_connect.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utility/constants.dart';
 
-class HttpService {
+class HttpService extends GetConnect {
   final String baseUrl = MAIN_URL;
 
-  Future<Response> get({required String endpointUrl}) async {
+  HttpService() {
+    httpClient.timeout = const Duration(seconds: 30);
+  }
+
+  Future<Response> getMethod({required String endpointUrl}) async {
     try {
       log("$baseUrl/$endpointUrl");
       final prefs = await SharedPreferences.getInstance();
@@ -23,7 +28,7 @@ class HttpService {
     }
   }
 
-  Future<Response> getById(
+  Future<Response> getByIdMethod(
       {required String endpointUrl, required dynamic itemData}) async {
     try {
       log("$baseUrl/$endpointUrl");
@@ -38,7 +43,7 @@ class HttpService {
     }
   }
 
-  Future<Response> post(
+  Future<Response> postMethod(
       {required String endpointUrl, required dynamic itemData}) async {
     try {
       // showSnackBar("$baseUrl/$endpointUrl", MsgType.warning);
@@ -58,7 +63,7 @@ class HttpService {
     }
   }
 
-  Future<Response> putById(
+  Future<Response> putByIdMethod(
       {required String endpointUrl,
       required String itemId,
       required dynamic itemData}) async {
@@ -73,7 +78,7 @@ class HttpService {
     }
   }
 
-  Future<Response> put(
+  Future<Response> putMethod(
       {required String endpointUrl, required dynamic itemData}) async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -86,7 +91,7 @@ class HttpService {
     }
   }
 
-  Future<Response> delete(
+  Future<Response> deleteMethod(
       {required String endpointUrl, required String itemId}) async {
     try {
       final prefs = await SharedPreferences.getInstance();

@@ -13,16 +13,12 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _namecontroller = TextEditingController(text: "");
-  // TextEditingController(text: "Jay Gandhi");
   final TextEditingController _emailcontroller =
       TextEditingController(text: "");
-  // TextEditingController(text: "gandhijay126@gmail.com");
   final TextEditingController _passwordcontroller =
       TextEditingController(text: "");
-  // TextEditingController(text: "12345678");
   final TextEditingController _confirmPasswordcontroller =
       TextEditingController(text: "");
-  // TextEditingController(text: "12345678");
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
@@ -39,125 +35,130 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  'Register',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  minHeight: constraints.maxHeight,
                 ),
-                const SizedBox(height: 50),
-                CustomTextField(
-                  labelText: "Name",
-                  controller: _namecontroller,
-                ),
-                const SizedBox(height: 10),
-                CustomTextField(
-                  labelText: "Email",
-                  controller: _emailcontroller,
-                ),
-                const SizedBox(height: 10),
-                CustomTextField(
-                  labelText: "Password",
-                  controller: _passwordcontroller,
-                  obscureText: true,
-                ),
-                const SizedBox(height: 10),
-                CustomTextField(
-                  labelText: "Confirm Password",
-                  controller: _confirmPasswordcontroller,
-                  obscureText: true,
-                ),
-                const SizedBox(height: 20),
-                _isLoading
-                    ? const CircularProgressIndicator.adaptive()
-                    : ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _isLoading = true;
-                          });
-                          if (_formKey.currentState!.validate()) {
-                            if (_passwordcontroller.text !=
-                                _confirmPasswordcontroller.text) {
-                              showSnackBar(
-                                  "Passwords do not match!", MsgType.error);
-                              return;
-                            }
-                            context.userController.register(
-                              name: _namecontroller.text,
-                              email: _emailcontroller.text.trim(),
-                              password: _passwordcontroller.text.trim(),
-                            );
-                          }
-                          Future.delayed(const Duration(seconds: 2), () {
-                            setState(() {
-                              _isLoading = false;
-                            });
-                            Get.back();
-                          });
-                        },
-                        child: const Text('Register'),
-                      ),
-                // dont haven't account by not using Row
-                const SizedBox(height: 20),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text("Already have an account? "),
-                    InkWell(
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: const Text(
-                        "Login",
-                        style: TextStyle(
-                          color: Colors.deepPurple,
-                          fontWeight: FontWeight.bold,
-                        ),
+                child: IntrinsicHeight(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const SizedBox(height: 40),
+                          SizedBox(
+                            height: 100,
+                            child: Image.asset("assets/splashlogo.png"),
+                          ),
+                          const SizedBox(height: 10),
+                          const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 50),
+                          CustomTextField(
+                            labelText: "Name",
+                            controller: _namecontroller,
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextField(
+                            labelText: "Email",
+                            controller: _emailcontroller,
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextField(
+                            labelText: "Password",
+                            controller: _passwordcontroller,
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextField(
+                            labelText: "Confirm Password",
+                            controller: _confirmPasswordcontroller,
+                            obscureText: true,
+                          ),
+                          const SizedBox(height: 30),
+                          _isLoading
+                              ? const CircularProgressIndicator.adaptive()
+                              : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    minimumSize:
+                                        const Size(double.infinity, 50),
+                                    backgroundColor:
+                                        context.theme.colorScheme.primary,
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      _isLoading = true;
+                                    });
+                                    if (_formKey.currentState!.validate()) {
+                                      if (_passwordcontroller.text !=
+                                          _confirmPasswordcontroller.text) {
+                                        showSnackBar("Passwords do not match!",
+                                            MsgType.error);
+                                        setState(() {
+                                          _isLoading = false;
+                                        });
+                                        return;
+                                      }
+                                      context.userController.register(
+                                        name: _namecontroller.text,
+                                        email: _emailcontroller.text.trim(),
+                                        password:
+                                            _passwordcontroller.text.trim(),
+                                      );
+                                    }
+                                    Future.delayed(const Duration(seconds: 2),
+                                        () {
+                                      setState(() {
+                                        _isLoading = false;
+                                      });
+                                      Get.back();
+                                    });
+                                  },
+                                  child: const Text(
+                                    'Sign Up',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                ),
+                          const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text("Already have an account? "),
+                              InkWell(
+                                onTap: () {
+                                  Get.back();
+                                },
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(
+                                    color: context.theme.colorScheme.primary,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                        ],
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         ),
       ),
     );
   }
 }
-
-// class CustomTextField extends StatelessWidget {
-//   const CustomTextField({
-//     super.key,
-//     required this.labelText,
-//     required this.controller,
-//     this.obscureText = false,
-//   });
-
-//   final String labelText;
-//   final TextEditingController controller;
-//   final bool obscureText;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return TextFormField(
-//       controller: controller,
-//       obscureText: obscureText,
-//       decoration: InputDecoration(
-//         labelText: labelText,
-//         hintText: 'Enter your $labelText',
-//       ),
-//       validator: (value) {
-//         if (value == null || value.isEmpty) {
-//           return 'Please enter your $labelText';
-//         }
-//         return null;
-//       },
-//     );
-//   }
-// }

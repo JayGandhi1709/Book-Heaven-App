@@ -18,7 +18,9 @@ class SalesChart extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Sales Chart')),
+      appBar: AppBar(
+        title: const Text('Sales Chart'),
+      ),
       body: Column(
         children: [
           const SizedBox(height: 20),

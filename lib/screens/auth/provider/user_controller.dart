@@ -56,7 +56,7 @@ class UserController extends GetxController {
         "email": email.toLowerCase(),
         "password": password,
       };
-      final response = await service.post(
+      final response = await service.postMethod(
         endpointUrl: '$subUrl/login',
         itemData: loginData,
       );
@@ -120,7 +120,7 @@ class UserController extends GetxController {
         "password": password,
       };
 
-      final response = await service.post(
+      final response = await service.postMethod(
         endpointUrl: '$subUrl/register',
         itemData: user,
       );
@@ -163,7 +163,7 @@ class UserController extends GetxController {
     try {
       prefs = await SharedPreferences.getInstance();
       token = prefs?.getString(USER_TOKEN) ?? "";
-      final response = await service.get(
+      final response = await service.getMethod(
         endpointUrl: '$subUrl/tokenIsValid',
       );
       if (response.isOk) {

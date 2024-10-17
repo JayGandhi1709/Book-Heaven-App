@@ -64,7 +64,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
         body: SingleChildScrollView(
           child: Form(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   _images.isNotEmpty
@@ -81,8 +81,9 @@ class _AddBookScreenState extends State<AddBookScreen> {
                                     width: 100,
                                     height: 150,
                                     color: Get.theme.colorScheme.onSurface,
-                                    child: const Icon(
+                                    child: Icon(
                                       Icons.add,
+                                      color: Get.theme.colorScheme.surface,
                                       size: 40,
                                     ),
                                   ),
@@ -99,8 +100,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                                       child: IconButton(
                                         icon: Icon(
                                           Icons.cancel,
-                                          color:
-                                              Get.theme.colorScheme.onSurface,
+                                          color: Get.theme.colorScheme.surface,
                                         ),
                                         onPressed: () {
                                           setState(() {
@@ -173,6 +173,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                   CustomTextFormField(
                     labelText: "Publication Year",
                     controller: _publicationYearController,
+                    keyboardType: TextInputType.number,
                   ),
                   CustomTextFormField(
                     labelText: "Genre",
@@ -201,53 +202,64 @@ class _AddBookScreenState extends State<AddBookScreen> {
                       labelText: "ISBN", controller: _isbnController),
                   // Integer physicalPrice;
                   CustomTextFormField(
-                      labelText: "Physical Price",
-                      controller: _physicalPriceController),
+                    labelText: "Physical Price",
+                    controller: _physicalPriceController,
+                    keyboardType: TextInputType.number,
+                  ),
                   // Integer digitalPrice;
                   CustomTextFormField(
-                      labelText: "Digital Price",
-                      controller: _digitalPriceController),
+                    labelText: "Digital Price",
+                    keyboardType: TextInputType.number,
+                    controller: _digitalPriceController,
+                  ),
                   // String page;
                   CustomTextFormField(
-                      labelText: "Page", controller: _pageController),
+                    keyboardType: TextInputType.number,
+                    labelText: "Page",
+                    controller: _pageController,
+                  ),
                   // String language;
                   CustomTextFormField(
                       labelText: "Language", controller: _languageController),
                   // String pdfUrl;
-                  GestureDetector(
-                    onTap: selectPdf,
-                    child: DottedBorder(
-                      color: Get.theme.colorScheme.onSurface,
-                      borderType: BorderType.RRect,
-                      radius: const Radius.circular(10),
-                      dashPattern: const [10, 4],
-                      strokeCap: StrokeCap.round,
-                      child: Container(
-                        width: double.infinity,
-                        height: 70,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const Icon(
-                              Icons.folder_open,
-                              size: 40,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: GestureDetector(
+                      onTap: selectPdf,
+                      child: DottedBorder(
+                        color: Get.theme.colorScheme.onSurface,
+                        borderType: BorderType.RRect,
+                        radius: const Radius.circular(10),
+                        dashPattern: const [10, 4],
+                        strokeCap: StrokeCap.round,
+                        child: Container(
+                          width: double.infinity,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                const Icon(
+                                  Icons.folder_open,
+                                  size: 40,
+                                ),
+                                const SizedBox(width: 10),
+                                Text(
+                                  pdf != null
+                                      ? pdf!.path.split('/').last
+                                      : "Select Book PDF file",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    color: Colors.grey.shade400,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                              pdf != null
-                                  ? pdf!.path.split('/').last
-                                  : "Select Book PDF file",
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey.shade400,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
@@ -261,7 +273,6 @@ class _AddBookScreenState extends State<AddBookScreen> {
                             setState(() {
                               _isLoading = true;
                             });
-                            log(_genreController.toString());
                             context.bookController.addBook(
                               title: _bookNameController.text,
                               desc: _descriptionController.text,
@@ -279,7 +290,7 @@ class _AddBookScreenState extends State<AddBookScreen> {
                               page: _pageController.text,
                               language: _languageController.text,
                               hasPhysicalCopy:
-                                  _physicalPriceController.text != null,
+                                  _physicalPriceController.text.isNotEmpty,
                               hasDigitalCopy: pdf == null ? false : true,
                               pdf: pdf!,
                             );

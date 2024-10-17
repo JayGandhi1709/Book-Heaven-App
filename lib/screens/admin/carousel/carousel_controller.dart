@@ -25,7 +25,7 @@ class CarouselServices extends GetxController {
         "description": description,
       });
 
-      final response = await service.post(
+      final response = await service.postMethod(
         endpointUrl: subUrl,
         itemData: formData,
       );
@@ -58,7 +58,7 @@ class CarouselServices extends GetxController {
   // delete carousel from database
   Future<void> deleteCarousel(String id) async {
     try {
-      final response = await service.delete(
+      final response = await service.deleteMethod(
         endpointUrl: subUrl,
         itemId: id,
       );
@@ -97,7 +97,7 @@ class CarouselServices extends GetxController {
               })
           .toList();
 
-      final response = await service.put(
+      final response = await service.putMethod(
         endpointUrl: "$subUrl/update-display-order",
         itemData: carouselList,
       );
@@ -133,7 +133,7 @@ class CarouselServices extends GetxController {
         "description": carousel.description,
       });
 
-      final response = await service.putById(
+      final response = await service.putByIdMethod(
         endpointUrl: subUrl,
         itemData: formData,
         itemId: carousel.id,
