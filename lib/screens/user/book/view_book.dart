@@ -14,7 +14,6 @@ class ViewBook extends StatefulWidget {
 }
 
 class _ViewBookState extends State<ViewBook> {
-  // State variable to track if the full description is shown
   final RxBool showFullDescription = false.obs;
 
   @override
@@ -34,7 +33,7 @@ class _ViewBookState extends State<ViewBook> {
                 Stack(
                   alignment: Alignment.topRight,
                   children: [
-                    Container(
+                    SizedBox(
                       height: MediaQuery.of(context).size.height * 0.35,
                       child: PageView.builder(
                         itemCount: widget.book.img.length,
@@ -67,7 +66,7 @@ class _ViewBookState extends State<ViewBook> {
                               //         color: Colors.red,
                               //       )
                               //     : const Icon(Icons.favorite_border),
-                              icon: const Icon(Icons.favorite_border),
+                              icon: const Icon(Icons.favorite_border,color: Colors.black),
                               selectedIcon: const Icon(
                                 Icons.favorite,
                                 color: Colors.red,
@@ -113,7 +112,7 @@ class _ViewBookState extends State<ViewBook> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'ISBN',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w600),
@@ -150,7 +149,7 @@ class _ViewBookState extends State<ViewBook> {
                             fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        '${widget.book.page}',
+                        widget.book.page,
                         style: const TextStyle(fontSize: 16),
                       ),
                     ],
@@ -243,14 +242,7 @@ class _ViewBookState extends State<ViewBook> {
               if (widget.book.hasDigitalCopy && widget.book.pdfUrl != null)
                 Container(
                   decoration: BoxDecoration(
-                    // gradient: const LinearGradient(
-                    //   colors: [
-                    //     Color(0xff466168),
-                    //     Color.fromARGB(255, 128, 160, 168),
-                    //     Color.fromARGB(255, 147, 187, 197),
-                    //   ], // Specify your gradient colors
-                    // ),
-                    color: Colors.blue,
+                    color: context.theme.colorScheme.primary,
                     borderRadius: BorderRadius.circular(
                         8), // Optional: for rounded corners
                   ),
@@ -263,7 +255,7 @@ class _ViewBookState extends State<ViewBook> {
                     onPressed: () {
                       Get.to(
                         () => CustomPdfViewer(
-                          pdfUrl: widget.book.pdfUrl!,
+                          book: widget.book,
                         ),
                       );
                     },
@@ -278,6 +270,7 @@ class _ViewBookState extends State<ViewBook> {
         ),
       ),
       bottomNavigationBar: BottomAppBar(
+        color: context.theme.bottomNavigationBarTheme.backgroundColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -291,7 +284,7 @@ class _ViewBookState extends State<ViewBook> {
                   //     Color.fromARGB(255, 147, 187, 197),
                   //   ], // Specify your gradient colors
                   // ),
-                  color: Colors.blue,
+                  color: context.theme.bottomNavigationBarTheme.selectedItemColor,
                   borderRadius:
                       BorderRadius.circular(8), // Optional: for rounded corners
                 ),
@@ -339,7 +332,7 @@ class _ViewBookState extends State<ViewBook> {
                   //     Color.fromARGB(255, 147, 187, 197),
                   //   ], // Specify your gradient colors
                   // ),
-                  color: Colors.blue,
+                  color: context.theme.bottomNavigationBarTheme.selectedItemColor,
                   borderRadius:
                       BorderRadius.circular(8), // Optional: for rounded corners
                 ),

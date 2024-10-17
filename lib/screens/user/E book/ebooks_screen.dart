@@ -53,7 +53,7 @@ class EBooksScreen extends StatelessWidget {
                             ),
                             title: Text(orderItem.book.title),
                             onTap: () => Get.to(() => CustomPdfViewer(
-                                  pdfUrl: orderItem.book.pdfUrl!,
+                              book: orderItem.book,
                                   isPurchased: true,
                                 )),
                           ),

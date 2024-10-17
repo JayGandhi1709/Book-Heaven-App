@@ -73,7 +73,8 @@ class AppThemes {
     ),
     scaffoldBackgroundColor: const Color(0xFF121212), // Charcoal background
     appBarTheme: const AppBarTheme(
-      backgroundColor: Color(0xFFFF9800), // Deep Amber AppBar
+      // backgroundColor: Color(0xFFFF9800), // Deep Amber AppBar
+      backgroundColor: Color(0xFFFFC107), // Amber AppBar
       foregroundColor: Color(0xFFFFF8E1), // Light Beige text color
       elevation: 1, // Shadow for AppBar
       titleTextStyle: TextStyle(

@@ -6,6 +6,7 @@ import 'package:book_heaven/models/user_model.dart';
 import 'package:book_heaven/services/http_services.dart';
 import 'package:book_heaven/utility/show_snack_bar.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class OrderController extends GetxController {
   final HttpService service = HttpService();
@@ -25,10 +26,14 @@ class OrderController extends GetxController {
   final RxList<OrderModel> _allFilterOrders = <OrderModel>[].obs;
   List<OrderModel> get allFilterOrders => _allFilterOrders;
 
+  final RxMap<String, double> _salesData = <String, double>{}.obs;
+  Map<String, double> get salesData => _salesData;
+
   @override
   void onInit() {
     super.onInit();
     getAllOrders();
+
   }
 
   Future<void> getAllOrders({
@@ -36,9 +41,6 @@ class OrderController extends GetxController {
   }) async {
     try {
       Response response;
-
-      log(user.role.toString());
-
       if (user.role == "ADMIN") {
         response = await service.get(endpointUrl: "admin/$subUrl");
       } else {
@@ -57,6 +59,7 @@ class OrderController extends GetxController {
         if (apiResponse.success == true) {
           _allOrders.assignAll(apiResponse.data ?? []);
           _allFilterOrders.assignAll(_allOrders);
+
           // filter ebooks orders
           if (user.role == "USER") {
             _allEBooksOrders.assignAll(_allOrders
@@ -64,6 +67,7 @@ class OrderController extends GetxController {
                 .toList());
           }
           update();
+          getSalesDataLast7Days();
 
           if (showSnack) {
             showSnackBar(apiResponse.message, MsgType.success);
@@ -318,5 +322,65 @@ class OrderController extends GetxController {
     // Update the filtered orders list and notify listeners
     _allFilterOrders.assignAll(filteredOrders);
     update();
+  }
+
+  double calculateTotalSelling() {
+    double total = 0.0;
+
+    for (var order in _allOrders) {
+      // Assuming OrderModel has a property `price` for the order amount
+      total += order.totalPrice; // Replace `price` with the actual property name
+    }
+
+    return total;
+  }
+
+  void getSalesDataLast7Days() {
+    Map<String, double> salesData = {};
+    DateTime today = DateTime.now();
+
+    try{
+      // Initialize the sales data for the last 7 days
+      for (int i = 0; i < 7; i++) {
+        DateTime date = today.subtract(Duration(days: i));
+        String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+        salesData[formattedDate] = 0.0; // Initialize with 0
+      }
+
+      // Debug: Log existing orders
+      for (var order in _allOrders) {
+        log("Order Date: ${order.orderDate}, Total Price: ${order.totalPrice}");
+
+        // Ensure the orderDate is in the correct format
+        DateTime orderDate;
+        try {
+          orderDate = DateTime.parse(order.orderDate);
+        } catch (e) {
+          log("Error parsing order date: ${order.orderDate}");
+          continue; // Skip if there's an error parsing the date
+        }
+
+        String formattedOrderDate = DateFormat('yyyy-MM-dd').format(orderDate);
+        log("Formatted Order Date: $formattedOrderDate");
+
+        log("${orderDate} ${formattedOrderDate} ${salesData.containsKey(formattedOrderDate)}" ,name:"date");
+
+        // Check if the order is within the last 7 days
+        if (salesData.containsKey(formattedOrderDate)) {
+          log("comming",name:"com");
+          salesData[formattedOrderDate] = salesData[formattedOrderDate]! + order.totalPrice;
+          log("Updated Sales Data: $formattedOrderDate -> ${salesData[formattedOrderDate]}");
+          log("Updated Sales Data value: ${salesData}");
+        }
+      }
+
+      _salesData.addAll(salesData);
+      update();
+    }catch(e){
+      log("Error: $e");
+    }
+
+
+
   }
 }

@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:book_heaven/screens/admin/book/book_screen.dart';
 import 'package:book_heaven/screens/admin/carousel/carousel.dart';
+import 'package:book_heaven/screens/admin/dashboard/sells.dart';
 import 'package:book_heaven/screens/admin/user/user_screen.dart';
 import 'package:book_heaven/screens/user/order/orders_screen.dart';
 import 'package:book_heaven/utility/extensions.dart';
@@ -45,6 +48,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.amber.shade300,
         title: const Text('Dashboard'),
         actions: [
           IconButton(
@@ -75,24 +80,39 @@ class _DashboardScreenState extends State<DashboardScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(CupertinoIcons.person, size: 20),
-              const SizedBox(height: 5),
-              Text(
-                context.userController.user.name.toString(),
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Text(
-                context.userController.user.email.toString(),
-                style: const TextStyle(
-                  fontSize: 12,
+          // Text(context.orderController.salesData.toString()),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(CupertinoIcons.person, size: 20),
+                    const SizedBox(height: 5),
+                    Text(
+                      context.userController.user.name.toString(),
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      context.userController.user.email.toString(),
+                      style: const TextStyle(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 20),
               Obx(
                 () {
                   List<Map<String, dynamic>> cardNames = [
+                    {
+                      'name': 'Selling',
+                      'count': "₹ ${context.orderController.calculateTotalSelling().toStringAsFixed(0)}",
+                      'onTap': () => Get.to(() => SalesChart(salesData: context.orderController.salesData)),
+                    },
                     {
                       'name': 'Users',
                       'count': context.dataProvider.allUsers.length.toString(),
@@ -111,6 +131,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     },
                     {
                       'name': 'Orders',
+                      'count':
+                          context.orderController.allOrders.length.toString(),
+                      'onTap': () => Get.to(() => const OrdersScreen()),
+                    },
+                    {
+                      'name': 'Pending Orders',
+                      'count':
+                          context.orderController.allOrders.length.toString(),
+                      'onTap': () => Get.to(() => const OrdersScreen()),
+                    },
+                    {
+                      'name': 'Cancelled Orders',
+                      'count':
+                          context.orderController.allOrders.length.toString(),
+                      'onTap': () => Get.to(() => const OrdersScreen()),
+                    },{
+                      'name': 'Delivered Orders',
                       'count':
                           context.orderController.allOrders.length.toString(),
                       'onTap': () => Get.to(() => const OrdersScreen()),
@@ -142,33 +179,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       return Card(
                         elevation: 2,
                         // color: context.theme.cardColor,
-
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: InkWell(
                           onTap: cardName['onTap'],
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(cardName['name'] ?? ''),
-                                Text(
-                                  cardName['count'] ?? '',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
+                          child: ListTile(
+                            title: Text(cardName['name'] ?? ''),
+                            subtitle: Text(
+                              cardName['count'] ?? '',
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                         ),
+                        // InkWell(
+                        //   onTap: cardName['onTap'],
+                        //   child: Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                        //     children: [
+                        //       Text(cardName['name'] ?? ''),
+                        //       Text(
+                        //         cardName['count'] ?? '',
+                        //         style: const TextStyle(
+                        //           fontWeight: FontWeight.bold,
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
                       );
                     },
                   );
                 },
               ),
+
             ],
           ),
         ),

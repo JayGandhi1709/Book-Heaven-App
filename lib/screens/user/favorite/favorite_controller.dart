@@ -48,6 +48,7 @@ class FavoriteController extends GetxController {
 
   // Check if a book is marked as favorite
   bool isFavorite(BookModel book) {
+    log(_allFavoriteBooks.contains(book).toString(),name: "isFav",);
     return _allFavoriteBooks.contains(book);
   }
 }

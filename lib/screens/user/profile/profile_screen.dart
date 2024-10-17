@@ -69,8 +69,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            const SizedBox(height: 50),
             const Center(
               child: CircleAvatar(
                 radius: 50,
@@ -95,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontWeight: FontWeight.w400,
               ),
             ),
-            const SizedBox(height: 35),
+            const SizedBox(height: 50),
             ...settingsItem.map(
               (e) => Padding(
                 padding: const EdgeInsets.all(4.0),
